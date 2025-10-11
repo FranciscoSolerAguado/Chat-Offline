@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<conversaciones>
+
+    <conversacion idConversacion="conv1">
+        <usuario1>Ana</usuario1>
+        <usuario2>Luis</usuario2>
+        <fechaInicio>2025-10-11T11:00:00</fechaInicio>
+        <fechaUltimoMensaje>2025-10-11T11:20:00</fechaUltimoMensaje>
+
+        <mensajes>
+            <mensaje idMensaje="m001">
+                <remitente>Ana</remitente>
+                <destinatario>Luis</destinatario>
+                <contenido>¡Hola Luis! ¿Cómo estás?</contenido>
+                <fechaEnvio>2025-10-11T11:01:00</fechaEnvio>
+            </mensaje>
+
+            <mensaje idMensaje="m002">
+                <remitente>Luis</remitente>
+                <destinatario>Ana</destinatario>
+                <contenido>Muy bien 😄, te paso el archivo que pediste.</contenido>
+                <fechaEnvio>2025-10-11T11:05:00</fechaEnvio>
+
+                <adjunto>
+                    <nombreArchivo>informe.pdf</nombreArchivo>
+                    <rutaArchivo>media/informe.pdf</rutaArchivo>
+                    <tamano>204800</tamano>
+                    <tipoMime>application/pdf</tipoMime>
+                </adjunto>
+            </mensaje>
+        </mensajes>
+    </conversacion>
+
+    <conversacion idConversacion="conv2">
+        <usuario1>Ana</usuario1>
+        <usuario2>Pedro</usuario2>
+        <fechaInicio>2025-10-11T12:00:00</fechaInicio>
+        <fechaUltimoMensaje>2025-10-11T12:15:00</fechaUltimoMensaje>
+
+        <mensajes>
+            <mensaje idMensaje="m003">
+                <remitente>Pedro</remitente>
+                <destinatario>Ana</destinatario>
+                <contenido>Hola Ana, te paso la imagen.</contenido>
+                <fechaEnvio>2025-10-11T12:05:00</fechaEnvio>
+                <adjunto>
+                    <nombreArchivo>foto.png</nombreArchivo>
+                    <rutaArchivo>media/foto.png</rutaArchivo>
+                    <tamano>35842</tamano>
+                    <tipoMime>image/png</tipoMime>
+                </adjunto>
+            </mensaje>
+        </mensajes>
+    </conversacion>
+
+</conversaciones>

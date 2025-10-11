@@ -17,6 +17,9 @@ public class Usuario {
     private String email;
 
     @XmlElement
+    private String password;
+
+    @XmlElement
     private LocalDateTime fechaRegistro;
 
     @XmlElement
@@ -29,10 +32,11 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(String idUsuario, String nombreUsuario, String email) {
+    public Usuario(String idUsuario, String nombreUsuario, String email, String password) {
         this.idUsuario = idUsuario;
         this.nombreUsuario = nombreUsuario;
         this.email = email;
+        this.password = password;
         this.fechaRegistro = LocalDateTime.now();
         this.activo = true;
     }
@@ -62,6 +66,14 @@ public class Usuario {
         this.email = email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public LocalDateTime getFechaRegistro() {
         return fechaRegistro;
     }
@@ -87,8 +99,8 @@ public class Usuario {
     }
 
 
-    public void desactivar() {
-        this.activo = false;
+    public boolean validarPassword(String input) {
+        return this.password != null && this.password.equals(input);
     }
 
     @Override
