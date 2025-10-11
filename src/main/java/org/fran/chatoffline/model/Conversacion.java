@@ -33,7 +33,7 @@ public class Conversacion {
     @XmlElement
     private LocalDateTime fechaUltimoMensaje;
 
-    // --- Constructores ---
+
     public Conversacion() { }
 
     public Conversacion(String idConversacion, String usuario1, String usuario2) {
@@ -43,7 +43,7 @@ public class Conversacion {
         this.fechaInicio = LocalDateTime.now();
     }
 
-    // --- Getters & Setters ---
+
     public String getIdConversacion() { return idConversacion; }
     public void setIdConversacion(String idConversacion) { this.idConversacion = idConversacion; }
 

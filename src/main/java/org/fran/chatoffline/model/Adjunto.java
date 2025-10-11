@@ -27,7 +27,7 @@ public class Adjunto {
         this.tipoMime = tipoMime;
     }
 
-    // Getters & Setters
+
     public String getNombreArchivo() { return nombreArchivo; }
     public void setNombreArchivo(String nombreArchivo) { this.nombreArchivo = nombreArchivo; }
 
