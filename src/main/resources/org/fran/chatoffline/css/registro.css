@@ -1,0 +1,76 @@
+
+.root {
+    -fx-background-color: #0097A7;
+    -fx-font-family: "Segoe UI";
+}
+
+
+.login-box {
+    -fx-background-color: white;
+    -fx-padding: 40 60;
+    -fx-border-radius: 25;
+    -fx-background-radius: 25;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 15, 0, 0, 4);
+}
+
+
+.title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #000;
+}
+
+
+.label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #000;
+}
+
+
+.input-field {
+    -fx-background-color: #e6e6e6;
+    -fx-background-radius: 20;
+    -fx-padding: 8 15;
+    -fx-pref-width: 250;
+    -fx-font-size: 14px;
+    -fx-border-color: transparent;
+}
+
+.input-field:focused {
+    -fx-background-color: #dcdcdc;
+}
+
+
+.btn-entrar {
+    -fx-background-color: #e6e6e6;
+    -fx-background-radius: 20;
+    -fx-text-fill: #000;
+    -fx-font-weight: bold;
+    -fx-padding: 8 25;
+    -fx-cursor: hand;
+}
+
+.btn-entrar:hover {
+    -fx-background-color: #d0d0d0;
+}
+
+
+.link {
+    -fx-text-fill: #000000;
+    -fx-font-size: 13px;
+    -fx-underline: true;
+    -fx-cursor: hand;
+}
+
+.link:hover {
+    -fx-text-fill: #007a88;
+}
+
+.button:hover {
+    -fx-background-color: #06c1d4;
+    -fx-text-fill: white;
+    -fx-opacity: 1.0;
+    -fx-border-color: #ffffff;
+    -fx-border-width: 1px;
+    -fx-border-radius: 3px;
+}
