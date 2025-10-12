@@ -1,4 +1,4 @@
 package org.fran.chatoffline.controller;
 
-public class AdjuntoController {
+public class PerfilUsuarioController {
 }
