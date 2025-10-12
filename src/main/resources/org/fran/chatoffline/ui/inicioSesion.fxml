@@ -1,14 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
             fx:controller="org.fran.chatoffline.controller.InicioSesionController"
-            prefHeight="400.0" prefWidth="600.0">
+            stylesheets="@../css/inicioSesion.css" styleClass="root">
 
-</AnchorPane>
+    <top>
+        <HBox fx:id="topBar" alignment="CENTER_LEFT" prefHeight="40.0" spacing="10.0"
+              style="-fx-background-color: #1c1a1a;">
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+
+            <children>
+                <ImageView fitHeight="24.0" fitWidth="24.0" opacity="0.5" preserveRatio="true">
+                    <image>
+                        <Image url="@../img/logo.png" />
+                    </image>
+                    <HBox.margin>
+                        <Insets bottom="10.0" />
+                    </HBox.margin>
+                </ImageView>
+
+                <Label opacity="0.5" style="-fx-text-fill: white; -fx-font-family: 'Work Sans'; -fx-font-size: 14px;" text="Chat-OFFLine">
+                    <padding>
+                        <Insets bottom="10.0" />
+                    </padding>
+                </Label>
+
+                <Region HBox.hgrow="ALWAYS" />
+
+                <Button mnemonicParsing="false" onAction="#handleMinimize" opacity="0.5"
+                        style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 16;" text="—">
+                    <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" />
+                    </padding>
+                </Button>
+
+                <Button mnemonicParsing="false" onAction="#handleToggleMaximize" opacity="0.5"
+                        style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 16;" text="❐">
+                    <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" />
+                    </padding>
+                </Button>
+
+                <Button mnemonicParsing="false" onAction="#handleClose" opacity="0.5"
+                        style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 16;" text="✕">
+                    <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" />
+                    </padding>
+                </Button>
+            </children>
+        </HBox>
+    </top>
+
+<!-- xml -->
+<center>
+    <StackPane alignment="CENTER" styleClass="background">
+        <VBox alignment="CENTER"
+              spacing="20"
+              styleClass="login-box"
+              prefWidth="400.0" prefHeight="360.0"
+              minWidth="400.0" minHeight="360.0"
+              maxWidth="400.0" maxHeight="360.0">
+            <Label text="Iniciar Sesión" styleClass="title"/>
+
+            <VBox spacing="15" alignment="CENTER">
+                <Label text="Correo Electrónico" styleClass="label"/>
+                <TextField fx:id="txtEmail" promptText="Introduce tu correo" styleClass="input-field"/>
+
+                <Label text="Contraseña" styleClass="label"/>
+                <PasswordField fx:id="txtPassword" promptText="Introduce tu contraseña" styleClass="input-field"/>
+            </VBox>
+
+            <Button text="Entrar" fx:id="btnEntrar" styleClass="btn-entrar"/>
+            <Hyperlink text="¿No tienes una cuenta? Regístrate" fx:id="linkRegistro" styleClass="link"/>
+        </VBox>
+    </StackPane>
+</center>
+</BorderPane>
+
