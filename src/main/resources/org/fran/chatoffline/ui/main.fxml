@@ -66,21 +66,41 @@
                         <Insets bottom="10" left="10" right="10" top="10" />
                     </padding>
                     <!-- Repite este bloque para cada chat -->
-                    <HBox alignment="CENTER_LEFT" spacing="10" styleClass="chat-item">
+                    <HBox alignment="CENTER_LEFT" spacing="10" styleClass="chatHbox">
                         <Circle radius="15" styleClass="avatar" />
                         <Label styleClass="chat-name" text="Juan" />
                         <Region HBox.hgrow="ALWAYS" />
                         <Button styleClass="add-btn" text="+" />
                     </HBox>
 
-                    <HBox alignment="CENTER_LEFT" spacing="10" styleClass="chat-item">
+                    <HBox alignment="CENTER_LEFT" spacing="10" styleClass="chatHbox">
                         <Circle radius="15" styleClass="avatar" />
                         <Label styleClass="chat-name" text="Juan" />
                         <Region HBox.hgrow="ALWAYS" />
                         <Button styleClass="add-btn" text="+" />
                     </HBox>
 
-                    <HBox alignment="CENTER_LEFT" spacing="10" styleClass="chat-item">
+                    <HBox alignment="CENTER_LEFT" spacing="10" styleClass="chatHbox">
+                        <Circle radius="15" styleClass="avatar" />
+                        <Label styleClass="chat-name" text="Juan" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button styleClass="add-btn" text="+" />
+                    </HBox>
+                    <HBox alignment="CENTER_LEFT" spacing="10" styleClass="chatHbox">
+                        <Circle radius="15" styleClass="avatar" />
+                        <Label styleClass="chat-name" text="Juan" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button styleClass="add-btn" text="+" />
+                    </HBox>
+
+                    <HBox alignment="CENTER_LEFT" spacing="10" styleClass="chatHbox">
+                        <Circle radius="15" styleClass="avatar" />
+                        <Label styleClass="chat-name" text="Juan" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button styleClass="add-btn" text="+" />
+                    </HBox>
+
+                    <HBox alignment="CENTER_LEFT" spacing="10" styleClass="chatHbox">
                         <Circle radius="15" styleClass="avatar" />
                         <Label styleClass="chat-name" text="Juan" />
                         <Region HBox.hgrow="ALWAYS" />
@@ -101,7 +121,7 @@
 
     <!-- PANEL DERECHO -->
     <center>
-        <StackPane styleClass="main-area">
+        <StackPane fx:id="mainArea" styleClass="main-area">
             <VBox alignment="CENTER" prefHeight="556.0" prefWidth="636.0">
                 <StackPane alignment="CENTER">
                     <Circle radius="100" styleClass="mail-circle" />

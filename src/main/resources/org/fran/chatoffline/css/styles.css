@@ -23,7 +23,7 @@
     -fx-border-color: transparent;
 }
 
-.chat-item {
+.chatHbox {
     -fx-background-color: #e6e6e6;
     -fx-padding: 8 10;
     -fx-background-radius: 20;
