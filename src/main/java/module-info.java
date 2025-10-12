@@ -3,6 +3,8 @@ module org.fran.chatoffline {
     requires javafx.fxml;
     requires java.xml.bind;
     requires java.logging;
+    requires javafx.graphics;
+    requires javafx.base;
 
 
     opens org.fran.chatoffline to javafx.fxml;
