@@ -8,7 +8,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
@@ -25,8 +24,7 @@ public class MainController {
     private HBox topBar;
 
     @FXML
-    private StackPane mainArea; 
-
+    private StackPane mainArea;
 
     private double xOffset = 0;
     private double yOffset = 0;
@@ -44,40 +42,55 @@ public class MainController {
             stage.setY(event.getScreenY() - yOffset);
         });
 
+        // Carga la vista de conversación por defecto al iniciar
+        Platform.runLater(() -> abrirConversacion());
+
+        // Configura los botones que ya existen en main.fxml
+        setupExistingButtons();
+    }
+
+    /**
+     * Configura los eventos para los botones que forman parte de la UI principal (main.fxml).
+     */
+    private void setupExistingButtons() {
         Platform.runLater(() -> {
             Scene scene = topBar.getScene();
             if (scene == null) return;
             Parent root = scene.getRoot();
-            Set<Node> nodes = root.lookupAll(".masInformacionBoton");
-            nodes.forEach(node -> {
+
+            // Botón para abrir perfil de usuario
+            Set<Node> masInfoBotones = root.lookupAll(".masInformacionBoton");
+            masInfoBotones.forEach(node -> {
                 if (node instanceof Button) {
-                    ((Button) node).setOnAction(e -> abrirPerfilUsuario());
+                    ((Button) node).setOnAction(e -> mostrarEnMainArea("perfilUsuario.fxml"));
                 }
             });
-        });
 
-        Platform.runLater(() -> {
-            Scene scene = topBar.getScene();
-            if (scene == null) return;
-            Parent root = scene.getRoot();
-            Set<Node> nodes = root.lookupAll(".chatHbox");
-            nodes.forEach(node -> {
-                // Asigna el evento de clic directamente al nodo encontrado
+            // HBox para abrir una conversación
+            Set<Node> chatHboxes = root.lookupAll(".chatHbox");
+            chatHboxes.forEach(node -> {
                 node.setOnMouseClicked(e -> abrirConversacion());
             });
         });
-
     }
 
+    /**
+     * Carga la vista de conversación y le pasa una referencia de este controlador.
+     */
     private void abrirConversacion() {
         try {
-            Parent conversacion = FXMLLoader.load(getClass().getResource("/org/fran/chatoffline/ui/conversacion.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/fran/chatoffline/ui/conversacion.fxml"));
+            Parent conversacionView = loader.load();
+
+            // Obtiene el controlador de la vista cargada
+            ConversacionController conversacionController = loader.getController();
+            // Le pasa una referencia de este MainController
+            conversacionController.setMainController(this);
+
             if (mainArea != null) {
-                mainArea.getChildren().setAll(conversacion); // reemplaza contenido del StackPane central
+                mainArea.getChildren().setAll(conversacionView);
             } else {
-                // fallback: reemplaza raíz si mainArea no está disponible
-                Stage stage = (Stage) topBar.getScene().getWindow();
-                stage.getScene().setRoot(conversacion);
+                LOGGER.severe("mainArea es nulo. No se puede cargar la vista.");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -85,20 +98,22 @@ public class MainController {
         }
     }
 
-
-    private void abrirPerfilUsuario() {
+    /**
+     * Método genérico para cargar cualquier FXML en el área principal.
+     * @param fxmlFileName El nombre del archivo FXML (ej. "perfilUsuario.fxml")
+     */
+    public void mostrarEnMainArea(String fxmlFileName) {
         try {
-            Parent perfil = FXMLLoader.load(getClass().getResource("/org/fran/chatoffline/ui/perfilUsuario.fxml"));
+            String resourcePath = "/org/fran/chatoffline/ui/" + fxmlFileName;
+            Parent view = FXMLLoader.load(getClass().getResource(resourcePath));
             if (mainArea != null) {
-                mainArea.getChildren().setAll(perfil); // reemplaza contenido del StackPane central
+                mainArea.getChildren().setAll(view);
             } else {
-                // fallback: reemplaza raíz si mainArea no está disponible
-                Stage stage = (Stage) topBar.getScene().getWindow();
-                stage.getScene().setRoot(perfil);
+                LOGGER.severe("mainArea es nulo. No se puede cargar " + fxmlFileName);
             }
         } catch (IOException e) {
             e.printStackTrace();
-            LOGGER.severe("Error al cargar perfilUsuario.fxml: " + e.getMessage());
+            LOGGER.severe("Error al cargar " + fxmlFileName + ": " + e.getMessage());
         }
     }
 
