@@ -15,7 +15,7 @@
 
             <!-- BARRA SUPERIOR -->
             <top>
-                <HBox spacing="10" alignment="CENTER_LEFT" styleClass="barra-superior">
+                <HBox fx:id="topBar" spacing="10" alignment="CENTER_LEFT" styleClass="topBar">
                     <Circle radius="15" styleClass="avatar"/>
                     <Label text="Juan" fx:id="etiquetaNombreContacto" styleClass="nombre-contacto"/>
                     <Region HBox.hgrow="ALWAYS"/>

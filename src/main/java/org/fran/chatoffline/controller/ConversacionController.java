@@ -3,8 +3,11 @@ package org.fran.chatoffline.controller;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import org.fran.chatoffline.model.Mensaje;
 import org.fran.chatoffline.service.ConversacionService;
 
@@ -12,11 +15,19 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class ConversacionController {
+    private static final Logger LOGGER = Logger.getLogger(ConversacionController.class.getName());
+
+    // Referencia al controlador principal para delegar la navegación
+    private MainController mainController;
 
     @FXML
     private VBox contenedorMensajes;
+
+    @FXML
+    private HBox topBar;
 
     @FXML
     private TextField campoMensaje;
@@ -24,9 +35,29 @@ public class ConversacionController {
     @FXML
     private ScrollPane scrollMensajes;
 
+    /**
+     * Permite al MainController inyectarse a sí mismo para que este
+     * controlador pueda comunicarse con él.
+     */
+    public void setMainController(MainController mainController) {
+        this.mainController = mainController;
+    }
+
     @FXML
     private void initialize() {
         cargarMensajesDesdeXML();
+
+        // Asigna el evento de clic directamente al HBox de la barra superior.
+        if (topBar != null) {
+            topBar.setOnMouseClicked(e -> {
+                if (mainController != null) {
+                    // Pide al controlador principal que muestre la vista de perfil.
+                    mainController.mostrarEnMainArea("perfilUsuario.fxml");
+                } else {
+                    LOGGER.warning("MainController no está disponible. No se puede abrir el perfil.");
+                }
+            });
+        }
     }
 
     /**
@@ -35,13 +66,11 @@ public class ConversacionController {
      */
     private void cargarMensajesDesdeXML() {
         try {
-            // Cargar el archivo XML
             JAXBContext contexto = JAXBContext.newInstance(ConversacionService.class);
             Unmarshaller lector = contexto.createUnmarshaller();
             ConversacionService conversacion = (ConversacionService)
                     lector.unmarshal(new File("src/main/resources/conversaciones.xml"));
 
-            // Mostrar los mensajes en la interfaz
             List<Mensaje> mensajes = conversacion.getMensajes();
             for (Mensaje m : mensajes) {
                 agregarMensaje(m);
@@ -54,7 +83,6 @@ public class ConversacionController {
 
     /**
      * Agrega un mensaje visualmente al contenedor.
-     * Si el remitente es "Tú", se alinea a la derecha.
      */
     private void agregarMensaje(Mensaje mensaje) {
         HBox contenedor = new HBox();
@@ -74,14 +102,12 @@ public class ConversacionController {
         contenedor.getChildren().add(etiquetaMensaje);
         contenedorMensajes.getChildren().add(contenedor);
 
-        // Desplazar automáticamente hacia abajo
         scrollMensajes.layout();
         scrollMensajes.setVvalue(1.0);
     }
 
     /**
      * Evento del botón enviar.
-     * Añade un nuevo mensaje al chat (y en el futuro lo guarda en XML).
      */
     @FXML
     private void enviarMensaje() {
@@ -91,8 +117,6 @@ public class ConversacionController {
             Mensaje nuevo = new Mensaje("Tú", "Juan", texto);
             agregarMensaje(nuevo);
             campoMensaje.clear();
-
-            // Aquí podrías agregar la lógica para guardar el mensaje en el XML
         }
     }
 }
