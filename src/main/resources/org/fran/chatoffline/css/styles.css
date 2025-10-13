@@ -42,7 +42,7 @@
     -fx-text-fill: #000;
 }
 
-.add-btn {
+.masInformacionBoton {
     -fx-background-color: #0097A7;
     -fx-text-fill: white;
     -fx-font-weight: bold;
@@ -51,7 +51,7 @@
     -fx-background-radius: 15;
 }
 
-.add-btn:hover {
+.masInformacionBoton:hover {
     -fx-background-color: #007a88;
 }
 
@@ -87,4 +87,8 @@
     -fx-border-color: #ffffff;
     -fx-border-width: 1px;
     -fx-border-radius: 3px;
+}
+
+.chatHbox:hover{
+    -fx-background-color: #d0d0d0;
 }

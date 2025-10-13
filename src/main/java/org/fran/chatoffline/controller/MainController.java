@@ -25,10 +25,8 @@ public class MainController {
     private HBox topBar;
 
     @FXML
-    private StackPane mainArea; // nuevo: contenedor donde se cargará perfilUsuario.fxml
+    private StackPane mainArea; 
 
-    @FXML
-    private HBox chatHbox; // nuevo: botón para abrir conversación
 
     private double xOffset = 0;
     private double yOffset = 0;
@@ -50,7 +48,7 @@ public class MainController {
             Scene scene = topBar.getScene();
             if (scene == null) return;
             Parent root = scene.getRoot();
-            Set<Node> nodes = root.lookupAll(".add-btn");
+            Set<Node> nodes = root.lookupAll(".masInformacionBoton");
             nodes.forEach(node -> {
                 if (node instanceof Button) {
                     ((Button) node).setOnAction(e -> abrirPerfilUsuario());
@@ -58,9 +56,16 @@ public class MainController {
             });
         });
 
-        if (chatHbox != null) {
-            chatHbox.setOnMouseClicked(e -> abrirConversacion());
-        }
+        Platform.runLater(() -> {
+            Scene scene = topBar.getScene();
+            if (scene == null) return;
+            Parent root = scene.getRoot();
+            Set<Node> nodes = root.lookupAll(".chatHbox");
+            nodes.forEach(node -> {
+                // Asigna el evento de clic directamente al nodo encontrado
+                node.setOnMouseClicked(e -> abrirConversacion());
+            });
+        });
 
     }
 

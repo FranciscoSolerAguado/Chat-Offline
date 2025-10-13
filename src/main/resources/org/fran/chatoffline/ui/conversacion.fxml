@@ -1,10 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.fran.chatoffline.controller.ConversacionController"
-            prefHeight="400.0" prefWidth="600.0">
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.fran.chatoffline.controller.ConversacionController" stylesheets="@../css/conversacion.css">
 
-</AnchorPane>
+
+    <!-- PANEL DERECHO -->
+    <center>
+        <BorderPane styleClass="area-conversacion">
+
+            <!-- BARRA SUPERIOR -->
+            <top>
+                <HBox spacing="10" alignment="CENTER_LEFT" styleClass="barra-superior">
+                    <Circle radius="15" styleClass="avatar"/>
+                    <Label text="Juan" fx:id="etiquetaNombreContacto" styleClass="nombre-contacto"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Button text="⭳" styleClass="boton-superior">
+                        <tooltip>
+                            <Tooltip text="Exportar conversación"/>
+                        </tooltip>
+                    </Button>
+                    <Button text="✎" styleClass="boton-superior">
+                        <tooltip>
+                            <Tooltip text="Editar conversación"/>
+                        </tooltip>
+                    </Button>
+                </HBox>
+            </top>
+
+            <!-- ZONA DE MENSAJES -->
+            <center>
+                <ScrollPane fx:id="scrollMensajes" fitToWidth="true"
+                            vbarPolicy="AS_NEEDED" hbarPolicy="NEVER"
+                            styleClass="scroll-mensajes">
+                    <VBox fx:id="contenedorMensajes" spacing="10">
+                        <padding>
+                            <Insets top="15" right="15" bottom="60" left="15"/>
+                        </padding>
+                    </VBox>
+                </ScrollPane>
+            </center>
+
+            <!-- BARRA INFERIOR -->
+            <bottom>
+                <HBox spacing="10" alignment="CENTER_LEFT" styleClass="barra-inferior">
+                    <Button text="📎" styleClass="boton-adjuntar">
+                        <tooltip>
+                            <Tooltip text="Adjuntar archivo"/>
+                        </tooltip>
+                    </Button>
+                    <TextField fx:id="campoMensaje" promptText="Escribe tu mensaje"
+                               HBox.hgrow="ALWAYS" styleClass="campo-mensaje"/>
+                    <Button text="🕊" fx:id="botonEnviar" styleClass="boton-enviar">
+                        <tooltip>
+                            <Tooltip text="Enviar mensaje"/>
+                        </tooltip>
+                    </Button>
+                </HBox>
+            </bottom>
+        </BorderPane>
+    </center>
+</BorderPane>

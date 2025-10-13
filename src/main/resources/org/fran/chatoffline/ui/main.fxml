@@ -70,41 +70,41 @@
                         <Circle radius="15" styleClass="avatar" />
                         <Label styleClass="chat-name" text="Juan" />
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button styleClass="add-btn" text="+" />
+                        <Button styleClass="masInformacionBoton" text="+" />
                     </HBox>
 
                     <HBox alignment="CENTER_LEFT" spacing="10" styleClass="chatHbox">
                         <Circle radius="15" styleClass="avatar" />
                         <Label styleClass="chat-name" text="Juan" />
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button styleClass="add-btn" text="+" />
+                        <Button styleClass="masInformacionBoton" text="+" />
                     </HBox>
 
                     <HBox alignment="CENTER_LEFT" spacing="10" styleClass="chatHbox">
                         <Circle radius="15" styleClass="avatar" />
                         <Label styleClass="chat-name" text="Juan" />
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button styleClass="add-btn" text="+" />
+                        <Button styleClass="masInformacionBoton" text="+" />
                     </HBox>
                     <HBox alignment="CENTER_LEFT" spacing="10" styleClass="chatHbox">
                         <Circle radius="15" styleClass="avatar" />
                         <Label styleClass="chat-name" text="Juan" />
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button styleClass="add-btn" text="+" />
-                    </HBox>
-
-                    <HBox alignment="CENTER_LEFT" spacing="10" styleClass="chatHbox">
-                        <Circle radius="15" styleClass="avatar" />
-                        <Label styleClass="chat-name" text="Juan" />
-                        <Region HBox.hgrow="ALWAYS" />
-                        <Button styleClass="add-btn" text="+" />
+                        <Button styleClass="masInformacionBoton" text="+" />
                     </HBox>
 
                     <HBox alignment="CENTER_LEFT" spacing="10" styleClass="chatHbox">
                         <Circle radius="15" styleClass="avatar" />
                         <Label styleClass="chat-name" text="Juan" />
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button styleClass="add-btn" text="+" />
+                        <Button styleClass="masInformacionBoton" text="+" />
+                    </HBox>
+
+                    <HBox alignment="CENTER_LEFT" spacing="10" styleClass="chatHbox">
+                        <Circle radius="15" styleClass="avatar" />
+                        <Label styleClass="chat-name" text="Juan" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button styleClass="masInformacionBoton" text="+" />
                     </HBox>
                 </VBox>
             </ScrollPane>

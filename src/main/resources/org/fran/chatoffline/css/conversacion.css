@@ -1,0 +1,99 @@
+.root {
+    -fx-font-family: "Segoe UI";
+}
+
+
+.area-conversacion {
+    -fx-background-color: #0097A7;
+    -fx-border-color: transparent;
+}
+
+
+.barra-superior {
+    -fx-background-color: #ffffff;
+    -fx-padding: 10 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 10, 0, 0, 2);
+}
+
+.nombre-contacto {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #000000;
+}
+
+.boton-superior {
+    -fx-background-color: transparent;
+    -fx-font-size: 18px;
+    -fx-cursor: hand;
+    -fx-text-fill: #333333;
+}
+
+.boton-superior:hover {
+    -fx-text-fill: #0097A7;
+}
+
+
+.scroll-mensajes {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.mensaje-izquierda {
+    -fx-background-color: #e6e6e6;
+    -fx-background-radius: 20;
+    -fx-padding: 10 15;
+    -fx-alignment: CENTER_LEFT;
+    -fx-max-width: 60%;
+    -fx-wrap-text: true;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 2);
+}
+
+.mensaje-derecha {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 20;
+    -fx-padding: 10 15;
+    -fx-alignment: CENTER_RIGHT;
+    -fx-max-width: 60%;
+    -fx-wrap-text: true;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 2);
+}
+
+
+.barra-inferior {
+    -fx-background-color: #e6e6e6;
+
+    -fx-padding: 10 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 10, 0, 0, -2);
+}
+
+.boton-adjuntar,
+.boton-enviar {
+    -fx-background-color: transparent;
+    -fx-font-size: 18px;
+    -fx-cursor: hand;
+}
+
+.boton-adjuntar:hover,
+.boton-enviar:hover {
+    -fx-opacity: 0.8;
+}
+
+.campo-mensaje {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-font-size: 14px;
+    -fx-text-fill: #000000;
+    -fx-prompt-text-fill: #555555;
+}
+
+
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+
