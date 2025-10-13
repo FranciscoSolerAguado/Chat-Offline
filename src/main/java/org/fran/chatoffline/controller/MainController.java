@@ -42,9 +42,6 @@ public class MainController {
             stage.setY(event.getScreenY() - yOffset);
         });
 
-        // Carga la vista de conversación por defecto al iniciar
-        Platform.runLater(() -> abrirConversacion());
-
         // Configura los botones que ya existen en main.fxml
         setupExistingButtons();
     }
