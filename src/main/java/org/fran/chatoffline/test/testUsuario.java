@@ -13,11 +13,11 @@ public class testUsuario {
 
         // 1. Crear un objeto Usuario de prueba
         Usuario usuarioOriginal = new Usuario("test01", "Test User", "test@example.com", "password123");
-        String filename = "C:\\Users\\franc\\Desktop\\Chat-Offline\\src\\main\\resources\\usuarioTest.xml";
+        String rutaArchivo = "C:\\Users\\franc\\Desktop\\Chat-Offline\\src\\main\\resources\\usuarioTest.xml";
 
         // 2. Escribir el objeto en un archivo XML
-        System.out.println("Escribiendo usuario en " + filename + "...");
-        boolean escrituraExitosa = XMLManager.writeXML(usuarioOriginal, filename);
+        System.out.println("Escribiendo usuario en " +rutaArchivo + "...");
+        boolean escrituraExitosa = XMLManager.writeXML(usuarioOriginal, rutaArchivo);
 
         if (escrituraExitosa) {
             System.out.println("Escritura exitosa.");
@@ -27,10 +27,10 @@ public class testUsuario {
         }
 
         // 3. Leer el objeto desde el archivo XML
-        System.out.println("Leyendo usuario desde " + filename + "...");
+        System.out.println("Leyendo usuario desde " + rutaArchivo + "...");
         // Se necesita una instancia inicial para que JAXB sepa la clase a la que deserializar
         Usuario usuarioLeido = new Usuario();
-        usuarioLeido = XMLManager.readXML(usuarioLeido, filename);
+        usuarioLeido = XMLManager.readXML(usuarioLeido, rutaArchivo);
 
         // 4. Mostrar los resultados y verificar
         if (usuarioLeido != null && usuarioLeido.getIdUsuario() != null) {
@@ -51,7 +51,7 @@ public class testUsuario {
         }
 
         // 5. Limpiar el archivo de prueba
-        new File(filename).delete();
+        new File(rutaArchivo).delete();
         System.out.println("\nArchivo de prueba eliminado. Test finalizado.");
     }
 }

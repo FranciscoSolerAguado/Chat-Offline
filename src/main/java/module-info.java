@@ -12,6 +12,7 @@ module org.fran.chatoffline {
 
     opens org.fran.chatoffline.model to java.xml.bind;
     opens org.fran.chatoffline.DataAccess to java.xml.bind;
+    opens org.fran.chatoffline.service to java.xml.bind;
 
     exports org.fran.chatoffline;
 }
