@@ -9,5 +9,9 @@ module org.fran.chatoffline {
 
     opens org.fran.chatoffline to javafx.fxml;
     opens org.fran.chatoffline.controller to javafx.fxml;
+
+    opens org.fran.chatoffline.model to java.xml.bind;
+    opens org.fran.chatoffline.DataAccess to java.xml.bind;
+
     exports org.fran.chatoffline;
 }

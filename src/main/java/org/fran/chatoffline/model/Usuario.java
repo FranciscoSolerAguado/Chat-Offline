@@ -1,7 +1,10 @@
 package org.fran.chatoffline.model;
 
-import java.time.LocalDateTime;
+import org.fran.chatoffline.DataAccess.LocalDateTimeAdapter;
+
 import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.time.LocalDateTime;
 
 @XmlRootElement(name = "usuario")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -20,6 +23,7 @@ public class Usuario {
     private String password;
 
     @XmlElement
+    @XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
     private LocalDateTime fechaRegistro;
 
     @XmlElement
