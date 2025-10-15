@@ -1,9 +1,11 @@
 package org.fran.chatoffline.model;
 
+import jakarta.xml.bind.annotation.*;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.bind.annotation.*;
+
 
 @XmlRootElement(name = "conversacion")
 @XmlAccessorType(XmlAccessType.FIELD)

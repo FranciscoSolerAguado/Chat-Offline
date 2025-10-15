@@ -1,6 +1,9 @@
 package org.fran.chatoffline.model;
 
-import javax.xml.bind.annotation.*;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "adjunto")
 @XmlAccessorType(XmlAccessType.FIELD)

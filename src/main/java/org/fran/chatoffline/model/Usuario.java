@@ -2,8 +2,8 @@ package org.fran.chatoffline.model;
 
 import org.fran.chatoffline.DataAccess.LocalDateTimeAdapter;
 
-import javax.xml.bind.annotation.*;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.xml.bind.annotation.*;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDateTime;
 
 @XmlRootElement(name = "usuario")

@@ -1,8 +1,9 @@
 package org.fran.chatoffline.service;
 
+import jakarta.xml.bind.annotation.*;
 import org.fran.chatoffline.model.Mensaje;
 
-import javax.xml.bind.annotation.*;
+
 import java.util.List;
 
 @XmlRootElement(name = "conversacion")

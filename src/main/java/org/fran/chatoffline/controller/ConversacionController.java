@@ -1,5 +1,7 @@
 package org.fran.chatoffline.controller;
 
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.Unmarshaller;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -11,8 +13,7 @@ import javafx.scene.layout.VBox;
 import org.fran.chatoffline.model.Mensaje;
 import org.fran.chatoffline.service.ConversacionService;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
+
 import java.io.File;
 import java.util.List;
 import java.util.logging.Logger;
