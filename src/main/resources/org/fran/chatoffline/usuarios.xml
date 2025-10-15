@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<usuarios>
+    <usuario idUsuario="b146acb5-a3a9-4489-b4b6-0a11945e567b">
+        <nombreUsuario>franciscojsoleraguado</nombreUsuario>
+        <email>franciscojsoleraguado@gmail.com</email>
+        <telefono>600059483</telefono>
+        <password>Fran23423</password>
+        <fechaRegistro>2025-10-15T18:45:58.062284400</fechaRegistro>
+        <activo>true</activo>
+    </usuario>
+    <usuario idUsuario="08bfff06-c8a5-473d-9bf0-7dab39f9f134">
+        <nombreUsuario>prueba</nombreUsuario>
+        <email>prueba@gmail.com</email>
+        <telefono>600059483</telefono>
+        <password>Fran2006.</password>
+        <fechaRegistro>2025-10-15T19:01:31.163470800</fechaRegistro>
+        <activo>true</activo>
+    </usuario>
+    <usuario idUsuario="2f478feb-a124-4cd1-86e4-2c0f0f98a003">
+        <nombreUsuario>prueba1</nombreUsuario>
+        <email>prueba1@gmail.com</email>
+        <telefono>600059483</telefono>
+        <password>dsfsf</password>
+        <fechaRegistro>2025-10-15T19:20:48.134315100</fechaRegistro>
+        <activo>true</activo>
+    </usuario>
+</usuarios>

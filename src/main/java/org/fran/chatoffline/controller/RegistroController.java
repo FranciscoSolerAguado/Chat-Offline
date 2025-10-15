@@ -25,7 +25,7 @@ public class RegistroController {
     private static final Logger LOGGER = Logger.getLogger(RegistroController.class.getName());
     private static final String USUARIOS_XML_PATH = "src/main/resources/org/fran/chatoffline/usuarios.xml";
 
-    // Expresiones regulares para validación
+
     private static final Pattern GMAIL_REGEX = Pattern.compile("^[a-zA-Z0-9._%+-]+@gmail\\.com$");
     private static final Pattern TELEFONO_REGEX = Pattern.compile("^[6789]\\d{8}$");
 
@@ -34,7 +34,7 @@ public class RegistroController {
     @FXML
     private PasswordField txtPassword;
     @FXML
-    private TextField txtTelefono; // Asegúrate de añadir este campo en tu registro.fxml
+    private TextField txtTelefono;
     @FXML
     private Button btnEntrar;
     @FXML
@@ -49,22 +49,25 @@ public class RegistroController {
     }
 
     private void registrarse() {
+
         String email = txtEmail.getText().trim();
-        String pass = txtPassword.getText().trim();
+        String contrasena = txtPassword.getText().trim();
         String telefono = txtTelefono.getText().trim();
 
         // Validaciones de formato
-        if (email.isEmpty() || pass.isEmpty() || telefono.isEmpty()) {
+        if (email.isEmpty() || contrasena.isEmpty() || telefono.isEmpty()) {
             mostrarAlerta("Por favor, completa todos los campos.");
             return;
         }
         if (!GMAIL_REGEX.matcher(email).matches()) {
-            mostrarAlerta("El correo electrónico debe ser una dirección de @gmail.com válida.");
+            LOGGER.warning("El formato del correo electrónico no es válido: " + email);
+            mostrarAlerta("El formato del correo electrónico no es válido, tiene que acabar en @gmail.com");
             return;
+
         }
         if (!TELEFONO_REGEX.matcher(telefono).matches()) {
-            mostrarAlerta("El formato del teléfono no es válido. Debe tener 9 dígitos y empezar por 6, 7, 8 o 9.");
-            return;
+            LOGGER.warning("El formato del teléfono no es válido: " + telefono);
+            mostrarAlerta("El formato del teléfono no es válido, tiene que empezar por 6, 7, 8 o 9 y tener 8 dígitos");
         }
 
         LOGGER.info("Intento de registro para el email: " + email);
@@ -77,7 +80,6 @@ public class RegistroController {
                 coleccionUsuarios = XMLManager.readXML(coleccionUsuarios, USUARIOS_XML_PATH);
             } catch (Exception e) {
                 LOGGER.log(Level.SEVERE, "Error al leer el archivo de usuarios. Se creará uno nuevo.", e);
-                // Si el archivo está corrupto o no se puede leer, continuamos con una lista vacía.
             }
         }
 
@@ -92,7 +94,7 @@ public class RegistroController {
         }
 
         String nombreUsuario = email.split("@")[0];
-        Usuario nuevoUsuario = new Usuario(UUID.randomUUID().toString(), nombreUsuario, email, pass, telefono);
+        Usuario nuevoUsuario = new Usuario(UUID.randomUUID().toString(), nombreUsuario, email, contrasena, telefono);
         coleccionUsuarios.addUsuario(nuevoUsuario);
 
         boolean guardadoExitoso = XMLManager.writeXML(coleccionUsuarios, USUARIOS_XML_PATH);
