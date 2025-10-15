@@ -1,4 +1,4 @@
-package org.fran.chatoffline.DataAccess;
+package org.fran.chatoffline.dataAccess;
 
 import org.fran.chatoffline.model.Usuario;
 import org.junit.jupiter.api.AfterEach;

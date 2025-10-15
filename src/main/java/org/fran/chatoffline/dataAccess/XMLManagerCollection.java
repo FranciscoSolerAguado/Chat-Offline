@@ -1,17 +1,15 @@
-package org.fran.chatoffline.DataAccess;
+package org.fran.chatoffline.dataAccess;
+
+import org.fran.chatoffline.model.Usuario;
 
 import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
+import jakarta.xml.bind.Unmarshaller;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
-import org.fran.chatoffline.model.Usuario;
-import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Marshaller;
-import jakarta.xml.bind.Unmarshaller;
-
-
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +40,7 @@ public class XMLManagerCollection {
         this.usuarios.add(usuario);
     }
 
-
+    // --- Métodos genéricos añadidos ---
 
     public static <T> boolean writeXML(T c, String filename) {
         boolean result = false;

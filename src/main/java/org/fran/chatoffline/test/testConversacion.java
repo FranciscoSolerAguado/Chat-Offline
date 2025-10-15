@@ -1,6 +1,6 @@
 package org.fran.chatoffline.test;
 
-import org.fran.chatoffline.DataAccess.XMLManager;
+import org.fran.chatoffline.dataAccess.XMLManager;
 import org.fran.chatoffline.model.Mensaje;
 import org.fran.chatoffline.service.ConversacionService;
 

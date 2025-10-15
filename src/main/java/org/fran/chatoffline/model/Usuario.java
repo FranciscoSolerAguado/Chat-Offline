@@ -1,9 +1,11 @@
 package org.fran.chatoffline.model;
 
-import org.fran.chatoffline.DataAccess.LocalDateTimeAdapter;
-
 import jakarta.xml.bind.annotation.*;
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.fran.chatoffline.dataAccess.LocalDateTimeAdapter;
+
+
+
 import java.time.LocalDateTime;
 
 @XmlRootElement(name = "usuario")
@@ -18,6 +20,9 @@ public class Usuario {
 
     @XmlElement
     private String email;
+
+    @XmlElement
+    private String telefono; // Nuevo campo
 
     @XmlElement
     private String password;
@@ -36,11 +41,12 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(String idUsuario, String nombreUsuario, String email, String password) {
+    public Usuario(String idUsuario, String nombreUsuario, String email, String password, String telefono) {
         this.idUsuario = idUsuario;
         this.nombreUsuario = nombreUsuario;
         this.email = email;
         this.password = password;
+        this.telefono = telefono;
         this.fechaRegistro = LocalDateTime.now();
         this.activo = true;
     }
@@ -68,6 +74,14 @@ public class Usuario {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 
     public String getPassword() {

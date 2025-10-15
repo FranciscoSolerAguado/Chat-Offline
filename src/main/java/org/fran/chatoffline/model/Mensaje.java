@@ -1,7 +1,7 @@
 package org.fran.chatoffline.model;
 
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import org.fran.chatoffline.DataAccess.LocalDateTimeAdapter;
+import org.fran.chatoffline.dataAccess.LocalDateTimeAdapter;
 
 import jakarta.xml.bind.annotation.*;
 import java.time.LocalDateTime;

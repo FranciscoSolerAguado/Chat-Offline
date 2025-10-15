@@ -11,6 +11,7 @@ module org.fran.chatoffline {
     // JAXB (Java Architecture for XML Binding) - Jakarta Namespace
     requires jakarta.xml.bind;
     requires org.glassfish.jaxb.runtime;
+    requires org.glassfish.jaxb.core; // Requerido para la instanciación de clases
     requires jakarta.activation;
 
 
@@ -21,9 +22,9 @@ module org.fran.chatoffline {
     opens org.fran.chatoffline.controller to javafx.fxml;
 
     // Abrir paquetes a la API y a la implementación de JAXB
-    opens org.fran.chatoffline.model to jakarta.xml.bind, org.glassfish.jaxb.runtime;
-    opens org.fran.chatoffline.DataAccess to jakarta.xml.bind, org.glassfish.jaxb.runtime;
-    opens org.fran.chatoffline.service to jakarta.xml.bind, org.glassfish.jaxb.runtime;
+    opens org.fran.chatoffline.model to jakarta.xml.bind, org.glassfish.jaxb.runtime, org.glassfish.jaxb.core;
+    opens org.fran.chatoffline.dataAccess to jakarta.xml.bind, org.glassfish.jaxb.runtime, org.glassfish.jaxb.core;
+    opens org.fran.chatoffline.service to jakarta.xml.bind, org.glassfish.jaxb.runtime, org.glassfish.jaxb.core;
 
     exports org.fran.chatoffline;
 }

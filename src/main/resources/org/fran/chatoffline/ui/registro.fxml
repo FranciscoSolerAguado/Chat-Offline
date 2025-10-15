@@ -64,7 +64,7 @@
                <Label layoutX="93.0" layoutY="10.0" styleClass="label" text="Nombre" />
                <TextField fx:id="txtEmail1" layoutX="10.0" layoutY="43.0" promptText="Introduce tu nombre" styleClass="input-field" />
                <Label layoutX="93.0" layoutY="10.0" styleClass="label" text="Teléfono" />
-               <TextField fx:id="txtEmail2" layoutX="10.0" layoutY="43.0" promptText="Introduce tu teléfono" styleClass="input-field" />
+               <TextField fx:id="txtTelefono" layoutX="10.0" layoutY="43.0" promptText="Introduce tu teléfono" styleClass="input-field" />
 
                     <Label styleClass="label" text="Contraseña" />
                     <PasswordField fx:id="txtPassword" promptText="Introduce tu contraseña" styleClass="input-field" />
