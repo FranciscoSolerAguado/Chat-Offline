@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <usuarios>
-
+    <usuario idUsuario="6700e0aa-f816-4ef9-b138-a850e95eebb6">
+        <nombre>prueba</nombre>
+        <nombreUsuario>prueba</nombreUsuario>
+        <email>prueba@gmail.com</email>
+        <telefono>600059483</telefono>
+        <password>prueba</password>
+        <fechaRegistro>2025-10-16T18:40:15.267136300</fechaRegistro>
+        <activo>true</activo>
+    </usuario>
 </usuarios>

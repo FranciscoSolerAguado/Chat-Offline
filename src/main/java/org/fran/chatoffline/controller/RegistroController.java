@@ -89,10 +89,10 @@ public class RegistroController {
 
         final String finalEmail = email;
         // Comprueba si ya existe un usuario con el mismo email (ignorando mayúsculas/minúsculas) en la colección de usuarios.
-        boolean usuarioExiste = coleccionUsuarios.getUsuarios().stream()
+        boolean gmailExiste = coleccionUsuarios.getUsuarios().stream()
                 .anyMatch(u -> u.getEmail().equalsIgnoreCase(finalEmail));
 
-        if (usuarioExiste) {
+        if (gmailExiste) {
             LOGGER.warning("Intento de registro para un email ya existente: " + email);
             mostrarAlerta("El correo electrónico ya está registrado. Por favor, inicia sesión.");
             return;

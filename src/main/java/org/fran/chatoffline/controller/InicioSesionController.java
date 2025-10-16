@@ -4,18 +4,25 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import org.fran.chatoffline.dataAccess.XMLManager;
+import org.fran.chatoffline.model.GestorUsuarios;
+import org.fran.chatoffline.model.Usuario;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class InicioSesionController {
-    private static final Logger LOGGER = Logger.getLogger(ConversacionController.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(InicioSesionController.class.getName());
+    private static final String USUARIOS_XML_PATH = "src/main/resources/org/fran/chatoffline/usuarios.xml";
+
     @FXML
     private TextField txtEmail;
     @FXML
@@ -34,61 +41,88 @@ public class InicioSesionController {
     }
 
     private void iniciarSesion() {
-        String email = txtEmail.getText();
-        String pass = txtPassword.getText();
+        String email = txtEmail.getText().trim();
+        String pass = txtPassword.getText().trim();
 
         if (email.isEmpty() || pass.isEmpty()) {
-            mostrarAlerta("Por favor, completa todos los campos.");
-        } else {
-            System.out.println("Intento de inicio de sesión con: " + email);
+            mostrarAlerta("Por favor, introduce tu email y contraseña.");
+            return;
+        }
+
+        LOGGER.info("Intento de inicio de sesión para: " + email);
+
+        File usuariosFile = new File(USUARIOS_XML_PATH);
+        if (!usuariosFile.exists()) {
+            LOGGER.warning("Archivo de usuarios no encontrado. Nadie puede iniciar sesión.");
+            mostrarAlerta("Credenciales incorrectas.");
+            return;
+        }
+
+        GestorUsuarios coleccionUsuarios = new GestorUsuarios();
+        try {
+            coleccionUsuarios = XMLManager.readXML(coleccionUsuarios, USUARIOS_XML_PATH);
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error al leer el archivo de usuarios.", e);
+            mostrarAlerta("Error al leer el archivo xml.");
+            return;
+        }
+
+        /**
+         * Buscar al usuario por email (ignorando mayúsculas/minúsculas)
+         * Optional lo que hace es que puede encontrar dos cosas un objeto usuario
+         * o un valor vacio si no encuentra nada
+         */
+
+        Optional<Usuario> gmailEncontrado = coleccionUsuarios.getUsuarios().stream()
+                .filter(u -> u.getEmail().equalsIgnoreCase(email))
+                .findFirst();
+
+        /**
+         * Si se encuentra el gmail y la contraseña coincide con la almacenada en el xml te dirige a la pantalla principal
+         */
+        if (gmailEncontrado.isPresent() && gmailEncontrado.get().validarPassword(pass)) {
+            LOGGER.info("Inicio de sesión exitoso para: " + email);
+            /**
+             * Si el inicio de sesion es correcto te dirige a la pantalla principal
+             */
             try {
-                Node MainContent = FXMLLoader.load(getClass().getResource("/org/fran/chatoffline/ui/main.fxml"));
-                // Obtener la escena actual y reemplazar el contenido
+                Parent mainContent = FXMLLoader.load(getClass().getResource("/org/fran/chatoffline/ui/main.fxml"));
                 Stage stage = (Stage) topBar.getScene().getWindow();
-                stage.getScene().setRoot((Parent) MainContent);
+                stage.getScene().setRoot(mainContent);
             } catch (IOException e) {
-                e.printStackTrace();
-                mostrarAlerta("Error al cargar la ventana principal.");
+                LOGGER.log(Level.SEVERE, "Error al cargar la ventana principal.", e);
+                mostrarAlerta("Error al cargar la aplicación.");
             }
-            // Aquí podrás validar contra usuarios.xml
+        } else {
+            LOGGER.warning("Fallo de inicio de sesión para: " + email);
+            mostrarAlerta("Credenciales incorrectas.");
         }
     }
 
     private void abrirRegistro() {
-        System.out.println("Abrir ventana de registro...");
         try {
-            Node registroContent = FXMLLoader.load(getClass().getResource("/org/fran/chatoffline/ui/registro.fxml"));
-            // Obtener la escena actual y reemplazar el contenido
+            Parent registroContent = FXMLLoader.load(getClass().getResource("/org/fran/chatoffline/ui/registro.fxml"));
             Stage stage = (Stage) topBar.getScene().getWindow();
-            stage.getScene().setRoot((Parent) registroContent);
+            stage.getScene().setRoot(registroContent);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error al cargar la ventana de registro.", e);
             mostrarAlerta("Error al cargar la ventana de registro.");
         }
-
     }
 
     private void mostrarAlerta(String msg) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setHeaderText(null);
         alert.setContentText(msg);
         alert.showAndWait();
     }
 
-
-
-    /**
-     * Método que maneja el evento de minimizar la ventana
-     */
     @FXML
     private void handleMinimize() {
         Stage stage = (Stage) topBar.getScene().getWindow();
         stage.setIconified(true);
     }
 
-    /**
-     * Método que maneja el evento de maximizar o restaurar la ventana.
-     */
     private boolean isMaximized = false;
 
     @FXML
@@ -97,14 +131,12 @@ public class InicioSesionController {
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
 
         if (isMaximized) {
-            // Restaurar tamaño y centrar
             stage.setWidth(1200);
             stage.setHeight(800);
             stage.setX(screenBounds.getMinX() + (screenBounds.getWidth() - 1000) / 2);
             stage.setY(screenBounds.getMinY() + (screenBounds.getHeight() - 700) / 2);
             isMaximized = false;
         } else {
-            // Maximizar manualmente
             stage.setX(screenBounds.getMinX());
             stage.setY(screenBounds.getMinY());
             stage.setWidth(screenBounds.getWidth());
@@ -113,9 +145,6 @@ public class InicioSesionController {
         }
     }
 
-    /**
-     * Método que maneja el evento de cerrar la aplicación.
-     */
     @FXML
     private void handleClose() {
         Platform.exit();

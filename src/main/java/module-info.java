@@ -15,7 +15,7 @@ module org.fran.chatoffline {
     requires jakarta.activation;
 
 
-    // --- PERMISOS PARA REFLEXIÓN ---
+
 
     // Abrir paquetes a JavaFX para que pueda acceder a los controladores
     opens org.fran.chatoffline to javafx.fxml;
