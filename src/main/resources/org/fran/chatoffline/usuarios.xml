@@ -9,4 +9,31 @@
         <fechaRegistro>2025-10-16T18:40:15.267136300</fechaRegistro>
         <activo>true</activo>
     </usuario>
+    <usuario idUsuario="33079b3a-e533-4eaa-98d6-8724629c5cf3">
+        <nombre>Fran</nombre>
+        <nombreUsuario>Fran</nombreUsuario>
+        <email>fran@gmail.com</email>
+        <telefono>600059483</telefono>
+        <password>fran</password>
+        <fechaRegistro>2025-10-16T19:07:51.450960800</fechaRegistro>
+        <activo>true</activo>
+    </usuario>
+    <usuario idUsuario="9168babf-7f66-4ee0-8758-58bd906be803">
+        <nombre>juan</nombre>
+        <nombreUsuario>juan</nombreUsuario>
+        <email>juan@gmail.com</email>
+        <telefono>638088251</telefono>
+        <password>juan</password>
+        <fechaRegistro>2025-10-16T19:08:11.344405500</fechaRegistro>
+        <activo>true</activo>
+    </usuario>
+    <usuario idUsuario="ea5228a0-3356-422a-9347-8a3b467e54b5">
+        <nombre>Marta</nombre>
+        <nombreUsuario>Marta</nombreUsuario>
+        <email>marta@gmail.com</email>
+        <telefono>638088196</telefono>
+        <password>marta</password>
+        <fechaRegistro>2025-10-16T19:08:41.064677100</fechaRegistro>
+        <activo>true</activo>
+    </usuario>
 </usuarios>

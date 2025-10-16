@@ -24,7 +24,6 @@ module org.fran.chatoffline {
     // Abrir paquetes a la API y a la implementación de JAXB
     opens org.fran.chatoffline.model to jakarta.xml.bind, org.glassfish.jaxb.runtime, org.glassfish.jaxb.core;
     opens org.fran.chatoffline.dataAccess to jakarta.xml.bind, org.glassfish.jaxb.runtime, org.glassfish.jaxb.core;
-    opens org.fran.chatoffline.service to jakarta.xml.bind, org.glassfish.jaxb.runtime, org.glassfish.jaxb.core;
 
     exports org.fran.chatoffline;
 }

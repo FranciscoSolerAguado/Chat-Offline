@@ -63,39 +63,39 @@ public class InicioSesionController {
             coleccionUsuarios = XMLManager.readXML(coleccionUsuarios, USUARIOS_XML_PATH);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error al leer el archivo de usuarios.", e);
-            mostrarAlerta("Error al leer el archivo xml.");
+            mostrarAlerta("Error del sistema. Por favor, contacta al administrador.");
             return;
         }
 
-        /**
-         * Buscar al usuario por email (ignorando mayúsculas/minúsculas)
-         * Optional lo que hace es que puede encontrar dos cosas un objeto usuario
-         * o un valor vacio si no encuentra nada
-         */
-
-        Optional<Usuario> gmailEncontrado = coleccionUsuarios.getUsuarios().stream()
+        Optional<Usuario> usuarioEncontrado = coleccionUsuarios.getUsuarios().stream()
                 .filter(u -> u.getEmail().equalsIgnoreCase(email))
                 .findFirst();
 
-        /**
-         * Si se encuentra el gmail y la contraseña coincide con la almacenada en el xml te dirige a la pantalla principal
-         */
-        if (gmailEncontrado.isPresent() && gmailEncontrado.get().validarPassword(pass)) {
+        if (usuarioEncontrado.isPresent() && usuarioEncontrado.get().validarPassword(pass)) {
             LOGGER.info("Inicio de sesión exitoso para: " + email);
-            /**
-             * Si el inicio de sesion es correcto te dirige a la pantalla principal
-             */
-            try {
-                Parent mainContent = FXMLLoader.load(getClass().getResource("/org/fran/chatoffline/ui/main.fxml"));
-                Stage stage = (Stage) topBar.getScene().getWindow();
-                stage.getScene().setRoot(mainContent);
-            } catch (IOException e) {
-                LOGGER.log(Level.SEVERE, "Error al cargar la ventana principal.", e);
-                mostrarAlerta("Error al cargar la aplicación.");
-            }
+            navegarAPantallaPrincipal(usuarioEncontrado.get());
         } else {
             LOGGER.warning("Fallo de inicio de sesión para: " + email);
             mostrarAlerta("Credenciales incorrectas.");
+        }
+    }
+
+    private void navegarAPantallaPrincipal(Usuario usuarioLogueado) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/fran/chatoffline/ui/main.fxml"));
+            Parent mainContent = loader.load();
+
+            // Obtener el controlador de la nueva ventana
+            MainController mainController = loader.getController();
+            // Pasar el usuario que ha iniciado sesión
+            mainController.setUsuarioActual(usuarioLogueado);
+
+            Stage stage = (Stage) topBar.getScene().getWindow();
+            stage.getScene().setRoot(mainContent);
+
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Error fatal al cargar la ventana principal.", e);
+            mostrarAlerta("Error fatal al cargar la aplicación.");
         }
     }
 

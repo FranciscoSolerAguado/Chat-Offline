@@ -61,51 +61,11 @@
             <Label styleClass="sidebar-title" text="Chats" />
 
             <ScrollPane fitToWidth="true" styleClass="chat-scroll">
-                <VBox spacing="10">
+                <VBox fx:id="chatListContainer" spacing="10">
                     <padding>
                         <Insets bottom="10" left="10" right="10" top="10" />
                     </padding>
-                    <!-- Repite este bloque para cada chat -->
-                    <HBox alignment="CENTER_LEFT" spacing="10" styleClass="chatHbox">
-                        <Circle radius="15" styleClass="avatar" />
-                        <Label styleClass="chat-name" text="Juan" />
-                        <Region HBox.hgrow="ALWAYS" />
-                        <Button styleClass="masInformacionBoton" text="+" />
-                    </HBox>
-
-                    <HBox alignment="CENTER_LEFT" spacing="10" styleClass="chatHbox">
-                        <Circle radius="15" styleClass="avatar" />
-                        <Label styleClass="chat-name" text="Juan" />
-                        <Region HBox.hgrow="ALWAYS" />
-                        <Button styleClass="masInformacionBoton" text="+" />
-                    </HBox>
-
-                    <HBox alignment="CENTER_LEFT" spacing="10" styleClass="chatHbox">
-                        <Circle radius="15" styleClass="avatar" />
-                        <Label styleClass="chat-name" text="Juan" />
-                        <Region HBox.hgrow="ALWAYS" />
-                        <Button styleClass="masInformacionBoton" text="+" />
-                    </HBox>
-                    <HBox alignment="CENTER_LEFT" spacing="10" styleClass="chatHbox">
-                        <Circle radius="15" styleClass="avatar" />
-                        <Label styleClass="chat-name" text="Juan" />
-                        <Region HBox.hgrow="ALWAYS" />
-                        <Button styleClass="masInformacionBoton" text="+" />
-                    </HBox>
-
-                    <HBox alignment="CENTER_LEFT" spacing="10" styleClass="chatHbox">
-                        <Circle radius="15" styleClass="avatar" />
-                        <Label styleClass="chat-name" text="Juan" />
-                        <Region HBox.hgrow="ALWAYS" />
-                        <Button styleClass="masInformacionBoton" text="+" />
-                    </HBox>
-
-                    <HBox alignment="CENTER_LEFT" spacing="10" styleClass="chatHbox">
-                        <Circle radius="15" styleClass="avatar" />
-                        <Label styleClass="chat-name" text="Juan" />
-                        <Region HBox.hgrow="ALWAYS" />
-                        <Button styleClass="masInformacionBoton" text="+" />
-                    </HBox>
+                    <!-- El contenido de este VBox se generará dinámicamente -->
                 </VBox>
             </ScrollPane>
 
