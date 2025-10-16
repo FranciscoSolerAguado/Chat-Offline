@@ -52,19 +52,21 @@
         </HBox>
     </top>
 
-    <!-- xml -->
+
     <center>
         <StackPane alignment="CENTER" styleClass="background">
             <VBox alignment="CENTER" maxHeight="511.0" maxWidth="400.0" minHeight="360.0" minWidth="400.0" prefHeight="511.0" prefWidth="400.0" spacing="20" styleClass="login-box">
                 <Label styleClass="title" text="Registro" />
 
                 <VBox alignment="CENTER" spacing="15">
+                    <Label styleClass="label" text="Nombre" />
+                    <TextField fx:id="txtNombre" promptText="Introduce tu nombre" styleClass="input-field" />
+
                     <Label styleClass="label" text="Correo Electrónico" />
                     <TextField fx:id="txtEmail" promptText="Introduce tu correo" styleClass="input-field" />
-               <Label layoutX="93.0" layoutY="10.0" styleClass="label" text="Nombre" />
-               <TextField fx:id="txtEmail1" layoutX="10.0" layoutY="43.0" promptText="Introduce tu nombre" styleClass="input-field" />
-               <Label layoutX="93.0" layoutY="10.0" styleClass="label" text="Teléfono" />
-               <TextField fx:id="txtTelefono" layoutX="10.0" layoutY="43.0" promptText="Introduce tu teléfono" styleClass="input-field" />
+
+                    <Label styleClass="label" text="Teléfono" />
+                    <TextField fx:id="txtTelefono" promptText="Introduce tu teléfono" styleClass="input-field" />
 
                     <Label styleClass="label" text="Contraseña" />
                     <PasswordField fx:id="txtPassword" promptText="Introduce tu contraseña" styleClass="input-field" />

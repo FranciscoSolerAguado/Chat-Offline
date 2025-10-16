@@ -16,6 +16,7 @@ import org.fran.chatoffline.model.Usuario;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,6 +30,8 @@ public class RegistroController {
     private static final Pattern GMAIL_REGEX = Pattern.compile("^[a-zA-Z0-9._%+-]+@gmail\\.com$");
     private static final Pattern TELEFONO_REGEX = Pattern.compile("^[6789]\\d{8}$");
 
+    @FXML
+    private TextField txtNombre;
     @FXML
     private TextField txtEmail;
     @FXML
@@ -50,12 +53,13 @@ public class RegistroController {
 
     private void registrarse() {
 
+        String nombre = txtNombre.getText().trim();
         String email = txtEmail.getText().trim();
         String contrasena = txtPassword.getText().trim();
         String telefono = txtTelefono.getText().trim();
 
         // Validaciones de formato
-        if (email.isEmpty() || contrasena.isEmpty() || telefono.isEmpty()) {
+        if (nombre.isEmpty() || email.isEmpty() || contrasena.isEmpty() || telefono.isEmpty()) {
             mostrarAlerta("Por favor, completa todos los campos.");
             return;
         }
@@ -84,6 +88,7 @@ public class RegistroController {
         }
 
         final String finalEmail = email;
+        // Comprueba si ya existe un usuario con el mismo email (ignorando mayúsculas/minúsculas) en la colección de usuarios.
         boolean usuarioExiste = coleccionUsuarios.getUsuarios().stream()
                 .anyMatch(u -> u.getEmail().equalsIgnoreCase(finalEmail));
 
@@ -93,8 +98,7 @@ public class RegistroController {
             return;
         }
 
-        String nombreUsuario = email.split("@")[0];
-        Usuario nuevoUsuario = new Usuario(UUID.randomUUID().toString(), nombreUsuario, email, contrasena, telefono);
+        Usuario nuevoUsuario = new Usuario(UUID.randomUUID().toString(), nombre, nombre, email, telefono, contrasena, LocalDateTime.now(), true, null);
         coleccionUsuarios.addUsuario(nuevoUsuario);
 
         boolean guardadoExitoso = XMLManager.writeXML(coleccionUsuarios, USUARIOS_XML_PATH);

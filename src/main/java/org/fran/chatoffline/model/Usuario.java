@@ -16,6 +16,9 @@ public class Usuario {
     private String idUsuario;
 
     @XmlElement
+    private String nombre;
+
+    @XmlElement
     private String nombreUsuario;
 
     @XmlElement
@@ -35,22 +38,23 @@ public class Usuario {
     private boolean activo;
 
     @XmlElement
-    private String rutaAvatar;
+    private String rutaFotoPerfil;
 
 
     public Usuario() {
     }
 
-    public Usuario(String idUsuario, String nombreUsuario, String email, String password, String telefono) {
+    public Usuario(String idUsuario, String nombre, String nombreUsuario, String email, String telefono, String password, LocalDateTime fechaRegistro, boolean activo, String rutaFotoPerfil) {
         this.idUsuario = idUsuario;
+        this.nombre = nombre;
         this.nombreUsuario = nombreUsuario;
         this.email = email;
-        this.password = password;
         this.telefono = telefono;
-        this.fechaRegistro = LocalDateTime.now();
-        this.activo = true;
+        this.password = password;
+        this.fechaRegistro = fechaRegistro;
+        this.activo = activo;
+        this.rutaFotoPerfil = rutaFotoPerfil;
     }
-
 
     public String getIdUsuario() {
         return idUsuario;
@@ -58,6 +62,14 @@ public class Usuario {
 
     public void setIdUsuario(String idUsuario) {
         this.idUsuario = idUsuario;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getNombreUsuario() {
@@ -108,14 +120,13 @@ public class Usuario {
         this.activo = activo;
     }
 
-    public String getRutaAvatar() {
-        return rutaAvatar;
+    public String getRutaFotoPerfil() {
+        return rutaFotoPerfil;
     }
 
-    public void setRutaAvatar(String rutaAvatar) {
-        this.rutaAvatar = rutaAvatar;
+    public void setRutaFotoPerfil(String rutaFotoPerfil) {
+        this.rutaFotoPerfil = rutaFotoPerfil;
     }
-
 
     public boolean validarPassword(String input) {
         return this.password != null && this.password.equals(input);
