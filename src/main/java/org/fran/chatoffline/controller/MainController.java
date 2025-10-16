@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -33,14 +34,13 @@ public class MainController {
     @FXML
     private VBox chatListContainer;
 
-    private Usuario usuarioActual; // Almacena el usuario que ha iniciado sesión
+    private Usuario usuarioActual;
 
     private double xOffset = 0;
     private double yOffset = 0;
 
     @FXML
     private void initialize() {
-        // Configurar el arrastre de la ventana
         topBar.setOnMousePressed(event -> {
             xOffset = event.getSceneX();
             yOffset = event.getSceneY();
@@ -52,14 +52,9 @@ public class MainController {
         });
     }
 
-    /**
-     * Este método es llamado por el InicioSesionController para pasar el usuario logueado.
-     * @param usuario El usuario que ha iniciado sesión.
-     */
     public void setUsuarioActual(Usuario usuario) {
         this.usuarioActual = usuario;
         LOGGER.info("Usuario actual establecido: " + usuario.getNombreUsuario());
-        // Una vez que tenemos el usuario, cargamos la lista de chats filtrada.
         Platform.runLater(this::cargarListaUsuarios);
     }
 
@@ -87,7 +82,6 @@ public class MainController {
 
         if (coleccionUsuarios.getUsuarios() != null) {
             for (Usuario usuario : coleccionUsuarios.getUsuarios()) {
-                //Solo añade el chat si el ID no es el del usuario actual.
                 if (!usuario.getIdUsuario().equals(usuarioActual.getIdUsuario())) {
                     HBox chatHBox = crearChatHBox(usuario);
                     chatListContainer.getChildren().add(chatHBox);
@@ -120,27 +114,64 @@ public class MainController {
         return hbox;
     }
 
-    private void abrirConversacion(Usuario usuario) {
-        LOGGER.info("Abriendo conversación con: " + usuario.getNombreUsuario());
-        mostrarEnMainArea("conversacion.fxml");
-    }
-
-    private void abrirPerfilUsuario(Usuario usuario) {
-        LOGGER.info("Abriendo perfil de: " + usuario.getNombreUsuario());
-        mostrarEnMainArea("perfilUsuario.fxml");
-    }
-
-    public void mostrarEnMainArea(String fxmlFileName) {
+    private void abrirConversacion(Usuario contacto) {
         try {
-            String resourcePath = "/org/fran/chatoffline/ui/" + fxmlFileName;
-            Parent view = FXMLLoader.load(getClass().getResource(resourcePath));
-            if (mainArea != null) {
-                mainArea.getChildren().setAll(view);
-            } else {
-                LOGGER.severe("mainArea es nulo. No se puede cargar " + fxmlFileName);
-            }
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/fran/chatoffline/ui/conversacion.fxml"));
+            Parent view = loader.load();
+
+            ConversacionController controller = loader.getController();
+            controller.setMainController(this);
+            controller.setContacto(contacto);
+
+            mainArea.getChildren().setAll(view);
+
         } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "Error al cargar " + fxmlFileName, e);
+            LOGGER.log(Level.SEVERE, "Error al cargar la vista de conversación.", e);
+        }
+    }
+
+    public void abrirPerfilUsuario(Usuario usuario) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/fran/chatoffline/ui/perfilUsuario.fxml"));
+            Parent view = loader.load();
+
+            PerfilUsuarioController controller = loader.getController();
+            controller.setMainController(this);
+            controller.setUsuario(usuario);
+
+            mainArea.getChildren().setAll(view);
+
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Error al cargar la vista de perfil de usuario.", e);
+        }
+    }
+
+    /**
+     * Recarga toda la vista principal (main.fxml).
+     * Este método es llamado por los controladores secundarios para "volver" a la pantalla principal.
+     */
+    public void cerrarVistaSecundariaYRefrescar() {
+        try {
+            // Obtener la escena actual
+            Scene scene = topBar.getScene();
+            if (scene == null) {
+                LOGGER.severe("No se puede obtener la escena para recargar la vista principal.");
+                return;
+            }
+
+            // Cargar de nuevo el main.fxml
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/fran/chatoffline/ui/main.fxml"));
+            Parent newRoot = loader.load();
+
+            // Obtener el nuevo controlador y pasarle el usuario actual para mantener el estado
+            MainController newMainController = loader.getController();
+            newMainController.setUsuarioActual(this.usuarioActual);
+
+            // Reemplazar la raíz de la escena con la nueva vista cargada
+            scene.setRoot(newRoot);
+
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Error al recargar la vista principal (main.fxml).", e);
         }
     }
 

@@ -17,7 +17,7 @@
             <top>
                 <HBox fx:id="topBar" spacing="10" alignment="CENTER_LEFT" styleClass="topBar">
                     <Circle radius="15" styleClass="avatar"/>
-                    <Label text="Juan" fx:id="etiquetaNombreContacto" styleClass="nombre-contacto"/>
+                    <Label text="Juan" fx:id="nombreContacto" styleClass="nombre-contacto"/>
                     <Region HBox.hgrow="ALWAYS"/>
                     <Button text="⭳" styleClass="boton-superior">
                         <tooltip>
