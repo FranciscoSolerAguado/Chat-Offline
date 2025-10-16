@@ -1,8 +1,8 @@
 package org.fran.chatoffline.test;
 
 import org.fran.chatoffline.dataAccess.XMLManager;
+import org.fran.chatoffline.model.GestorConversacion;
 import org.fran.chatoffline.model.Mensaje;
-import org.fran.chatoffline.service.ConversacionService;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ public class testConversacion {
         System.out.println("--- Iniciando test simple de Conversacion ---");
 
         // 1. Crear una conversación de prueba con dos mensajes
-        ConversacionService conversacionOriginal = new ConversacionService();
+        GestorConversacion conversacionOriginal = new GestorConversacion();
         List<Mensaje> mensajes = new ArrayList<>();
         mensajes.add(new Mensaje("Usuario1", "Usuario2", "Hola mundo!"));
         mensajes.add(new Mensaje("Usuario2", "Usuario1", "Hola! ¿Qué tal?"));
@@ -35,7 +35,7 @@ public class testConversacion {
 
         // 3. Leer la conversación desde el archivo XML
         System.out.println("Leyendo conversación desde " + filename + "...");
-        ConversacionService conversacionLeida = new ConversacionService();
+        GestorConversacion conversacionLeida = new GestorConversacion();
         conversacionLeida = XMLManager.readXML(conversacionLeida, filename);
 
         // 4. Mostrar los resultados y verificar

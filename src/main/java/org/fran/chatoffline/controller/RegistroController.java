@@ -11,7 +11,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import org.fran.chatoffline.dataAccess.XMLManager;
-import org.fran.chatoffline.dataAccess.XMLManagerCollection;
+import org.fran.chatoffline.model.GestorUsuarios;
 import org.fran.chatoffline.model.Usuario;
 
 import java.io.File;
@@ -73,7 +73,7 @@ public class RegistroController {
         LOGGER.info("Intento de registro para el email: " + email);
 
         File usuariosFile = new File(USUARIOS_XML_PATH);
-        XMLManagerCollection coleccionUsuarios = new XMLManagerCollection();
+        GestorUsuarios coleccionUsuarios = new GestorUsuarios();
 
         if (usuariosFile.exists()) {
             try {

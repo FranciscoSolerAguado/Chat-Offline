@@ -10,8 +10,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import org.fran.chatoffline.model.GestorConversacion;
 import org.fran.chatoffline.model.Mensaje;
-import org.fran.chatoffline.service.ConversacionService;
 
 
 import java.io.File;
@@ -59,6 +59,7 @@ public class ConversacionController {
                 }
             });
         }
+
     }
 
     /**
@@ -67,9 +68,9 @@ public class ConversacionController {
      */
     private void cargarMensajesDesdeXML() {
         try {
-            JAXBContext contexto = JAXBContext.newInstance(ConversacionService.class);
+            JAXBContext contexto = JAXBContext.newInstance(GestorConversacion.class);
             Unmarshaller lector = contexto.createUnmarshaller();
-            ConversacionService conversacion = (ConversacionService)
+            GestorConversacion conversacion = (GestorConversacion)
                     lector.unmarshal(new File("src/main/resources/conversaciones.xml"));
 
             List<Mensaje> mensajes = conversacion.getMensajes();
