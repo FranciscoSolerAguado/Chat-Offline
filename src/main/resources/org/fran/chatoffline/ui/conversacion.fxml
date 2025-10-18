@@ -18,7 +18,7 @@
                     <Circle radius="15" styleClass="avatar" />
                     <Label fx:id="lblNombreContacto" styleClass="nombre-contacto" text="Juan" />
                     <Region HBox.hgrow="ALWAYS" />
-                    <Button styleClass="boton-superior" text="⭳">
+                    <Button fx:id="btnExportarConversacion" onAction="#exportarConversacion" styleClass="boton-superior" text="⭳">
                         <tooltip>
                             <Tooltip text="Exportar conversación" />
                         </tooltip>
@@ -45,14 +45,14 @@
             <!-- BARRA INFERIOR -->
             <bottom>
                 <HBox alignment="CENTER_LEFT" spacing="10" styleClass="barra-inferior">
-                    <Button fx:id="botonAdjuntar" styleClass="boton-adjuntar" text="📎" onAction="#adjuntarArchivo">
+                    <Button fx:id="botonAdjuntar" onAction="#adjuntarArchivo" styleClass="boton-adjuntar" text="📎">
                         <tooltip>
                             <Tooltip text="Adjuntar archivo" />
                         </tooltip>
                     </Button>
 
                     <TextField fx:id="campoMensaje" promptText="Escribe tu mensaje" styleClass="campo-mensaje" HBox.hgrow="ALWAYS" />
-                    <Button fx:id="botonEnviar" styleClass="boton-enviar" text="🕊" onAction="#enviarMensaje">
+                    <Button fx:id="botonEnviar" onAction="#enviarMensaje" styleClass="boton-enviar" text="🕊">
                         <tooltip>
                             <Tooltip text="Enviar mensaje" />
                         </tooltip>

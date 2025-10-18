@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -22,7 +23,9 @@ import org.fran.chatoffline.model.Mensaje;
 import org.fran.chatoffline.model.Usuario;
 
 import java.io.*;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -38,6 +41,9 @@ public class ConversacionController {
     @FXML private TextField campoMensaje;
     @FXML private ScrollPane scrollMensajes;
     @FXML private Label lblNombreContacto;
+    @FXML private Button btnExportarConversacion;
+
+
 
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
@@ -63,6 +69,8 @@ public class ConversacionController {
                     mainController.abrirPerfilUsuario(contactoActual);
                 }
             });
+
+            btnExportarConversacion.setOnAction(e -> exportarConversacion());
         }
     }
 
@@ -197,6 +205,61 @@ public class ConversacionController {
         agregarMensaje(mensaje);
         guardarMensajeEnXML(mensaje);
     }
+
+    @FXML
+    private void exportarConversacion() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Exportar Conversación");
+        fileChooser.setInitialFileName("conversacion_" + contactoActual.getNombre() + ".csv");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV (*.csv)", "*.csv"));
+        File file = fileChooser.showSaveDialog(null);
+
+        if (file == null) {
+            return;
+        }
+
+        File conversacionFile = getConversacionesFile();
+        if (conversacionFile == null || !conversacionFile.exists() || conversacionFile.length() == 0) {
+            LOGGER.info("No hay conversación para exportar.");
+            return;
+        }
+
+        GestorConversacion gestor = XMLManager.readXML(new GestorConversacion(), conversacionFile.getAbsolutePath());
+        if (gestor == null || gestor.getMensajes() == null) {
+            LOGGER.info("No hay mensajes para exportar.");
+            return;
+        }
+
+        try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {
+            // Escribir cabecera del CSV
+            writer.println("Fecha y Hora,Remitente,Contenido,Adjunto");
+
+            // Procesar con Streams
+            gestor.getMensajes().stream()
+                .filter(m -> (m.getRemitente().equals(usuarioActual.getNombre()) && m.getDestinatario().equals(contactoActual.getNombre())) ||
+                             (m.getRemitente().equals(contactoActual.getNombre()) && m.getDestinatario().equals(usuarioActual.getNombre())))
+                .sorted(Comparator.comparing(Mensaje::getFechaEnvio))
+                .map(this::convertirMensajeACSV)
+                .forEach(writer::println);
+
+            LOGGER.info("Conversación exportada exitosamente a: " + file.getAbsolutePath());
+
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Error al exportar la conversación.", e);
+        }
+    }
+
+    private String convertirMensajeACSV(Mensaje m) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String fecha = m.getFechaEnvio().format(formatter);
+        String remitente = m.getRemitente();
+        // Escapar comillas y comas en el contenido
+        String contenido = "\"" + m.getContenido().replace("\"", "\"\"") + "\"";
+        String adjunto = m.tieneAdjunto() ? m.getAdjunto().getNombreArchivo() : "N/A";
+
+        return String.join(",", fecha, remitente, contenido, adjunto);
+    }
+
 
     private String getMimeType(File file) {
         String name = file.getName().toLowerCase();
