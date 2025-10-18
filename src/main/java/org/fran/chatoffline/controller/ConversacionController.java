@@ -4,10 +4,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -24,10 +21,11 @@ import org.fran.chatoffline.model.Usuario;
 
 import java.io.*;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.*;
+import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public class ConversacionController {
     private static final Logger LOGGER = Logger.getLogger(ConversacionController.class.getName());
@@ -36,13 +34,18 @@ public class ConversacionController {
     private Usuario usuarioActual;
     private Usuario contactoActual;
 
-    @FXML private VBox contenedorMensajes;
-    @FXML private HBox topBar;
-    @FXML private TextField campoMensaje;
-    @FXML private ScrollPane scrollMensajes;
-    @FXML private Label lblNombreContacto;
-    @FXML private Button btnExportarConversacion;
-
+    @FXML
+    private VBox contenedorMensajes;
+    @FXML
+    private HBox topBar;
+    @FXML
+    private TextField campoMensaje;
+    @FXML
+    private ScrollPane scrollMensajes;
+    @FXML
+    private Label lblNombreContacto;
+    @FXML
+    private Button btnExportarConversacion;
 
 
     public void setMainController(MainController mainController) {
@@ -236,17 +239,86 @@ public class ConversacionController {
 
             // Procesar con Streams
             gestor.getMensajes().stream()
-                .filter(m -> (m.getRemitente().equals(usuarioActual.getNombre()) && m.getDestinatario().equals(contactoActual.getNombre())) ||
-                             (m.getRemitente().equals(contactoActual.getNombre()) && m.getDestinatario().equals(usuarioActual.getNombre())))
-                .sorted(Comparator.comparing(Mensaje::getFechaEnvio))
-                .map(this::convertirMensajeACSV)
-                .forEach(writer::println);
+                    .filter(m -> (m.getRemitente().equals(usuarioActual.getNombre()) && m.getDestinatario().equals(contactoActual.getNombre())) ||
+                            (m.getRemitente().equals(contactoActual.getNombre()) && m.getDestinatario().equals(usuarioActual.getNombre())))
+                    .sorted(Comparator.comparing(Mensaje::getFechaEnvio))
+                    .map(this::convertirMensajeACSV)
+                    .forEach(writer::println);
 
             LOGGER.info("Conversación exportada exitosamente a: " + file.getAbsolutePath());
 
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Error al exportar la conversación.", e);
         }
+    }
+
+    @FXML
+    private void generarResumen() {
+        File conversacionFile = getConversacionesFile();
+        if (conversacionFile == null || !conversacionFile.exists() || conversacionFile.length() == 0) {
+            mostrarAlerta("No hay conversación para analizar.");
+            return;
+        }
+        GestorConversacion gestor = XMLManager.readXML(new GestorConversacion(), conversacionFile.getAbsolutePath());
+        if (gestor == null || gestor.getMensajes() == null) {
+            mostrarAlerta("No hay mensajes para analizar.");
+            return;
+        }
+        List<Mensaje> mensajesConversacion = gestor.getMensajes().stream()
+                .filter(m -> (m.getRemitente().equals(usuarioActual.getNombre()) && m.getDestinatario().equals(contactoActual.getNombre())) ||
+                        (m.getRemitente().equals(contactoActual.getNombre()) && m.getDestinatario().equals(usuarioActual.getNombre())))
+                .collect(Collectors.toList());
+        if (mensajesConversacion.isEmpty()) {
+            mostrarAlerta("No hay mensajes en esta conversación.");
+            return;
+        }
+        long totalMensajes = mensajesConversacion.size();
+        Map<String, Long> mensajesPorUsuario = mensajesConversacion.stream()
+                .collect(Collectors.groupingBy(Mensaje::getRemitente, Collectors.counting()));
+        List<String> stopWords = Arrays.asList("que", "de", "la", "el", "en", "y", "a", "los", "del", "un", "una", "es", "no", "si", "para", "con", "mi", "te", "se", "lo", "su", "me", "por", "qué", "pero", "como", "más", "este", "esta");
+        Map<String, Long> conteoPalabras = mensajesConversacion.stream()
+                .flatMap(m -> Arrays.stream(m.getContenido().toLowerCase().split("\\s+")))
+                .map(palabra -> palabra.replaceAll("[^a-záéíóúñ]", ""))
+                .filter(palabra -> !palabra.isEmpty() && !stopWords.contains(palabra) && palabra.length() > 3)
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+        String palabrasMasComunes = conteoPalabras.entrySet().stream()
+                .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+                .limit(5)
+                .map(entry -> entry.getKey() + " (" + entry.getValue() + " veces)")
+                .collect(Collectors.joining("\n- "));
+        StringBuilder resumen = new StringBuilder();
+        resumen.append("Resumen de la Conversación con ").append(contactoActual.getNombre()).append("\n");
+        resumen.append("====================================================\n\n");
+        resumen.append("▪ Total de mensajes: ").append(totalMensajes).append("\n\n");
+        resumen.append("▪ Mensajes por usuario:\n");
+        mensajesPorUsuario.forEach((usuario, cantidad) ->
+                resumen.append("  - ").append(usuario).append(": ").append(cantidad).append(" mensajes\n")
+        );
+        resumen.append("\n▪ 5 palabras más comunes (más de 3 letras):\n- ");
+        resumen.append(palabrasMasComunes.isEmpty() ? "No hay suficientes palabras." : palabrasMasComunes);
+
+        mostrarResumenEnDialogo(resumen.toString());
+    }
+
+    private void mostrarResumenEnDialogo(String contenido) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Resumen de la Conversación");
+        alert.setHeaderText("Análisis de la conversación con " + contactoActual.getNombre());
+        TextArea textArea = new TextArea(contenido);
+        textArea.setEditable(false);
+        textArea.setWrapText(true);
+        textArea.setPrefSize(400, 250);
+
+        alert.getDialogPane().setContent(textArea);
+        alert.showAndWait();
+    }
+
+    private void mostrarAlerta(String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Información");
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
     }
 
     private String convertirMensajeACSV(Mensaje m) {

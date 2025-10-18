@@ -23,9 +23,9 @@
                             <Tooltip text="Exportar conversación" />
                         </tooltip>
                     </Button>
-                    <Button styleClass="boton-superior" text="✎">
+                    <Button fx:id="btnResumenStreams" onAction="#generarResumen" styleClass="boton-superior" text="✎">
                         <tooltip>
-                            <Tooltip text="Editar conversación" />
+                            <Tooltip text="Generar resumen" />
                         </tooltip>
                     </Button>
                 </HBox>
