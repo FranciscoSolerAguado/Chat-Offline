@@ -36,6 +36,10 @@ public class MainController {
     private StackPane mainArea;
     @FXML
     private VBox chatListContainer;
+    @FXML
+    private Circle statusIndicator;
+    @FXML
+    private Label statusLabel;
 
     private Usuario usuarioActual;
 
@@ -58,6 +62,12 @@ public class MainController {
     public void setUsuarioActual(Usuario usuario) {
         this.usuarioActual = usuario;
         LOGGER.info("Usuario actual establecido: " + usuario.getNombre());
+        if (statusLabel != null) {
+            statusLabel.setText(usuario.getNombre() + " (Activo)");
+        }
+        if (statusIndicator != null) {
+            statusIndicator.setVisible(true);
+        }
         Platform.runLater(this::cargarListaUsuarios);
     }
 
@@ -135,6 +145,7 @@ public class MainController {
 
             ConversacionController controller = loader.getController();
             controller.setMainController(this);
+            controller.setUsuarioActual(this.usuarioActual);
             controller.setContacto(contacto);
 
             mainArea.getChildren().setAll(view);
@@ -155,7 +166,9 @@ public class MainController {
 
             PerfilUsuarioController controller = loader.getController();
             controller.setMainController(this);
-            controller.setContacto(usuario);
+            // Pasa tanto el usuario del perfil como el usuario logueado
+            controller.setDatosPerfil(usuario, this.usuarioActual);
+
 
             mainArea.getChildren().setAll(view);
 
@@ -190,13 +203,13 @@ public class MainController {
 
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Error al recargar la vista principal (main.fxml).", e);
+            LOGGER.log(Level.SEVERE, "Error al recargar la vista principal (main.fxml).", e);
         }
     }
 
 
     private File getUsuariosFile() {
-        final String resourcePath = "/org/fran/chatoffline/usuarios.xml";
-        return getFileFromResource(resourcePath);
+        return getFileFromResource("/org/fran/chatoffline/usuarios.xml");
     }
 
     private File getFileFromResource(String resourcePath) {

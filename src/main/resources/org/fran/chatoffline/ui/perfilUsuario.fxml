@@ -23,7 +23,7 @@
                     <Label fx:id="lblTelefonoContacto" styleClass="label" text="639088251" />
                <Label fx:id="lblEstadoContacto" layoutX="115.0" layoutY="43.0" styleClass="label" text="En linea" />
                 </VBox>
-                <Button fx:id="btnCerrar" styleClass="btnCerrar" text="Cerrar" />
+                <Button fx:id="btnCerrar" onAction="#handleCerrar" styleClass="btnCerrar" text="Cerrar" />
             </VBox>
         </StackPane>
     </center>

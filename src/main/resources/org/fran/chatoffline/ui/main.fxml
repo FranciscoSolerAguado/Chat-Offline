@@ -73,8 +73,8 @@
                 <padding>
                     <Insets bottom="15" left="15" right="15" top="15" />
                 </padding>
-                <Circle radius="10" styleClass="active-dot" />
-                <Label styleClass="active-label" text="Tú (Activo)" />
+                <Circle fx:id="statusIndicator" radius="10" styleClass="active-dot" />
+                <Label fx:id="statusLabel" styleClass="active-label" text="Tú (Activo)" />
             </HBox>
         </VBox>
     </left>

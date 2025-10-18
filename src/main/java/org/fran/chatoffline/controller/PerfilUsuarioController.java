@@ -1,7 +1,6 @@
 package org.fran.chatoffline.controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import org.fran.chatoffline.model.Usuario;
 
@@ -12,80 +11,67 @@ public class PerfilUsuarioController {
     private static final Logger LOGGER = Logger.getLogger(PerfilUsuarioController.class.getName());
 
     private MainController mainController;
-    private Usuario usuarioActual;
-    private Usuario contactoActual;
-
+    private Usuario usuarioLogueado;
+    private Usuario usuarioDelPerfil;
 
     @FXML
     private Label lblNombreContacto;
-
     @FXML
     private Label lblGmailContacto;
-
     @FXML
     private Label lblTelefonoContacto;
-
     @FXML
     private Label lblEstadoContacto;
 
-
-    @FXML
-    private Button btnCerrar;
-
-    /**
-     * Permite al MainController inyectarse a sí mismo para la comunicación.
-     */
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
     }
 
-    public void setUsuarioActual(Usuario usuario) {
-        this.usuarioActual = usuario;
-    }
-
-    @FXML
-    private void initialize(){
-        btnCerrar.setOnAction(e -> handleCerrar());
-    }
-
     /**
-     * Recibe el usuario cuyo perfil se va a mostrar.
+     * Recibe los datos necesarios para configurar la vista del perfil.
+     * @param usuarioDelPerfil El usuario cuyo perfil se va a mostrar.
+     * @param usuarioLogueado El usuario que ha iniciado la sesión.
      */
-    public void setContacto(Usuario contacto) {
-        this.contactoActual = contacto;
+    public void setDatosPerfil(Usuario usuarioDelPerfil, Usuario usuarioLogueado) {
+        this.usuarioDelPerfil = usuarioDelPerfil;
+        this.usuarioLogueado = usuarioLogueado;
+        actualizarVista();
+    }
+
+    private void actualizarVista() {
+        if (usuarioDelPerfil == null) {
+            LOGGER.severe("No se ha proporcionado un usuario para mostrar en el perfil.");
+            return;
+        }
+
         if (lblNombreContacto != null) {
-            lblNombreContacto.setText(contacto.getNombre());
-        } else {
-            LOGGER.warning("La etiqueta lblNombreContacto es nula. Revisa el fx:id en conversacion.fxml.");
+            lblNombreContacto.setText(usuarioDelPerfil.getNombre());
         }
-
         if (lblGmailContacto != null) {
-            lblGmailContacto.setText(contacto.getEmail());
-        } else {
-            LOGGER.warning("La etiqueta lblGmailContacto es nula. Revisa el fx:id en conversacion.fxml.");
+            lblGmailContacto.setText(usuarioDelPerfil.getEmail());
         }
-
         if (lblTelefonoContacto != null) {
-            lblTelefonoContacto.setText(contacto.getTelefono());
-        }else {
-            LOGGER.warning("La etiqueta lblTelefonoContacto es nula. Revisa el fx:id en conversacion.fxml.");
+            lblTelefonoContacto.setText(usuarioDelPerfil.getTelefono());
         }
 
+        // Lógica para mostrar el estado "Activo" o "Desconectado"
         if (lblEstadoContacto != null) {
-            lblEstadoContacto.setText("En linea");
-        }else {
-            LOGGER.warning("La etiqueta lblEstadoContacto es nula. Revisa el fx:id en conversacion.fxml.");
+            // Comprueba si el perfil que se muestra es el del propio usuario logueado
+            if (usuarioLogueado != null && usuarioLogueado.getIdUsuario().equals(usuarioDelPerfil.getIdUsuario())) {
+                lblEstadoContacto.setText("Activo");
+                lblEstadoContacto.getStyleClass().removeAll("estado-inactivo");
+                lblEstadoContacto.getStyleClass().add("estado-activo");
+            } else {
+                lblEstadoContacto.setText("Desconectado");
+                lblEstadoContacto.getStyleClass().removeAll("estado-activo");
+                lblEstadoContacto.getStyleClass().add("estado-inactivo");
+            }
         }
     }
-    /**
-     * Maneja el evento del botón "Cerrar" o "Volver".
-     * Notifica al MainController para que limpie la vista y refresque la lista de chats.
-     * DEBES AÑADIR UN BOTÓN EN perfilUsuario.fxml Y ASIGNARLE onAction="#handleCerrar"
-     */
+
     @FXML
     private void handleCerrar() {
         if (mainController != null) {
-            LOGGER.info("Cerrando perfil y refrescando la lista de chats.");
             mainController.cerrarVistaSecundariaYRefrescar();
         } else {
             LOGGER.severe("MainController es nulo. No se puede cerrar la vista correctamente.");
