@@ -51,7 +51,7 @@
                         </tooltip>
                     </Button>
                     <TextField fx:id="campoMensaje" promptText="Escribe tu mensaje" styleClass="campo-mensaje" HBox.hgrow="ALWAYS" />
-                    <Button fx:id="botonEnviar" styleClass="boton-enviar" text="🕊">
+                    <Button fx:id="botonEnviar" styleClass="boton-enviar" text="🕊" onAction="#enviarMensaje">
                         <tooltip>
                             <Tooltip text="Enviar mensaje" />
                         </tooltip>

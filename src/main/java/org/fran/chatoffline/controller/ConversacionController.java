@@ -1,5 +1,6 @@
 package org.fran.chatoffline.controller;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -111,6 +112,8 @@ public class ConversacionController {
 
         scrollMensajes.layout();
         scrollMensajes.setVvalue(1.0);
+        Platform.runLater(() -> scrollMensajes.setVvalue(1.0));
+
     }
 
     @FXML
@@ -153,8 +156,17 @@ public class ConversacionController {
     }
 
     private File getConversacionesFile() {
-        final String resourcePath = "/org/fran/chatoffline/conversaciones.xml";
-        return getFileFromResource(resourcePath);
+        String ruta = System.getProperty("user.home") + File.separator + "conversaciones.xml";
+        File archivo = new File(ruta);
+        try {
+            if (!archivo.exists()) {
+                archivo.createNewFile();
+            }
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "No se pudo crear el archivo de conversaciones.", e);
+            return null;
+        }
+        return archivo;
     }
 
     private File getFileFromResource(String resourcePath) {
