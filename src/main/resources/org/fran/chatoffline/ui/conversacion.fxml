@@ -45,11 +45,12 @@
             <!-- BARRA INFERIOR -->
             <bottom>
                 <HBox alignment="CENTER_LEFT" spacing="10" styleClass="barra-inferior">
-                    <Button styleClass="boton-adjuntar" text="📎">
+                    <Button fx:id="botonAdjuntar" styleClass="boton-adjuntar" text="📎" onAction="#adjuntarArchivo">
                         <tooltip>
                             <Tooltip text="Adjuntar archivo" />
                         </tooltip>
                     </Button>
+
                     <TextField fx:id="campoMensaje" promptText="Escribe tu mensaje" styleClass="campo-mensaje" HBox.hgrow="ALWAYS" />
                     <Button fx:id="botonEnviar" styleClass="boton-enviar" text="🕊" onAction="#enviarMensaje">
                         <tooltip>

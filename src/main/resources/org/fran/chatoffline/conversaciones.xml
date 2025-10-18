@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<conversacion>
+    <mensajes>
+        <mensaje idMensaje="9cccd8e0-c4c0-4091-b851-6aa5235019e7">
+            <remitente>Fran</remitente>
+            <destinatario>juan</destinatario>
+            <contenido>Hola</contenido>
+            <fechaEnvio>2025-10-18T12:06:17.625636700</fechaEnvio>
+        </mensaje>
+        <mensaje idMensaje="ff86261f-990c-44c2-9ef1-8007c4eba038">
+            <remitente>Fran</remitente>
+            <destinatario>juan</destinatario>
+            <contenido>📎 Archivo adjunto: 1000_F_520903921_Ps1PHPMJ7Iy2N6pYn6DQXzOFPZv1qF3b.jpg</contenido>
+            <fechaEnvio>2025-10-18T12:07:34.573185300</fechaEnvio>
+            <adjunto>
+                <nombreArchivo>1000_F_520903921_Ps1PHPMJ7Iy2N6pYn6DQXzOFPZv1qF3b.jpg</nombreArchivo>
+                <rutaArchivo>C:\Users\franc\Downloads\1000_F_520903921_Ps1PHPMJ7Iy2N6pYn6DQXzOFPZv1qF3b.jpg</rutaArchivo>
+                <tamano>135855</tamano>
+                <tipoMime>image/jpeg</tipoMime>
+            </adjunto>
+        </mensaje>
+        <mensaje idMensaje="e84ea749-784b-447d-9b45-466a69c1bdff">
+            <remitente>juan</remitente>
+            <destinatario>Fran</destinatario>
+            <contenido>hola</contenido>
+            <fechaEnvio>2025-10-18T12:08:11.503264900</fechaEnvio>
+        </mensaje>
+        <mensaje idMensaje="8137b1fd-0ea0-4c0f-b6bb-6a4ac8841899">
+            <remitente>Fran</remitente>
+            <destinatario>juan</destinatario>
+            <contenido>📎 Archivo adjunto: ssstwitter.com_1746554364353 (1).mp4</contenido>
+            <fechaEnvio>2025-10-18T12:15:02.410343800</fechaEnvio>
+            <adjunto>
+                <nombreArchivo>ssstwitter.com_1746554364353 (1).mp4</nombreArchivo>
+                <rutaArchivo>C:\Users\franc\Downloads\ssstwitter.com_1746554364353 (1).mp4</rutaArchivo>
+                <tamano>1902518</tamano>
+                <tipoMime>video/mp4</tipoMime>
+            </adjunto>
+        </mensaje>
+        <mensaje idMensaje="6e52ed57-363b-4c96-8441-2f3aad322477">
+            <remitente>Fran</remitente>
+            <destinatario>juan</destinatario>
+            <contenido>📎 Archivo adjunto: 1000_F_520903921_Ps1PHPMJ7Iy2N6pYn6DQXzOFPZv1qF3b.jpg</contenido>
+            <fechaEnvio>2025-10-18T12:19:35.530853700</fechaEnvio>
+            <adjunto>
+                <nombreArchivo>1000_F_520903921_Ps1PHPMJ7Iy2N6pYn6DQXzOFPZv1qF3b.jpg</nombreArchivo>
+                <rutaArchivo>C:\Users\franc\Desktop\Chat-Offline\media\1000_F_520903921_Ps1PHPMJ7Iy2N6pYn6DQXzOFPZv1qF3b.jpg</rutaArchivo>
+                <tamano>135855</tamano>
+                <tipoMime>image/jpg</tipoMime>
+            </adjunto>
+        </mensaje>
+        <mensaje idMensaje="caa0cb17-d5da-47d5-9ebe-1743805c3abc">
+            <remitente>Fran</remitente>
+            <destinatario>juan</destinatario>
+            <contenido>📎 Archivo adjunto: 1000_F_520903921_Ps1PHPMJ7Iy2N6pYn6DQXzOFPZv1qF3b.jpg</contenido>
+            <fechaEnvio>2025-10-18T12:20:57.128426700</fechaEnvio>
+            <adjunto>
+                <nombreArchivo>1000_F_520903921_Ps1PHPMJ7Iy2N6pYn6DQXzOFPZv1qF3b.jpg</nombreArchivo>
+                <rutaArchivo>C:\Users\franc\Desktop\Chat-Offline\src\main\resources\org\fran\chatoffline\media\1000_F_520903921_Ps1PHPMJ7Iy2N6pYn6DQXzOFPZv1qF3b.jpg</rutaArchivo>
+                <tamano>135855</tamano>
+                <tipoMime>image/jpg</tipoMime>
+            </adjunto>
+        </mensaje>
+    </mensajes>
+</conversacion>
