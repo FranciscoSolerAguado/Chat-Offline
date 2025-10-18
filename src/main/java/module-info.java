@@ -13,6 +13,8 @@ module org.fran.chatoffline {
     requires org.glassfish.jaxb.runtime;
     requires org.glassfish.jaxb.core; // Requerido para la instanciación de clases
     requires jakarta.activation;
+    requires java.desktop;
+    requires javafx.media;
 
 
     // Abrir paquetes a JavaFX para que pueda acceder a los controladores

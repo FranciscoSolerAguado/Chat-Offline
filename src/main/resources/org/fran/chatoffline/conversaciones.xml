@@ -61,5 +61,17 @@
                 <tipoMime>image/jpg</tipoMime>
             </adjunto>
         </mensaje>
+        <mensaje idMensaje="5e1d905e-0bde-4556-b1c2-f4e4d9eb886b">
+            <remitente>Fran</remitente>
+            <destinatario>juan</destinatario>
+            <contenido>📎 Archivo adjunto: ssstwitter.com_1746554364353 (1).mp4</contenido>
+            <fechaEnvio>2025-10-18T12:33:04.548530500</fechaEnvio>
+            <adjunto>
+                <nombreArchivo>ssstwitter.com_1746554364353 (1).mp4</nombreArchivo>
+                <rutaArchivo>C:\Users\franc\Desktop\Chat-Offline\src\main\resources\org\fran\chatoffline\media\ssstwitter.com_1746554364353 (1).mp4</rutaArchivo>
+                <tamano>1902518</tamano>
+                <tipoMime>video/mp4</tipoMime>
+            </adjunto>
+        </mensaje>
     </mensajes>
 </conversacion>

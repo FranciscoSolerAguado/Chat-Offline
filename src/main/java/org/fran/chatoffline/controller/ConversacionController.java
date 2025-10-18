@@ -11,6 +11,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.stage.FileChooser;
 import org.fran.chatoffline.dataAccess.XMLManager;
 import org.fran.chatoffline.model.Adjunto;
@@ -50,6 +53,17 @@ public class ConversacionController {
             lblNombreContacto.setText(contacto.getNombre());
         }
         cargarMensajesDesdeXML();
+    }
+
+    @FXML
+    private void initialize() {
+        if (topBar != null) {
+            topBar.setOnMouseClicked(e -> {
+                if (mainController != null && contactoActual != null) {
+                    mainController.abrirPerfilUsuario(contactoActual);
+                }
+            });
+        }
     }
 
     private void cargarMensajesDesdeXML() {
@@ -98,9 +112,21 @@ public class ConversacionController {
                     imageView.setPreserveRatio(true);
                     contenidoMensaje.getChildren().add(imageView);
                 } else if (adj.getTipoMime() != null && adj.getTipoMime().startsWith("video")) {
-                    Label videoLabel = new Label("🎬 " + adj.getNombreArchivo());
-                    videoLabel.setStyle("-fx-text-fill: #555; -fx-font-style: italic;");
-                    contenidoMensaje.getChildren().add(videoLabel);
+                    Media media = new Media(archivoAdjunto.toURI().toString());
+                    MediaPlayer mediaPlayer = new MediaPlayer(media);
+                    MediaView mediaView = new MediaView(mediaPlayer);
+
+                    mediaView.setFitWidth(300);
+                    mediaView.setPreserveRatio(true);
+
+                    mediaView.setOnMouseClicked(event -> {
+                        if (mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
+                            mediaPlayer.pause();
+                        } else {
+                            mediaPlayer.play();
+                        }
+                    });
+                    contenidoMensaje.getChildren().add(mediaView);
                 }
             }
         }
@@ -209,4 +235,3 @@ public class ConversacionController {
         return archivo;
     }
 }
-
