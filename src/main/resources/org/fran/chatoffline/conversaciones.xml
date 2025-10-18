@@ -1,83 +1,95 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <conversacion>
     <mensajes>
-        <mensaje idMensaje="9cccd8e0-c4c0-4091-b851-6aa5235019e7">
+        <mensaje idMensaje="e484b7c3-bf9b-4ef1-9bd6-b8a918cd06e1">
             <remitente>Fran</remitente>
             <destinatario>juan</destinatario>
-            <contenido>Hola</contenido>
-            <fechaEnvio>2025-10-18T12:06:17.625636700</fechaEnvio>
+            <contenido>¡Ey Juan! ¿Te apetece hacer una ruta mañana? El tiempo pinta genial.</contenido>
+            <fechaEnvio>2025-10-18T13:10:28.8577978</fechaEnvio>
         </mensaje>
-        <mensaje idMensaje="ff86261f-990c-44c2-9ef1-8007c4eba038">
+        <mensaje idMensaje="7ca23585-0f52-46f4-a033-ea649dcd3ec7">
             <remitente>Fran</remitente>
             <destinatario>juan</destinatario>
-            <contenido>📎 Archivo adjunto: 1000_F_520903921_Ps1PHPMJ7Iy2N6pYn6DQXzOFPZv1qF3b.jpg</contenido>
-            <fechaEnvio>2025-10-18T12:07:34.573185300</fechaEnvio>
+            <contenido>📎 Archivo adjunto: cielo.jpg</contenido>
+            <fechaEnvio>2025-10-18T13:11:00.0937773</fechaEnvio>
             <adjunto>
-                <nombreArchivo>1000_F_520903921_Ps1PHPMJ7Iy2N6pYn6DQXzOFPZv1qF3b.jpg</nombreArchivo>
-                <rutaArchivo>C:\Users\franc\Downloads\1000_F_520903921_Ps1PHPMJ7Iy2N6pYn6DQXzOFPZv1qF3b.jpg</rutaArchivo>
-                <tamano>135855</tamano>
-                <tipoMime>image/jpeg</tipoMime>
+                <nombreArchivo>cielo.jpg</nombreArchivo>
+                <rutaArchivo>C:\Users\franc\Desktop\Chat-Offline\src\main\resources\org\fran\chatoffline\media\cielo.jpg</rutaArchivo>
+                <tamano>101011</tamano>
+                <tipoMime>image/jpg</tipoMime>
             </adjunto>
         </mensaje>
-        <mensaje idMensaje="e84ea749-784b-447d-9b45-466a69c1bdff">
+        <mensaje idMensaje="600704ab-46ac-4442-a1ba-1122a1190054">
             <remitente>juan</remitente>
             <destinatario>Fran</destinatario>
-            <contenido>hola</contenido>
-            <fechaEnvio>2025-10-18T12:08:11.503264900</fechaEnvio>
+            <contenido>¡Me apunto! ¿Dónde tenías pensado ir?</contenido>
+            <fechaEnvio>2025-10-18T13:11:39.5288855</fechaEnvio>
         </mensaje>
-        <mensaje idMensaje="8137b1fd-0ea0-4c0f-b6bb-6a4ac8841899">
-            <remitente>Fran</remitente>
-            <destinatario>juan</destinatario>
-            <contenido>📎 Archivo adjunto: ssstwitter.com_1746554364353 (1).mp4</contenido>
-            <fechaEnvio>2025-10-18T12:15:02.410343800</fechaEnvio>
-            <adjunto>
-                <nombreArchivo>ssstwitter.com_1746554364353 (1).mp4</nombreArchivo>
-                <rutaArchivo>C:\Users\franc\Downloads\ssstwitter.com_1746554364353 (1).mp4</rutaArchivo>
-                <tamano>1902518</tamano>
-                <tipoMime>video/mp4</tipoMime>
-            </adjunto>
-        </mensaje>
-        <mensaje idMensaje="6e52ed57-363b-4c96-8441-2f3aad322477">
-            <remitente>Fran</remitente>
-            <destinatario>juan</destinatario>
-            <contenido>📎 Archivo adjunto: 1000_F_520903921_Ps1PHPMJ7Iy2N6pYn6DQXzOFPZv1qF3b.jpg</contenido>
-            <fechaEnvio>2025-10-18T12:19:35.530853700</fechaEnvio>
-            <adjunto>
-                <nombreArchivo>1000_F_520903921_Ps1PHPMJ7Iy2N6pYn6DQXzOFPZv1qF3b.jpg</nombreArchivo>
-                <rutaArchivo>C:\Users\franc\Desktop\Chat-Offline\media\1000_F_520903921_Ps1PHPMJ7Iy2N6pYn6DQXzOFPZv1qF3b.jpg</rutaArchivo>
-                <tamano>135855</tamano>
-                <tipoMime>image/jpg</tipoMime>
-            </adjunto>
-        </mensaje>
-        <mensaje idMensaje="caa0cb17-d5da-47d5-9ebe-1743805c3abc">
-            <remitente>Fran</remitente>
-            <destinatario>juan</destinatario>
-            <contenido>📎 Archivo adjunto: 1000_F_520903921_Ps1PHPMJ7Iy2N6pYn6DQXzOFPZv1qF3b.jpg</contenido>
-            <fechaEnvio>2025-10-18T12:20:57.128426700</fechaEnvio>
-            <adjunto>
-                <nombreArchivo>1000_F_520903921_Ps1PHPMJ7Iy2N6pYn6DQXzOFPZv1qF3b.jpg</nombreArchivo>
-                <rutaArchivo>C:\Users\franc\Desktop\Chat-Offline\src\main\resources\org\fran\chatoffline\media\1000_F_520903921_Ps1PHPMJ7Iy2N6pYn6DQXzOFPZv1qF3b.jpg</rutaArchivo>
-                <tamano>135855</tamano>
-                <tipoMime>image/jpg</tipoMime>
-            </adjunto>
-        </mensaje>
-        <mensaje idMensaje="5e1d905e-0bde-4556-b1c2-f4e4d9eb886b">
-            <remitente>Fran</remitente>
-            <destinatario>juan</destinatario>
-            <contenido>📎 Archivo adjunto: ssstwitter.com_1746554364353 (1).mp4</contenido>
-            <fechaEnvio>2025-10-18T12:33:04.548530500</fechaEnvio>
-            <adjunto>
-                <nombreArchivo>ssstwitter.com_1746554364353 (1).mp4</nombreArchivo>
-                <rutaArchivo>C:\Users\franc\Desktop\Chat-Offline\src\main\resources\org\fran\chatoffline\media\ssstwitter.com_1746554364353 (1).mp4</rutaArchivo>
-                <tamano>1902518</tamano>
-                <tipoMime>video/mp4</tipoMime>
-            </adjunto>
-        </mensaje>
-        <mensaje idMensaje="250e8907-e548-46c6-9207-3dd3de150787">
-            <remitente>Marta</remitente>
+        <mensaje idMensaje="00658941-50d2-42ee-b66d-6c2d23b544bc">
+            <remitente>juan</remitente>
             <destinatario>Fran</destinatario>
-            <contenido>hola</contenido>
-            <fechaEnvio>2025-10-18T12:35:58.985299100</fechaEnvio>
+            <contenido>📎 Archivo adjunto: mapa.png</contenido>
+            <fechaEnvio>2025-10-18T13:12:22.6343617</fechaEnvio>
+            <adjunto>
+                <nombreArchivo>mapa.png</nombreArchivo>
+                <rutaArchivo>C:\Users\franc\Desktop\Chat-Offline\src\main\resources\org\fran\chatoffline\media\mapa.png</rutaArchivo>
+                <tamano>759161</tamano>
+                <tipoMime>image/png</tipoMime>
+            </adjunto>
+        </mensaje>
+        <mensaje idMensaje="3be43636-a8cc-4aca-96ed-81c5ac061726">
+            <remitente>Fran</remitente>
+            <destinatario>juan</destinatario>
+            <contenido>Podríamos ir al pico. Hay vistas brutales.</contenido>
+            <fechaEnvio>2025-10-18T13:13:08.6262787</fechaEnvio>
+        </mensaje>
+        <mensaje idMensaje="4864b191-1cec-4e4f-8623-63e2ffc8b007">
+            <remitente>juan</remitente>
+            <destinatario>Fran</destinatario>
+            <contenido>¡Qué pasada! ¿Llevamos bocata o paramos a comer?</contenido>
+            <fechaEnvio>2025-10-18T13:13:51.8415347</fechaEnvio>
+        </mensaje>
+        <mensaje idMensaje="7ec8a7aa-bc23-484a-9092-e29beead1c92">
+            <remitente>Fran</remitente>
+            <destinatario>juan</destinatario>
+            <contenido>Bocata y fruta. Y llevo café en termo 😎</contenido>
+            <fechaEnvio>2025-10-18T13:14:38.0736817</fechaEnvio>
+        </mensaje>
+        <mensaje idMensaje="1a2e368f-8225-412c-87a3-e09b7521ef25">
+            <remitente>juan</remitente>
+            <destinatario>Fran</destinatario>
+            <contenido>Eres un crack. ¿Hora de salida?</contenido>
+            <fechaEnvio>2025-10-18T13:15:05.5535947</fechaEnvio>
+        </mensaje>
+        <mensaje idMensaje="b8462b8a-f777-4fcf-b837-0dea38006dac">
+            <remitente>Fran</remitente>
+            <destinatario>juan</destinatario>
+            <contenido>8:00 en mi casa.</contenido>
+            <fechaEnvio>2025-10-18T13:15:54.4990188</fechaEnvio>
+        </mensaje>
+        <mensaje idMensaje="5dd8fff3-9fd5-4c3d-bc6d-76e5932298b4">
+            <remitente>Fran</remitente>
+            <destinatario>juan</destinatario>
+            <contenido>No llegues tarde</contenido>
+            <fechaEnvio>2025-10-18T13:16:02.0578556</fechaEnvio>
+        </mensaje>
+        <mensaje idMensaje="218c463d-6a74-40b9-86a5-3814a704acd1">
+            <remitente>juan</remitente>
+            <destinatario>Fran</destinatario>
+            <contenido>Ok</contenido>
+            <fechaEnvio>2025-10-18T13:16:41.4728313</fechaEnvio>
+        </mensaje>
+        <mensaje idMensaje="7b58e3b6-d1d5-49d4-a183-d26cb51ab9d5">
+            <remitente>juan</remitente>
+            <destinatario>Fran</destinatario>
+            <contenido>Llevo camara</contenido>
+            <fechaEnvio>2025-10-18T13:16:47.4085415</fechaEnvio>
+        </mensaje>
+        <mensaje idMensaje="5d7f3d7c-6778-4a9a-ae21-4574e2217541">
+            <remitente>juan</remitente>
+            <destinatario>Fran</destinatario>
+            <contenido>Por si vemos algo</contenido>
+            <fechaEnvio>2025-10-18T13:16:56.9695467</fechaEnvio>
         </mensaje>
     </mensajes>
 </conversacion>
