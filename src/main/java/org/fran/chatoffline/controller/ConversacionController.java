@@ -95,17 +95,23 @@ public class ConversacionController {
     private void agregarMensaje(Mensaje mensaje) {
         HBox contenedor = new HBox();
         contenedor.setPadding(new Insets(5, 10, 5, 10));
+        contenedor.setFillHeight(false); // <-- Importante para que no estire verticalmente
+
 
         Label etiquetaMensaje = new Label(mensaje.getContenido());
         etiquetaMensaje.setWrapText(true);
+        etiquetaMensaje.setMaxWidth(300); // Ajusta el ancho máximo del globo
+        etiquetaMensaje.setStyle("-fx-font-size: 14px; -fx-padding: 8px 12px; -fx-background-radius: 10px; -fx-background-color: #e0e0e0;");
+
 
         if (usuarioActual != null && mensaje.getRemitente().equals(usuarioActual.getNombre())) {
-            etiquetaMensaje.getStyleClass().add("mensaje-derecha");
+            etiquetaMensaje.setStyle("-fx-background-color: #c2e7ff; -fx-background-radius: 10px; -fx-padding: 8px 12px;");
             contenedor.setAlignment(Pos.CENTER_RIGHT);
         } else {
-            etiquetaMensaje.getStyleClass().add("mensaje-izquierda");
+            etiquetaMensaje.setStyle("-fx-background-color: #e6e6e6; -fx-background-radius: 10px; -fx-padding: 8px 12px;");
             contenedor.setAlignment(Pos.CENTER_LEFT);
         }
+
 
         contenedor.getChildren().add(etiquetaMensaje);
         contenedorMensajes.getChildren().add(contenedor);
@@ -167,23 +173,5 @@ public class ConversacionController {
             return null;
         }
         return archivo;
-    }
-
-    private File getFileFromResource(String resourcePath) {
-        try {
-            URL resourceUrl = getClass().getResource(resourcePath);
-            if (resourceUrl == null) {
-                URL dirUrl = getClass().getResource("/");
-                if (dirUrl == null) throw new IOException("No se puede encontrar la raíz del classpath.");
-                File rootDir = new File(dirUrl.toURI());
-                File outputFile = new File(rootDir, resourcePath.substring(1));
-                outputFile.getParentFile().mkdirs();
-                return outputFile;
-            }
-            return new File(resourceUrl.toURI());
-        } catch (URISyntaxException | IOException e) {
-            LOGGER.log(Level.SEVERE, "Error crítico al obtener la ruta del archivo: " + resourcePath, e);
-            return null;
-        }
     }
 }
