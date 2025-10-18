@@ -44,10 +44,9 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(String idUsuario, String nombre, String nombreUsuario, String email, String telefono, String password, LocalDateTime fechaRegistro, boolean activo, String rutaFotoPerfil) {
+    public Usuario(String idUsuario, String nombre, String email, String telefono, String password, LocalDateTime fechaRegistro, boolean activo, String rutaFotoPerfil) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
-        this.nombreUsuario = nombreUsuario;
         this.email = email;
         this.telefono = telefono;
         this.password = password;
@@ -72,13 +71,6 @@ public class Usuario {
         this.nombre = nombre;
     }
 
-    public String getNombreUsuario() {
-        return nombreUsuario;
-    }
-
-    public void setNombreUsuario(String nombreUsuario) {
-        this.nombreUsuario = nombreUsuario;
-    }
 
     public String getEmail() {
         return email;

@@ -15,13 +15,13 @@
                     <Image url="@../img/fotoPerfilEjemplo.png" />
                 </image>
             </ImageView>
-                <Label styleClass="title" text="Juan" />
+                <Label fx:id="lblNombreContacto" styleClass="title" text="Juan" />
 
                 <VBox alignment="CENTER" spacing="15">
-                    <Label styleClass="label" text="juan@gmail.com" />
+                    <Label fx:id="lblGmailContacto" styleClass="label" text="juan@gmail.com" />
 
-                    <Label styleClass="label" text="639088251" />
-               <Label layoutX="115.0" layoutY="43.0" styleClass="label" text="En linea" />
+                    <Label fx:id="lblTelefonoContacto" styleClass="label" text="639088251" />
+               <Label fx:id="lblEstadoContacto" layoutX="115.0" layoutY="43.0" styleClass="label" text="En linea" />
                 </VBox>
                 <Button fx:id="btnCerrar" styleClass="btnCerrar" text="Cerrar" />
             </VBox>

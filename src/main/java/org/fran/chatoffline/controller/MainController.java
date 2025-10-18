@@ -22,12 +22,13 @@ import org.fran.chatoffline.model.Usuario;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MainController {
     private static final Logger LOGGER = Logger.getLogger(MainController.class.getName());
-    private static final String USUARIOS_XML_PATH = "src/main/resources/org/fran/chatoffline/usuarios.xml";
 
     @FXML
     private HBox topBar;
@@ -56,45 +57,32 @@ public class MainController {
 
     public void setUsuarioActual(Usuario usuario) {
         this.usuarioActual = usuario;
-        LOGGER.info("Usuario actual establecido: " + usuario.getNombreUsuario());
+        LOGGER.info("Usuario actual establecido: " + usuario.getNombre());
         Platform.runLater(this::cargarListaUsuarios);
     }
 
-    /**
-     * Metodo que lee los usuarios que hay registrados en el xml y los muestra en un scrollview con un VBOX dentro llamado chatListContainer
-     * donde se muestra el nombre de cada usuario
-     * También maneja que no se muestre el chat de el usuario con el que se ha iniciado sesión
-     */
     private void cargarListaUsuarios() {
         if (usuarioActual == null) {
             LOGGER.severe("No se puede cargar la lista de usuarios porque el usuario actual es nulo.");
             return;
         }
 
-        // Limpiar la lista de chats antes de cargarla de nuevo
         chatListContainer.getChildren().clear();
 
-        File usuariosFile = new File(USUARIOS_XML_PATH);
-        if (!usuariosFile.exists()) {
-            LOGGER.warning("El archivo de usuarios no existe. La lista de chats estará vacía.");
+        File usuariosFile = getUsuariosFile();
+        if (usuariosFile == null || !usuariosFile.exists() || usuariosFile.length() == 0) {
+            LOGGER.warning("El archivo de usuarios no existe o está vacío. La lista de chats estará vacía.");
             return;
         }
 
-        /**
-         * Primero creamos una nueva coleccion de usuarios y luego damos los valores leidos en el xml a la coleccion
-         */
         GestorUsuarios coleccionUsuarios = new GestorUsuarios();
         try {
-            coleccionUsuarios = XMLManager.readXML(coleccionUsuarios, USUARIOS_XML_PATH);
+            coleccionUsuarios = XMLManager.readXML(new GestorUsuarios(), usuariosFile.getAbsolutePath());
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error al leer el archivo de usuarios.", e);
             return;
         }
 
-        /**
-         * Añade solo los usuario que no tengan el id del usuario con el que se ha iniciado sesión
-         * Y los añade al chatHbox (lista de chjats) usando otro metodo "crearChatHbox"
-         */
         if (coleccionUsuarios.getUsuarios() != null) {
             for (Usuario usuario : coleccionUsuarios.getUsuarios()) {
                 if (!usuario.getIdUsuario().equals(usuarioActual.getIdUsuario())) {
@@ -120,7 +108,7 @@ public class MainController {
         Circle avatar = new Circle(15);
         avatar.getStyleClass().add("avatar");
 
-        Label nameLabel = new Label(usuario.getNombreUsuario());
+        Label nameLabel = new Label(usuario.getNombre());
         nameLabel.getStyleClass().add("chat-name");
 
         Region region = new Region();
@@ -167,7 +155,7 @@ public class MainController {
 
             PerfilUsuarioController controller = loader.getController();
             controller.setMainController(this);
-            controller.setUsuario(usuario);
+            controller.setContacto(usuario);
 
             mainArea.getChildren().setAll(view);
 
@@ -205,9 +193,30 @@ public class MainController {
         }
     }
 
-    /**
-     * Metodo que maneja el evento de minimizar la ventana.
-     */
+
+    private File getUsuariosFile() {
+        final String resourcePath = "/org/fran/chatoffline/usuarios.xml";
+        return getFileFromResource(resourcePath);
+    }
+
+    private File getFileFromResource(String resourcePath) {
+        try {
+            URL resourceUrl = getClass().getResource(resourcePath);
+            if (resourceUrl == null) {
+                URL dirUrl = getClass().getResource("/");
+                if (dirUrl == null) throw new IOException("No se puede encontrar la raíz del classpath.");
+                File rootDir = new File(dirUrl.toURI());
+                File outputFile = new File(rootDir, resourcePath.substring(1));
+                outputFile.getParentFile().mkdirs();
+                return outputFile;
+            }
+            return new File(resourceUrl.toURI());
+        } catch (URISyntaxException | IOException e) {
+            LOGGER.log(Level.SEVERE, "Error crítico al obtener la ruta del archivo: " + resourcePath, e);
+            return null;
+        }
+    }
+
     @FXML
     private void handleMinimize() {
         Stage stage = (Stage) topBar.getScene().getWindow();
@@ -216,9 +225,6 @@ public class MainController {
 
     private boolean isMaximized = false;
 
-    /**
-     * Metodo que maneja el evento de maximizar/restaurar la ventana.
-     */
     @FXML
     private void handleToggleMaximize() {
         Stage stage = (Stage) topBar.getScene().getWindow();
@@ -239,12 +245,8 @@ public class MainController {
         }
     }
 
-    /**
-     * Metodo que maneja el evento de cerrar la ventana.
-     */
     @FXML
     private void handleClose() {
         Platform.exit();
     }
 }
-

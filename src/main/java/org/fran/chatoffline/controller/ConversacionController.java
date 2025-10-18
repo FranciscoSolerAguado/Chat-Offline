@@ -8,24 +8,24 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import org.fran.chatoffline.dataAccess.XMLManager;
 import org.fran.chatoffline.model.GestorConversacion;
 import org.fran.chatoffline.model.Mensaje;
 import org.fran.chatoffline.model.Usuario;
 
-
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.Unmarshaller;
 import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ConversacionController {
     private static final Logger LOGGER = Logger.getLogger(ConversacionController.class.getName());
-    private static final String CONVERSACIONES_XML_PATH = "/org/fran/chatoffline/conversaciones.xml";
 
     private MainController mainController;
+    private Usuario usuarioActual;
     private Usuario contactoActual;
 
     @FXML
@@ -43,20 +43,22 @@ public class ConversacionController {
         this.mainController = mainController;
     }
 
+    public void setUsuarioActual(Usuario usuario) {
+        this.usuarioActual = usuario;
+    }
+
     public void setContacto(Usuario contacto) {
         this.contactoActual = contacto;
         if (lblNombreContacto != null) {
-            lblNombreContacto.setText(contacto.getNombreUsuario());
+            lblNombreContacto.setText(contacto.getNombre());
         } else {
             LOGGER.warning("La etiqueta lblNombreContacto es nula. Revisa el fx:id en conversacion.fxml.");
         }
-        // Una vez que tenemos el contacto, cargamos su conversación específica
         cargarMensajesDesdeXML();
     }
 
     @FXML
     private void initialize() {
-        // La carga de mensajes ahora se dispara desde setContacto()
         if (topBar != null) {
             topBar.setOnMouseClicked(e -> {
                 if (mainController != null && contactoActual != null) {
@@ -67,27 +69,23 @@ public class ConversacionController {
     }
 
     private void cargarMensajesDesdeXML() {
-        contenedorMensajes.getChildren().clear(); // Limpiar mensajes anteriores
-
-        URL resourceUrl = getClass().getResource(CONVERSACIONES_XML_PATH);
-        if (resourceUrl == null) {
-            LOGGER.warning("No se encontró el archivo de conversaciones en la ruta: " + CONVERSACIONES_XML_PATH);
-            // No hay archivo, no hay nada que cargar.
+        contenedorMensajes.getChildren().clear();
+        File conversacionFile = getConversacionesFile();
+        if (conversacionFile == null || !conversacionFile.exists() || conversacionFile.length() == 0) {
+            LOGGER.info("No hay conversaciones guardadas o el archivo no se puede localizar.");
             return;
         }
 
         try {
-            JAXBContext contexto = JAXBContext.newInstance(GestorConversacion.class);
-            Unmarshaller lector = contexto.createUnmarshaller();
-            GestorConversacion conversacion = (GestorConversacion) lector.unmarshal(resourceUrl);
-
+            GestorConversacion conversacion = XMLManager.readXML(new GestorConversacion(), conversacionFile.getAbsolutePath());
             if (conversacion != null && conversacion.getMensajes() != null) {
                 for (Mensaje m : conversacion.getMensajes()) {
-                    // Aquí en el futuro filtrarías los mensajes entre el usuario actual y el contactoActual
-                    agregarMensaje(m);
+                    if ((m.getRemitente().equals(usuarioActual.getNombre()) && m.getDestinatario().equals(contactoActual.getNombre())) ||
+                        (m.getRemitente().equals(contactoActual.getNombre()) && m.getDestinatario().equals(usuarioActual.getNombre()))) {
+                        agregarMensaje(m);
+                    }
                 }
             }
-
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error al leer o procesar el archivo de conversaciones.", e);
         }
@@ -100,8 +98,7 @@ public class ConversacionController {
         Label etiquetaMensaje = new Label(mensaje.getContenido());
         etiquetaMensaje.setWrapText(true);
 
-        // Esta lógica debería basarse en el ID del remitente, no en el nombre "Tú"
-        if (mensaje.getRemitente().equalsIgnoreCase("Tú")) { // A mejorar en el futuro
+        if (usuarioActual != null && mensaje.getRemitente().equals(usuarioActual.getNombre())) {
             etiquetaMensaje.getStyleClass().add("mensaje-derecha");
             contenedor.setAlignment(Pos.CENTER_RIGHT);
         } else {
@@ -112,7 +109,6 @@ public class ConversacionController {
         contenedor.getChildren().add(etiquetaMensaje);
         contenedorMensajes.getChildren().add(contenedor);
 
-        // Desplazar automáticamente hacia abajo
         scrollMensajes.layout();
         scrollMensajes.setVvalue(1.0);
     }
@@ -120,13 +116,62 @@ public class ConversacionController {
     @FXML
     private void enviarMensaje() {
         String texto = campoMensaje.getText().trim();
+        if (texto.isEmpty() || usuarioActual == null || contactoActual == null) {
+            return;
+        }
 
-        if (!texto.isEmpty() && contactoActual != null) {
-            // La lógica del remitente debería usar el ID del usuario logueado
-            Mensaje nuevo = new Mensaje("Tú", contactoActual.getNombreUsuario(), texto);
-            agregarMensaje(nuevo);
-            campoMensaje.clear();
-            // Aquí iría la lógica para guardar el nuevo mensaje en el XML
+        Mensaje nuevoMensaje = new Mensaje(usuarioActual.getNombre(), contactoActual.getNombre(), texto);
+        agregarMensaje(nuevoMensaje);
+        campoMensaje.clear();
+
+        File conversacionFile = getConversacionesFile();
+        if (conversacionFile == null) {
+            LOGGER.severe("No se pudo obtener la ruta del archivo de conversaciones. No se puede guardar el mensaje.");
+            return;
+        }
+
+       GestorConversacion conversacion = new GestorConversacion();
+        if (conversacionFile.exists() && conversacionFile.length() > 0) {
+            try {
+                conversacion = XMLManager.readXML(new GestorConversacion(), conversacionFile.getAbsolutePath());
+            } catch (Exception e) {
+                LOGGER.log(Level.SEVERE, "Error al leer el archivo de conversaciones para guardar. Se creará uno nuevo.", e);
+            }
+        }
+        if (conversacion.getMensajes() == null) {
+            conversacion.setMensajes(new ArrayList<>());
+        }
+
+        conversacion.getMensajes().add(nuevoMensaje);
+
+        boolean guardadoExitoso = XMLManager.writeXML(conversacion, conversacionFile.getAbsolutePath());
+        if (guardadoExitoso) {
+            LOGGER.info("Mensaje guardado exitosamente.");
+        } else {
+            LOGGER.severe("Fallo al guardar el mensaje en el archivo XML.");
+        }
+    }
+
+    private File getConversacionesFile() {
+        final String resourcePath = "/org/fran/chatoffline/conversaciones.xml";
+        return getFileFromResource(resourcePath);
+    }
+
+    private File getFileFromResource(String resourcePath) {
+        try {
+            URL resourceUrl = getClass().getResource(resourcePath);
+            if (resourceUrl == null) {
+                URL dirUrl = getClass().getResource("/");
+                if (dirUrl == null) throw new IOException("No se puede encontrar la raíz del classpath.");
+                File rootDir = new File(dirUrl.toURI());
+                File outputFile = new File(rootDir, resourcePath.substring(1));
+                outputFile.getParentFile().mkdirs();
+                return outputFile;
+            }
+            return new File(resourceUrl.toURI());
+        } catch (URISyntaxException | IOException e) {
+            LOGGER.log(Level.SEVERE, "Error crítico al obtener la ruta del archivo: " + resourcePath, e);
+            return null;
         }
     }
 }

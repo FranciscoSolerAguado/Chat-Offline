@@ -15,13 +15,14 @@ import org.fran.chatoffline.model.Usuario;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class InicioSesionController {
     private static final Logger LOGGER = Logger.getLogger(InicioSesionController.class.getName());
-    private static final String USUARIOS_XML_PATH = "src/main/resources/org/fran/chatoffline/usuarios.xml";
 
     @FXML
     private TextField txtEmail;
@@ -51,18 +52,18 @@ public class InicioSesionController {
 
         LOGGER.info("Intento de inicio de sesión para: " + email);
 
-        File usuariosFile = new File(USUARIOS_XML_PATH);
-        if (!usuariosFile.exists()) {
-            LOGGER.warning("Archivo de usuarios no encontrado. Nadie puede iniciar sesión.");
+        File usuariosFile = getUsuariosFile();
+        if (usuariosFile == null || !usuariosFile.exists() || usuariosFile.length() == 0) {
+            LOGGER.warning("Archivo de usuarios no encontrado o vacío. Nadie puede iniciar sesión.");
             mostrarAlerta("Credenciales incorrectas.");
             return;
         }
 
         GestorUsuarios coleccionUsuarios = new GestorUsuarios();
         try {
-            coleccionUsuarios = XMLManager.readXML(coleccionUsuarios, USUARIOS_XML_PATH);
+            coleccionUsuarios = XMLManager.readXML(new GestorUsuarios(), usuariosFile.getAbsolutePath());
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error al leer el archivo de usuarios.", e);
+            LOGGER.log(Level.SEVERE, "Error crítico al leer el archivo de usuarios.", e);
             mostrarAlerta("Error del sistema. Por favor, contacta al administrador.");
             return;
         }
@@ -110,8 +111,31 @@ public class InicioSesionController {
         }
     }
 
+    private File getUsuariosFile() {
+        final String resourcePath = "/org/fran/chatoffline/usuarios.xml";
+        return getFileFromResource(resourcePath);
+    }
+
+    private File getFileFromResource(String resourcePath) {
+        try {
+            URL resourceUrl = getClass().getResource(resourcePath);
+            if (resourceUrl == null) {
+                URL dirUrl = getClass().getResource("/");
+                if (dirUrl == null) throw new IOException("No se puede encontrar la raíz del classpath.");
+                File rootDir = new File(dirUrl.toURI());
+                File outputFile = new File(rootDir, resourcePath.substring(1));
+                outputFile.getParentFile().mkdirs();
+                return outputFile;
+            }
+            return new File(resourceUrl.toURI());
+        } catch (URISyntaxException | IOException e) {
+            LOGGER.log(Level.SEVERE, "Error crítico al obtener la ruta del archivo: " + resourcePath, e);
+            return null;
+        }
+    }
+
     private void mostrarAlerta(String msg) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
         alert.setContentText(msg);
         alert.showAndWait();

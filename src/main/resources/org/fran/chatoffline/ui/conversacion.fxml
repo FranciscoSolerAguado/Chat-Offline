@@ -5,8 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.fran.chatoffline.controller.ConversacionController" stylesheets="@../css/conversacion.css">
+<BorderPane stylesheets="@../css/conversacion.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.fran.chatoffline.controller.ConversacionController">
 
 
     <!-- PANEL DERECHO -->
@@ -15,18 +14,18 @@
 
             <!-- BARRA SUPERIOR -->
             <top>
-                <HBox fx:id="topBar" spacing="10" alignment="CENTER_LEFT" styleClass="topBar">
-                    <Circle radius="15" styleClass="avatar"/>
-                    <Label text="Juan" fx:id="nombreContacto" styleClass="nombre-contacto"/>
-                    <Region HBox.hgrow="ALWAYS"/>
-                    <Button text="⭳" styleClass="boton-superior">
+                <HBox fx:id="topBar" alignment="CENTER_LEFT" spacing="10" styleClass="topBar">
+                    <Circle radius="15" styleClass="avatar" />
+                    <Label fx:id="lblNombreContacto" styleClass="nombre-contacto" text="Juan" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button styleClass="boton-superior" text="⭳">
                         <tooltip>
-                            <Tooltip text="Exportar conversación"/>
+                            <Tooltip text="Exportar conversación" />
                         </tooltip>
                     </Button>
-                    <Button text="✎" styleClass="boton-superior">
+                    <Button styleClass="boton-superior" text="✎">
                         <tooltip>
-                            <Tooltip text="Editar conversación"/>
+                            <Tooltip text="Editar conversación" />
                         </tooltip>
                     </Button>
                 </HBox>
@@ -34,12 +33,10 @@
 
             <!-- ZONA DE MENSAJES -->
             <center>
-                <ScrollPane fx:id="scrollMensajes" fitToWidth="true"
-                            vbarPolicy="AS_NEEDED" hbarPolicy="NEVER"
-                            styleClass="scroll-mensajes">
+                <ScrollPane fx:id="scrollMensajes" fitToWidth="true" hbarPolicy="NEVER" styleClass="scroll-mensajes" vbarPolicy="AS_NEEDED">
                     <VBox fx:id="contenedorMensajes" spacing="10">
                         <padding>
-                            <Insets top="15" right="15" bottom="60" left="15"/>
+                            <Insets bottom="60" left="15" right="15" top="15" />
                         </padding>
                     </VBox>
                 </ScrollPane>
@@ -47,17 +44,16 @@
 
             <!-- BARRA INFERIOR -->
             <bottom>
-                <HBox spacing="10" alignment="CENTER_LEFT" styleClass="barra-inferior">
-                    <Button text="📎" styleClass="boton-adjuntar">
+                <HBox alignment="CENTER_LEFT" spacing="10" styleClass="barra-inferior">
+                    <Button styleClass="boton-adjuntar" text="📎">
                         <tooltip>
-                            <Tooltip text="Adjuntar archivo"/>
+                            <Tooltip text="Adjuntar archivo" />
                         </tooltip>
                     </Button>
-                    <TextField fx:id="campoMensaje" promptText="Escribe tu mensaje"
-                               HBox.hgrow="ALWAYS" styleClass="campo-mensaje"/>
-                    <Button text="🕊" fx:id="botonEnviar" styleClass="boton-enviar">
+                    <TextField fx:id="campoMensaje" promptText="Escribe tu mensaje" styleClass="campo-mensaje" HBox.hgrow="ALWAYS" />
+                    <Button fx:id="botonEnviar" styleClass="boton-enviar" text="🕊">
                         <tooltip>
-                            <Tooltip text="Enviar mensaje"/>
+                            <Tooltip text="Enviar mensaje" />
                         </tooltip>
                     </Button>
                 </HBox>
