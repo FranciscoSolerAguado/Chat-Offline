@@ -5,7 +5,7 @@ import jakarta.xml.bind.annotation.*;
 
 import java.util.List;
 
-@XmlRootElement(name = "conversacion")
+@XmlRootElement(name = "conversaciones")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class GestorConversacion {
 

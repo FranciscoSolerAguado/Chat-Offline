@@ -5,7 +5,6 @@ import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.fran.chatoffline.dataAccess.LocalDateTimeAdapter;
 
 
-
 import java.time.LocalDateTime;
 
 @XmlRootElement(name = "usuario")
@@ -17,9 +16,6 @@ public class Usuario {
 
     @XmlElement
     private String nombre;
-
-    @XmlElement
-    private String nombreUsuario;
 
     @XmlElement
     private String email;
@@ -37,14 +33,11 @@ public class Usuario {
     @XmlElement
     private boolean activo;
 
-    @XmlElement
-    private String rutaFotoPerfil;
-
 
     public Usuario() {
     }
 
-    public Usuario(String idUsuario, String nombre, String email, String telefono, String password, LocalDateTime fechaRegistro, boolean activo, String rutaFotoPerfil) {
+    public Usuario(String idUsuario, String nombre, String email, String telefono, String password, LocalDateTime fechaRegistro, boolean activo) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.email = email;
@@ -52,23 +45,15 @@ public class Usuario {
         this.password = password;
         this.fechaRegistro = fechaRegistro;
         this.activo = activo;
-        this.rutaFotoPerfil = rutaFotoPerfil;
     }
 
     public String getIdUsuario() {
         return idUsuario;
     }
 
-    public void setIdUsuario(String idUsuario) {
-        this.idUsuario = idUsuario;
-    }
 
     public String getNombre() {
         return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
     }
 
 
@@ -76,49 +61,11 @@ public class Usuario {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public String getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public LocalDateTime getFechaRegistro() {
-        return fechaRegistro;
-    }
-
-    public void setFechaRegistro(LocalDateTime fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
-    }
-
-    public boolean isActivo() {
-        return activo;
-    }
-
-    public void setActivo(boolean activo) {
-        this.activo = activo;
-    }
-
-    public String getRutaFotoPerfil() {
-        return rutaFotoPerfil;
-    }
-
-    public void setRutaFotoPerfil(String rutaFotoPerfil) {
-        this.rutaFotoPerfil = rutaFotoPerfil;
-    }
 
     public boolean validarPassword(String input) {
         return this.password != null && this.password.equals(input);
@@ -126,6 +73,6 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return nombreUsuario + " (" + (activo ? "activo" : "inactivo") + ")";
+        return nombre + " (" + (activo ? "activo" : "inactivo") + ")";
     }
 }

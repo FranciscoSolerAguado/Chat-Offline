@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<conversacion>
+<conversaciones>
     <mensajes>
         <mensaje idMensaje="e484b7c3-bf9b-4ef1-9bd6-b8a918cd06e1">
             <remitente>Fran</remitente>
@@ -91,5 +91,29 @@
             <contenido>Por si vemos algo</contenido>
             <fechaEnvio>2025-10-18T13:16:56.9695467</fechaEnvio>
         </mensaje>
+        <mensaje idMensaje="cd8905e2-a029-4507-84a8-ce597012b6ff">
+            <remitente>Pedro</remitente>
+            <destinatario>Fran</destinatario>
+            <contenido>Recogiste eso?</contenido>
+            <fechaEnvio>2025-10-19T11:04:27.7823404</fechaEnvio>
+        </mensaje>
+        <mensaje idMensaje="5bd4cafe-fab7-4916-af9e-30dd3c4028cf">
+            <remitente>Marta</remitente>
+            <destinatario>Fran</destinatario>
+            <contenido>📎 Archivo adjunto: proyectoFinalUd1_XML_Stream_2526 (1).pdf</contenido>
+            <fechaEnvio>2025-10-19T11:08:23.6919839</fechaEnvio>
+            <adjunto>
+                <nombreArchivo>proyectoFinalUd1_XML_Stream_2526 (1).pdf</nombreArchivo>
+                <rutaArchivo>C:\Users\franc\Desktop\Chat-Offline\src\main\resources\org\fran\chatoffline\media\proyectoFinalUd1_XML_Stream_2526 (1).pdf</rutaArchivo>
+                <tamano>399711</tamano>
+                <tipoMime>application/octet-stream</tipoMime>
+            </adjunto>
+        </mensaje>
+        <mensaje idMensaje="e9ef0a9c-ec28-4562-af01-f06d3cdc5c51">
+            <remitente>Fran</remitente>
+            <destinatario>Pedro</destinatario>
+            <contenido>si</contenido>
+            <fechaEnvio>2025-10-19T11:10:33.3104828</fechaEnvio>
+        </mensaje>
     </mensajes>
-</conversacion>
+</conversaciones>
