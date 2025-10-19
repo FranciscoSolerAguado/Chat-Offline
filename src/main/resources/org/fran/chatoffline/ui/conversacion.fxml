@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
 
-<BorderPane stylesheets="@../css/conversacion.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.fran.chatoffline.controller.ConversacionController">
+<BorderPane prefHeight="702.0" prefWidth="948.0" stylesheets="@../css/conversacion.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.fran.chatoffline.controller.ConversacionController">
 
 
     <!-- PANEL DERECHO -->
@@ -28,6 +28,11 @@
                             <Tooltip text="Generar resumen" />
                         </tooltip>
                     </Button>
+               <Button fx:id="btnEmpaquetarZip" layoutX="855.0" layoutY="20.0" onAction="#empaquetarConversacionEnZip" styleClass="boton-superior" text="↦⊞↤">
+                  <tooltip>
+                     <Tooltip text="Empaquetar conversación" />
+                  </tooltip>
+               </Button>
                 </HBox>
             </top>
 

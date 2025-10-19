@@ -21,12 +21,15 @@ import org.fran.chatoffline.model.Mensaje;
 import org.fran.chatoffline.model.Usuario;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 public class ConversacionController {
     private static final Logger LOGGER = Logger.getLogger(ConversacionController.class.getName());
@@ -47,6 +50,8 @@ public class ConversacionController {
     private Label lblNombreContacto;
     @FXML
     private Button btnExportarConversacion;
+    @FXML
+    private Button btnEmpaquetarZip;
 
 
     public void setMainController(MainController mainController) {
@@ -75,6 +80,7 @@ public class ConversacionController {
             });
 
             btnExportarConversacion.setOnAction(e -> exportarConversacion());
+            btnEmpaquetarZip.setOnAction(e -> empaquetarConversacionEnZip());
         }
     }
 
@@ -409,5 +415,62 @@ public class ConversacionController {
             return null;
         }
         return archivo;
+    }
+
+    @FXML
+    private void empaquetarConversacionEnZip() {
+        File conversacionFile = getConversacionesFile();
+        if (conversacionFile == null || !conversacionFile.exists() || gestorMensajesVacio(conversacionFile)) {
+            mostrarAlerta("No hay conversación para empaquetar.");
+            return;
+        }
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Empaquetar Conversación en ZIP");
+        fileChooser.setInitialFileName("conversacion_" + contactoActual.getNombre() + ".zip");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("ZIP (*.zip)", "*.zip"));
+        File zipFile = fileChooser.showSaveDialog(null);
+        if (zipFile == null) return;
+
+        GestorConversacion gestor = XMLManager.readXML(new GestorConversacion(), conversacionFile.getAbsolutePath());
+        List<Mensaje> mensajes = gestor.getMensajes().stream()
+                .filter(m -> (m.getRemitente().equals(usuarioActual.getNombre()) && m.getDestinatario().equals(contactoActual.getNombre())) ||
+                        (m.getRemitente().equals(contactoActual.getNombre()) && m.getDestinatario().equals(usuarioActual.getNombre())))
+                .sorted(Comparator.comparing(Mensaje::getFechaEnvio))
+                .collect(Collectors.toList());
+
+        try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFile))) {
+            // 1. Añadir el historial de chat
+            zos.putNextEntry(new ZipEntry("conversacion.txt"));
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            for (Mensaje m : mensajes) {
+                String linea = String.format("[%s] %s: %s\n", m.getFechaEnvio().format(formatter), m.getRemitente(), m.getContenido());
+                zos.write(linea.getBytes(StandardCharsets.UTF_8));
+            }
+            zos.closeEntry();
+
+            // 2. Añadir los adjuntos
+            for (Mensaje m : mensajes) {
+                if (m.tieneAdjunto()) {
+                    File adjuntoFile = new File(m.getAdjunto().getRutaArchivo());
+                    if (adjuntoFile.exists()) {
+                        zos.putNextEntry(new ZipEntry("adjuntos/" + adjuntoFile.getName()));
+                        try (FileInputStream fis = new FileInputStream(adjuntoFile)) {
+                            fis.transferTo(zos);
+                        }
+                        zos.closeEntry();
+                    }
+                }
+            }
+            mostrarAlerta("Conversación empaquetada en: " + zipFile.getAbsolutePath());
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Error al empaquetar la conversación en ZIP.", e);
+            mostrarAlerta("Error al crear el archivo ZIP.");
+        }
+    }
+
+    private boolean gestorMensajesVacio(File file) {
+        GestorConversacion gestor = XMLManager.readXML(new GestorConversacion(), file.getAbsolutePath());
+        return gestor == null || gestor.getMensajes() == null || gestor.getMensajes().isEmpty();
     }
 }
