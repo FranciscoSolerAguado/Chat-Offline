@@ -98,7 +98,7 @@ public class RegistroController {
         }
 
         String nombreUsuario = email.split("@")[0];
-        Usuario nuevoUsuario = new Usuario(UUID.randomUUID().toString(), nombre, email, telefono, contrasena, LocalDateTime.now(), true, null);
+        Usuario nuevoUsuario = new Usuario(UUID.randomUUID().toString(), nombre, email, telefono, contrasena, LocalDateTime.now(), true);
         coleccionUsuarios.addUsuario(nuevoUsuario);
 
         boolean guardadoExitoso = XMLManager.writeXML(coleccionUsuarios, usuariosFile.getAbsolutePath());

@@ -7,6 +7,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
@@ -111,33 +112,50 @@ public class ConversacionController {
         etiquetaMensaje.setMaxWidth(300);
         contenidoMensaje.getChildren().add(etiquetaMensaje);
 
-        // Mostrar el adjunto si existe
         if (mensaje.tieneAdjunto()) {
             Adjunto adj = mensaje.getAdjunto();
             File archivoAdjunto = new File(adj.getRutaArchivo());
             if (archivoAdjunto.exists()) {
-                if (adj.getTipoMime() != null && adj.getTipoMime().startsWith("image")) {
+                String mimeType = adj.getTipoMime();
+                if (mimeType != null && mimeType.startsWith("image")) {
                     Image imagen = new Image(archivoAdjunto.toURI().toString());
                     ImageView imageView = new ImageView(imagen);
                     imageView.setFitWidth(200);
                     imageView.setPreserveRatio(true);
+                    Tooltip.install(imageView, new Tooltip("Haz clic para guardar la imagen"));
+                    imageView.setOnMouseClicked(event -> exportarAdjunto(archivoAdjunto));
                     contenidoMensaje.getChildren().add(imageView);
-                } else if (adj.getTipoMime() != null && adj.getTipoMime().startsWith("video")) {
+                } else if (mimeType != null && mimeType.startsWith("video")) {
                     Media media = new Media(archivoAdjunto.toURI().toString());
                     MediaPlayer mediaPlayer = new MediaPlayer(media);
                     MediaView mediaView = new MediaView(mediaPlayer);
-
                     mediaView.setFitWidth(300);
                     mediaView.setPreserveRatio(true);
-
+                    Tooltip.install(mediaView, new Tooltip("Clic izquierdo para reproducir/pausar.\nClic derecho para guardar."));
                     mediaView.setOnMouseClicked(event -> {
-                        if (mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
-                            mediaPlayer.pause();
-                        } else {
-                            mediaPlayer.play();
+                        if (event.getButton() == MouseButton.PRIMARY) {
+                            if (mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
+                                mediaPlayer.pause();
+                            } else {
+                                mediaPlayer.play();
+                            }
+                        } else if (event.getButton() == MouseButton.SECONDARY) {
+                            exportarAdjunto(archivoAdjunto);
                         }
                     });
                     contenidoMensaje.getChildren().add(mediaView);
+                } else if (mimeType != null && mimeType.equals("application/pdf")) {
+                    Label pdfLabel = new Label("📄 " + adj.getNombreArchivo());
+                    pdfLabel.setStyle("-fx-text-fill: #D32F2F; -fx-font-weight: bold; -fx-cursor: hand;");
+                    Tooltip.install(pdfLabel, new Tooltip("Haz clic para guardar el PDF"));
+                    pdfLabel.setOnMouseClicked(event -> exportarAdjunto(archivoAdjunto));
+                    contenidoMensaje.getChildren().add(pdfLabel);
+                } else {
+                    Label fileLabel = new Label("📁 " + adj.getNombreArchivo());
+                    fileLabel.setStyle("-fx-text-fill: #444; -fx-font-style: italic; -fx-cursor: hand;");
+                    Tooltip.install(fileLabel, new Tooltip("Haz clic para guardar el archivo"));
+                    fileLabel.setOnMouseClicked(event -> exportarAdjunto(archivoAdjunto));
+                    contenidoMensaje.getChildren().add(fileLabel);
                 }
             }
         }
@@ -156,6 +174,31 @@ public class ConversacionController {
         Platform.runLater(() -> scrollMensajes.setVvalue(1.0));
     }
 
+    private void exportarAdjunto(File archivoOriginal) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Guardar Archivo Adjunto");
+        fileChooser.setInitialFileName(archivoOriginal.getName());
+
+        File destino = fileChooser.showSaveDialog(null);
+        if (destino == null) {
+            return; // El usuario canceló la selección
+        }
+
+        try (InputStream in = new FileInputStream(archivoOriginal);
+             OutputStream out = new FileOutputStream(destino)) {
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = in.read(buffer)) > 0) {
+                out.write(buffer, 0, length);
+            }
+            LOGGER.info("Adjunto exportado exitosamente a: " + destino.getAbsolutePath());
+            mostrarAlerta("Adjunto guardado en: " + destino.getAbsolutePath());
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Error al exportar el adjunto.", e);
+            mostrarAlerta("Error al guardar el archivo.");
+        }
+    }
+
     @FXML
     private void enviarMensaje() {
         String texto = campoMensaje.getText().trim();
@@ -170,29 +213,26 @@ public class ConversacionController {
     @FXML
     private void adjuntarArchivo() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Seleccionar imagen o video");
+        fileChooser.setTitle("Seleccionar Archivo");
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Archivos multimedia", "*.png", "*.jpg", "*.jpeg", "*.gif", "*.mp4", "*.mov", "*.avi")
+                new FileChooser.ExtensionFilter("Archivos Soportados", "*.png", "*.jpg", "*.jpeg", "*.gif", "*.mp4", "*.mov", "*.avi", "*.pdf"),
+                new FileChooser.ExtensionFilter("Todos los archivos", "*.*")
         );
 
         File archivoSeleccionado = fileChooser.showOpenDialog(null);
         if (archivoSeleccionado == null) return;
 
-        // Crear carpeta media/
         File carpetaMedia = new File("src/main/resources/org/fran/chatoffline/media");
         if (!carpetaMedia.exists()) carpetaMedia.mkdirs();
 
-        // Copiar el archivo
         File destino = new File(carpetaMedia, archivoSeleccionado.getName());
         try (InputStream in = new FileInputStream(archivoSeleccionado);
              OutputStream out = new FileOutputStream(destino)) {
-
             byte[] buffer = new byte[1024];
             int length;
             while ((length = in.read(buffer)) > 0) {
                 out.write(buffer, 0, length);
             }
-
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Error copiando archivo adjunto.", e);
             return;
@@ -202,8 +242,7 @@ public class ConversacionController {
         Adjunto adjunto = new Adjunto(destino.getName(), destino.getAbsolutePath(),
                 destino.length(), mime);
 
-        Mensaje mensaje = new Mensaje(usuarioActual.getNombre(), contactoActual.getNombre(),
-                "📎 Archivo adjunto: " + destino.getName(), adjunto);
+        Mensaje mensaje = new Mensaje(usuarioActual.getNombre(), contactoActual.getNombre(), "📎 Archivo adjunto: " + destino.getName(), adjunto);
 
         agregarMensaje(mensaje);
         guardarMensajeEnXML(mensaje);
@@ -234,10 +273,8 @@ public class ConversacionController {
         }
 
         try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {
-            // Escribir cabecera del CSV
             writer.println("Fecha y Hora,Remitente,Contenido,Adjunto");
 
-            // Procesar con Streams
             gestor.getMensajes().stream()
                     .filter(m -> (m.getRemitente().equals(usuarioActual.getNombre()) && m.getDestinatario().equals(contactoActual.getNombre())) ||
                             (m.getRemitente().equals(contactoActual.getNombre()) && m.getDestinatario().equals(usuarioActual.getNombre())))
@@ -325,7 +362,6 @@ public class ConversacionController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String fecha = m.getFechaEnvio().format(formatter);
         String remitente = m.getRemitente();
-        // Escapar comillas y comas en el contenido
         String contenido = "\"" + m.getContenido().replace("\"", "\"\"") + "\"";
         String adjunto = m.tieneAdjunto() ? m.getAdjunto().getNombreArchivo() : "N/A";
 
@@ -335,10 +371,15 @@ public class ConversacionController {
 
     private String getMimeType(File file) {
         String name = file.getName().toLowerCase();
-        if (name.endsWith(".png") || name.endsWith(".jpg") || name.endsWith(".jpeg") || name.endsWith(".gif"))
+        if (name.endsWith(".png") || name.endsWith(".jpg") || name.endsWith(".jpeg") || name.endsWith(".gif")) {
             return "image/" + name.substring(name.lastIndexOf(".") + 1);
-        if (name.endsWith(".mp4") || name.endsWith(".mov") || name.endsWith(".avi"))
+        }
+        if (name.endsWith(".mp4") || name.endsWith(".mov") || name.endsWith(".avi")) {
             return "video/" + name.substring(name.lastIndexOf(".") + 1);
+        }
+        if (name.endsWith(".pdf")) {
+            return "application/pdf";
+        }
         return "application/octet-stream";
     }
 
