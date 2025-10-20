@@ -62,6 +62,12 @@ public class ConversacionController {
         this.usuarioActual = usuario;
     }
 
+    /**
+     * Establece el nombre del contacto en el Hbox superior con el que se va a chatear, actualiza la interfaz
+     * y carga el historial de mensajes correspondiente.
+     *
+     * @param contacto El contacto que con el que se va a chatear, y por tanto del que cargará la conversación y su nombre.
+     */
     public void setContacto(Usuario contacto) {
         this.contactoActual = contacto;
         if (lblNombreContacto != null) {
@@ -70,6 +76,10 @@ public class ConversacionController {
         cargarMensajesDesdeXML();
     }
 
+    /**
+     * Método que maneja el evento de clicar en los botones "Exportar Conversación" y "Empaquetar en ZIP".
+     * Cuando se clica en ellos se llama a los métodos que hacen las acciones indicadas
+     */
     @FXML
     private void initialize() {
         if (topBar != null) {
@@ -84,6 +94,13 @@ public class ConversacionController {
         }
     }
 
+    /**
+     * Carga los mensajes en el contenedor de Mensajes, limpiandolo primero de todo, luego recibe el archivo conversaciones.xml desde getConversacionesFile()
+     * Dentro de un try catch creamos un GestorConversación(clase encargada de gestionar las conversaciones) con la ruta del archivo de conversaciones.xml
+     * Este GestorConversación llama a XMLManager con su método readXML()(que recibe un elemento, en este caso un GestorConversación, y la ruta
+     * del archivo de conversaciones.xml)
+     * Luego con un for each sacamos los mensajes del archivo y lo mostramos por la Interfaz gr´afica con agregarMensaje(Mensaje mensaje)
+     */
     private void cargarMensajesDesdeXML() {
         contenedorMensajes.getChildren().clear();
         File conversacionFile = getConversacionesFile();
@@ -96,6 +113,11 @@ public class ConversacionController {
             GestorConversacion conversacion = XMLManager.readXML(new GestorConversacion(), conversacionFile.getAbsolutePath());
             if (conversacion != null && conversacion.getMensajes() != null) {
                 for (Mensaje m : conversacion.getMensajes()) {
+                    /**
+                     * El if se asegura de que solo se procesen (agregarMensaje(m)) los mensajes que se han intercambiado
+                     * entre el usuario que está usando la aplicación y el contacto que ha seleccionado, ignorando todas las demás
+                     * conversaciones guardadas en el archivo XML
+                     */
                     if ((m.getRemitente().equals(usuarioActual.getNombre()) && m.getDestinatario().equals(contactoActual.getNombre())) ||
                             (m.getRemitente().equals(contactoActual.getNombre()) && m.getDestinatario().equals(usuarioActual.getNombre()))) {
                         agregarMensaje(m);
@@ -107,6 +129,27 @@ public class ConversacionController {
         }
     }
 
+    /**
+     * Este método maneja la existencia del archivo conversaciones.xml
+     * @return el archivo que ha creado si no existe o la ruta directamente si existe
+     */
+    private File getConversacionesFile() {
+        File archivo = new File("src/main/resources/org/fran/chatoffline/conversaciones.xml");
+        try {
+            archivo.getParentFile().mkdirs();
+            if (!archivo.exists()) archivo.createNewFile();
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "No se pudo crear el archivo de conversaciones.", e);
+            return null;
+        }
+        return archivo;
+    }
+
+    /**
+     * Este método añade un mensaje a la conversación que se muestra en la interfaz gráfica
+     * Tambien maneja el añadido los adjuntos y las imágenes
+     * @param mensaje El mensaje que se va a añadir en la GUI
+     */
     private void agregarMensaje(Mensaje mensaje) {
         HBox contenedor = new HBox();
         contenedor.setPadding(new Insets(5, 10, 5, 10));
@@ -123,14 +166,17 @@ public class ConversacionController {
             File archivoAdjunto = new File(adj.getRutaArchivo());
             if (archivoAdjunto.exists()) {
                 String mimeType = adj.getTipoMime();
+                //Si es una imagen
                 if (mimeType != null && mimeType.startsWith("image")) {
                     Image imagen = new Image(archivoAdjunto.toURI().toString());
                     ImageView imageView = new ImageView(imagen);
                     imageView.setFitWidth(200);
                     imageView.setPreserveRatio(true);
                     Tooltip.install(imageView, new Tooltip("Haz clic para guardar la imagen"));
+                    //Si clicamos en una imagen se exportar el archivo y nos permite descargarlo
                     imageView.setOnMouseClicked(event -> exportarAdjunto(archivoAdjunto));
                     contenidoMensaje.getChildren().add(imageView);
+                    //Si es un video
                 } else if (mimeType != null && mimeType.startsWith("video")) {
                     Media media = new Media(archivoAdjunto.toURI().toString());
                     MediaPlayer mediaPlayer = new MediaPlayer(media);
@@ -138,6 +184,7 @@ public class ConversacionController {
                     mediaView.setFitWidth(300);
                     mediaView.setPreserveRatio(true);
                     Tooltip.install(mediaView, new Tooltip("Clic izquierdo para reproducir/pausar.\nClic derecho para guardar."));
+                    //Para reproducir los videos
                     mediaView.setOnMouseClicked(event -> {
                         if (event.getButton() == MouseButton.PRIMARY) {
                             if (mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
@@ -150,25 +197,33 @@ public class ConversacionController {
                         }
                     });
                     contenidoMensaje.getChildren().add(mediaView);
+                    //Si es un pdf
                 } else if (mimeType != null && mimeType.equals("application/pdf")) {
                     Label pdfLabel = new Label("📄 " + adj.getNombreArchivo());
                     pdfLabel.setStyle("-fx-text-fill: #D32F2F; -fx-font-weight: bold; -fx-cursor: hand;");
                     Tooltip.install(pdfLabel, new Tooltip("Haz clic para guardar el PDF"));
+                    //Haciendo clic se guarda
                     pdfLabel.setOnMouseClicked(event -> exportarAdjunto(archivoAdjunto));
                     contenidoMensaje.getChildren().add(pdfLabel);
+                    //Si es un archivo
                 } else {
                     Label fileLabel = new Label("📁 " + adj.getNombreArchivo());
                     fileLabel.setStyle("-fx-text-fill: #444; -fx-font-style: italic; -fx-cursor: hand;");
                     Tooltip.install(fileLabel, new Tooltip("Haz clic para guardar el archivo"));
+                    //Haciendo clic se guarda
                     fileLabel.setOnMouseClicked(event -> exportarAdjunto(archivoAdjunto));
                     contenidoMensaje.getChildren().add(fileLabel);
                 }
             }
         }
 
+        //El color del mensaje depende de quien sea quien envie el mensaje
+        //Este formato para el usuario actual, es decir tus mensajes, esto aparecen a la derecha
         if (usuarioActual != null && mensaje.getRemitente().equals(usuarioActual.getNombre())) {
             etiquetaMensaje.setStyle("-fx-background-color: #c2e7ff; -fx-background-radius: 10px; -fx-padding: 8px 12px;");
             contenedor.setAlignment(Pos.CENTER_RIGHT);
+
+            //Este formato para el otro usuario con el que se esta hablando, aparecen a la izquierda
         } else {
             etiquetaMensaje.setStyle("-fx-background-color: #e6e6e6; -fx-background-radius: 10px; -fx-padding: 8px 12px;");
             contenedor.setAlignment(Pos.CENTER_LEFT);
@@ -176,10 +231,13 @@ public class ConversacionController {
 
         contenedor.getChildren().add(contenidoMensaje);
         contenedorMensajes.getChildren().add(contenedor);
-
         Platform.runLater(() -> scrollMensajes.setVvalue(1.0));
     }
 
+    /**
+     * Método que sirve para exportar los archivos y guardarlos, con la clase FileChooser
+     * @param archivoOriginal el archivo que recibe para guardar (haciendo clic en el desde la interfaz gráfica)
+     */
     private void exportarAdjunto(File archivoOriginal) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Guardar Archivo Adjunto");
@@ -190,6 +248,7 @@ public class ConversacionController {
             return; // El usuario canceló la selección
         }
 
+        // Copiar el archivo original al destino
         try (InputStream in = new FileInputStream(archivoOriginal);
              OutputStream out = new FileOutputStream(destino)) {
             byte[] buffer = new byte[1024];
@@ -403,18 +462,6 @@ public class ConversacionController {
 
         conversacion.getMensajes().add(mensaje);
         XMLManager.writeXML(conversacion, conversacionFile.getAbsolutePath());
-    }
-
-    private File getConversacionesFile() {
-        File archivo = new File("src/main/resources/org/fran/chatoffline/conversaciones.xml");
-        try {
-            archivo.getParentFile().mkdirs();
-            if (!archivo.exists()) archivo.createNewFile();
-        } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "No se pudo crear el archivo de conversaciones.", e);
-            return null;
-        }
-        return archivo;
     }
 
     @FXML

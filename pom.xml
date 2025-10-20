@@ -11,7 +11,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <junit.version>5.12.1</junit.version>
+        <junit.version>5.10.2</junit.version>
         <!-- Usaremos la versión 4.x de JAXB para compatibilidad con Jakarta -->
         <jaxb.version>4.0.5</jaxb.version>
     </properties>
