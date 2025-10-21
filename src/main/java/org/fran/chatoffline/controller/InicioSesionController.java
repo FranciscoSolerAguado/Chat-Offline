@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import org.fran.chatoffline.dataAccess.XMLManager;
 import org.fran.chatoffline.model.GestorUsuarios;
 import org.fran.chatoffline.model.Usuario;
+import org.fran.chatoffline.utils.LoggerUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class InicioSesionController {
-    private static final Logger LOGGER = Logger.getLogger(InicioSesionController.class.getName());
+    private static final Logger LOGGER = LoggerUtil.getLogger();
 
     @FXML
     private TextField txtEmail;

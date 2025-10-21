@@ -3,12 +3,12 @@ package org.fran.chatoffline.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import org.fran.chatoffline.model.Usuario;
+import org.fran.chatoffline.utils.LoggerUtil;
 
 import java.util.logging.Logger;
 
 public class PerfilUsuarioController {
-
-    private static final Logger LOGGER = Logger.getLogger(PerfilUsuarioController.class.getName());
+    private static final Logger LOGGER = LoggerUtil.getLogger();
 
     private MainController mainController;
     private Usuario usuarioLogueado;

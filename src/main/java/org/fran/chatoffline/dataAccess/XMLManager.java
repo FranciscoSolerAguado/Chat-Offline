@@ -7,6 +7,9 @@ import jakarta.xml.bind.Unmarshaller;
 
 import java.io.File;
 
+/**
+ * Esta clase se encarga de modificar, ya sea leyendo o escribiendo los archivos xml
+ */
 public class XMLManager {
     public static <T> boolean writeXML(T c, String filename) {
         boolean result = false;
@@ -19,7 +22,7 @@ public class XMLManager {
             m.marshal(c, new File(filename));
             result = true;
         } catch (JAXBException e) {
-            e.printStackTrace(); //mode development
+            e.printStackTrace();
         }
         return result;
     }

@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import org.fran.chatoffline.dataAccess.XMLManager;
 import org.fran.chatoffline.model.GestorUsuarios;
 import org.fran.chatoffline.model.Usuario;
+import org.fran.chatoffline.utils.LoggerUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,7 +25,7 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 public class RegistroController {
-    private static final Logger LOGGER = Logger.getLogger(RegistroController.class.getName());
+    private static final Logger LOGGER = LoggerUtil.getLogger();
 
     private static final Pattern GMAIL_REGEX = Pattern.compile("^[a-zA-Z0-9._%+-]+@gmail\\.com$");
     private static final Pattern TELEFONO_REGEX = Pattern.compile("^[6789]\\d{8}$");

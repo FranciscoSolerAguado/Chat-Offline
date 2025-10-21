@@ -19,6 +19,7 @@ import org.fran.chatoffline.model.Adjunto;
 import org.fran.chatoffline.model.GestorConversacion;
 import org.fran.chatoffline.model.Mensaje;
 import org.fran.chatoffline.model.Usuario;
+import org.fran.chatoffline.utils.LoggerUtil;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -32,7 +33,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class ConversacionController {
-    private static final Logger LOGGER = Logger.getLogger(ConversacionController.class.getName());
+    private static final Logger LOGGER = LoggerUtil.getLogger();
 
     private MainController mainController;
     private Usuario usuarioActual;
