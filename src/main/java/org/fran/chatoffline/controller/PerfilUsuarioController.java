@@ -38,6 +38,10 @@ public class PerfilUsuarioController {
         actualizarVista();
     }
 
+    /**
+     * Método que actualiza los datos que se muestran en la vista del perfil del usuario
+     * Y le asigna los datos del usuario del perfil a los distintos label.
+     */
     private void actualizarVista() {
         if (usuarioDelPerfil == null) {
             LOGGER.severe("No se ha proporcionado un usuario para mostrar en el perfil.");
@@ -69,6 +73,10 @@ public class PerfilUsuarioController {
         }
     }
 
+    /**
+     * Método que maneja el cierre del perfil del usuario
+     * Despues llama al método cerrarVistaSecundariaYRefrescar() del mainController para que los datos de la pantalla principal se muestren correctamente
+     */
     @FXML
     private void handleCerrar() {
         if (mainController != null) {

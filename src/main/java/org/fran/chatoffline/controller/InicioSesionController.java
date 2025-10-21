@@ -111,28 +111,59 @@ public class InicioSesionController {
         }
     }
 
+    /**
+     * Llama a getFileFromResource y devuelve la ruta convertida a archivo gracias a getFileFromResource
+     * @return
+     */
     private File getUsuariosFile() {
         final String resourcePath = "/org/fran/chatoffline/usuarios.xml";
         return getFileFromResource(resourcePath);
     }
 
+    /**
+     * Metodo que busca el archivo de usuarios.xml
+     * @param resourcePath
+     * @return
+     */
     private File getFileFromResource(String resourcePath) {
         try {
+            // Intenta obtener la URL del recurso utilizando el ClassLoader.
+            // Esto buscará el archivo en las carpetas de recursos del proyecto (classpath).
             URL resourceUrl = getClass().getResource(resourcePath);
+
+            // Si resourceUrl es null, significa que el recurso no se encontró como un archivo físico.
+            // Este es el escenario típico cuando la aplicación se ejecuta desde un archivo JAR.
             if (resourceUrl == null) {
                 URL dirUrl = getClass().getResource("/");
-                if (dirUrl == null) throw new IOException("No se puede encontrar la raíz del classpath.");
+                if (dirUrl == null) {
+                    throw new IOException("No se puede encontrar la raíz del classpath.");
+                }
+
+
                 File rootDir = new File(dirUrl.toURI());
+
+                // Construimos la ruta del archivo de salida. Estará en el mismo directorio que el JAR,
+                // siguiendo la estructura de paquetes. El substring(1) elimina la barra inicial de resourcePath.
                 File outputFile = new File(rootDir, resourcePath.substring(1));
+
+                // Aseguramos que todos los directorios padre para este archivo existan.
+                // Si no existen, los crea. Por ejemplo, para "data/config/settings.xml", crearía "data/config/".
                 outputFile.getParentFile().mkdirs();
+
+                // Devolvemos el objeto File que apunta a la ubicación fuera del JAR.
                 return outputFile;
+
+            } else {
+                // Si resourceUrl no es null, el recurso se encontró directamente (típico en un IDE).
+                // Convertimos la URL a un URI y luego a un objeto File.
+                return new File(resourceUrl.toURI());
             }
-            return new File(resourceUrl.toURI());
         } catch (URISyntaxException | IOException e) {
             LOGGER.log(Level.SEVERE, "Error crítico al obtener la ruta del archivo: " + resourcePath, e);
             return null;
         }
     }
+
 
     private void mostrarAlerta(String msg) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -141,6 +172,9 @@ public class InicioSesionController {
         alert.showAndWait();
     }
 
+    /**
+     * Metodo que maneja el minimizado de la pantalla
+     */
     @FXML
     private void handleMinimize() {
         Stage stage = (Stage) topBar.getScene().getWindow();
@@ -149,6 +183,9 @@ public class InicioSesionController {
 
     private boolean isMaximized = false;
 
+    /**
+     * Metodo que maneja el maximizado de la pantalla
+     */
     @FXML
     private void handleToggleMaximize() {
         Stage stage = (Stage) topBar.getScene().getWindow();
@@ -169,6 +206,9 @@ public class InicioSesionController {
         }
     }
 
+    /**
+     * Metodo que maneja el cierre de la pantalla
+     */
     @FXML
     private void handleClose() {
         Platform.exit();

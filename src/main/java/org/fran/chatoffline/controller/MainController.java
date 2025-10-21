@@ -59,6 +59,10 @@ public class MainController {
         });
     }
 
+    /**
+     * Método que establece el usuario actual para la aplicación
+     * @param usuario
+     */
     public void setUsuarioActual(Usuario usuario) {
         this.usuarioActual = usuario;
         LOGGER.info("Usuario actual establecido: " + usuario.getNombre());
@@ -71,6 +75,9 @@ public class MainController {
         Platform.runLater(this::cargarListaUsuarios);
     }
 
+    /**
+     * Metodo que carga la lista de usuario, menos el usuario actual
+     */
     private void cargarListaUsuarios() {
         if (usuarioActual == null) {
             LOGGER.severe("No se puede cargar la lista de usuarios porque el usuario actual es nulo.");
@@ -93,8 +100,10 @@ public class MainController {
             return;
         }
 
+
         if (coleccionUsuarios.getUsuarios() != null) {
             for (Usuario usuario : coleccionUsuarios.getUsuarios()) {
+                //Carga todos menos el usuario actual
                 if (!usuario.getIdUsuario().equals(usuarioActual.getIdUsuario())) {
                     HBox chatHBox = crearChatHBox(usuario);
                     chatListContainer.getChildren().add(chatHBox);
@@ -208,28 +217,61 @@ public class MainController {
     }
 
 
+    /**
+     * Llama a getFileFromResource y devuelve la ruta convertida a archivo gracias a getFileFromResource
+     * @return
+     */
     private File getUsuariosFile() {
         return getFileFromResource("/org/fran/chatoffline/usuarios.xml");
     }
 
+    /**
+     * Metodo que busca el archivo de usuarios.xml
+     * @param resourcePath
+     * @return
+     */
     private File getFileFromResource(String resourcePath) {
         try {
+            // Intenta obtener la URL del recurso utilizando el ClassLoader.
+            // Esto buscará el archivo en las carpetas de recursos del proyecto (classpath).
             URL resourceUrl = getClass().getResource(resourcePath);
+
+            // Si resourceUrl es null, significa que el recurso no se encontró como un archivo físico.
+            // Este es el escenario típico cuando la aplicación se ejecuta desde un archivo JAR.
             if (resourceUrl == null) {
                 URL dirUrl = getClass().getResource("/");
-                if (dirUrl == null) throw new IOException("No se puede encontrar la raíz del classpath.");
+                if (dirUrl == null) {
+                    throw new IOException("No se puede encontrar la raíz del classpath.");
+                }
+
+
                 File rootDir = new File(dirUrl.toURI());
+
+                // Construimos la ruta del archivo de salida. Estará en el mismo directorio que el JAR,
+                // siguiendo la estructura de paquetes. El substring(1) elimina la barra inicial de resourcePath.
                 File outputFile = new File(rootDir, resourcePath.substring(1));
+
+                // Aseguramos que todos los directorios padre para este archivo existan.
+                // Si no existen, los crea. Por ejemplo, para "data/config/settings.xml", crearía "data/config/".
                 outputFile.getParentFile().mkdirs();
+
+                // Devolvemos el objeto File que apunta a la ubicación fuera del JAR.
                 return outputFile;
+
+            } else {
+                // Si resourceUrl no es null, el recurso se encontró directamente (típico en un IDE).
+                // Convertimos la URL a un URI y luego a un objeto File.
+                return new File(resourceUrl.toURI());
             }
-            return new File(resourceUrl.toURI());
         } catch (URISyntaxException | IOException e) {
             LOGGER.log(Level.SEVERE, "Error crítico al obtener la ruta del archivo: " + resourcePath, e);
             return null;
         }
     }
 
+    /**
+     * Metodo que maneja el minimizado de la pantalla
+     */
     @FXML
     private void handleMinimize() {
         Stage stage = (Stage) topBar.getScene().getWindow();
@@ -238,6 +280,9 @@ public class MainController {
 
     private boolean isMaximized = false;
 
+    /**
+     * Metodo que maneja el maximizado de la pantalla
+     */
     @FXML
     private void handleToggleMaximize() {
         Stage stage = (Stage) topBar.getScene().getWindow();
@@ -258,6 +303,9 @@ public class MainController {
         }
     }
 
+    /**
+     * Metodo que maneja el cierre de la pantalla
+     */
     @FXML
     private void handleClose() {
         Platform.exit();
