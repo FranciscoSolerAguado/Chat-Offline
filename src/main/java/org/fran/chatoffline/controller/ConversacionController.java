@@ -131,6 +131,7 @@ public class ConversacionController {
 
     /**
      * Este método maneja la existencia del archivo conversaciones.xml
+     *
      * @return el archivo que ha creado si no existe o la ruta directamente si existe
      */
     private File getConversacionesFile() {
@@ -148,6 +149,7 @@ public class ConversacionController {
     /**
      * Este método añade un mensaje a la conversación que se muestra en la interfaz gráfica
      * Tambien maneja el añadido los adjuntos y las imágenes
+     *
      * @param mensaje El mensaje que se va a añadir en la GUI
      */
     private void agregarMensaje(Mensaje mensaje) {
@@ -218,7 +220,7 @@ public class ConversacionController {
         }
 
         //El color del mensaje depende de quien sea quien envie el mensaje
-        //Este formato para el usuario actual, es decir tus mensajes, esto aparecen a la derecha
+        //Este formato es para el usuario actual, es decir tus mensajes, esto aparecen a la derecha
         if (usuarioActual != null && mensaje.getRemitente().equals(usuarioActual.getNombre())) {
             etiquetaMensaje.setStyle("-fx-background-color: #c2e7ff; -fx-background-radius: 10px; -fx-padding: 8px 12px;");
             contenedor.setAlignment(Pos.CENTER_RIGHT);
@@ -236,6 +238,7 @@ public class ConversacionController {
 
     /**
      * Método que sirve para exportar los archivos y guardarlos, con la clase FileChooser
+     *
      * @param archivoOriginal el archivo que recibe para guardar (haciendo clic en el desde la interfaz gráfica)
      */
     private void exportarAdjunto(File archivoOriginal) {
@@ -264,6 +267,9 @@ public class ConversacionController {
         }
     }
 
+    /**
+     * Metodo utilizado por el botonEnviar en la ui para enviar el mensaje
+     */
     @FXML
     private void enviarMensaje() {
         String texto = campoMensaje.getText().trim();
@@ -275,6 +281,10 @@ public class ConversacionController {
         guardarMensajeEnXML(nuevoMensaje);
     }
 
+    /**
+     * Metodo utilizado por el botonAdjuntar en la ui para adjuntar un archivo
+     * Usando la clase FileChooser
+     */
     @FXML
     private void adjuntarArchivo() {
         FileChooser fileChooser = new FileChooser();
@@ -290,6 +300,7 @@ public class ConversacionController {
         File carpetaMedia = new File("src/main/resources/org/fran/chatoffline/media");
         if (!carpetaMedia.exists()) carpetaMedia.mkdirs();
 
+// Copiamos el archivo original al destino
         File destino = new File(carpetaMedia, archivoSeleccionado.getName());
         try (InputStream in = new FileInputStream(archivoSeleccionado);
              OutputStream out = new FileOutputStream(destino)) {
@@ -313,6 +324,10 @@ public class ConversacionController {
         guardarMensajeEnXML(mensaje);
     }
 
+
+    /**
+     * Metodo utilizado por el botonExportarConversacion en la ui para exportar la conversación
+     */
     @FXML
     private void exportarConversacion() {
         FileChooser fileChooser = new FileChooser();
@@ -326,11 +341,13 @@ public class ConversacionController {
         }
 
         File conversacionFile = getConversacionesFile();
+        //Si no hay conversacion
         if (conversacionFile == null || !conversacionFile.exists() || conversacionFile.length() == 0) {
             LOGGER.info("No hay conversación para exportar.");
             return;
         }
 
+        //Leemos el archivo de conversaciones
         GestorConversacion gestor = XMLManager.readXML(new GestorConversacion(), conversacionFile.getAbsolutePath());
         if (gestor == null || gestor.getMensajes() == null) {
             LOGGER.info("No hay mensajes para exportar.");
@@ -354,6 +371,9 @@ public class ConversacionController {
         }
     }
 
+    /**
+     * Metodo utilizado por el botonResumenStreams en la ui para generar un resumen de la conversacion
+     */
     @FXML
     private void generarResumen() {
         File conversacionFile = getConversacionesFile();
@@ -377,17 +397,25 @@ public class ConversacionController {
         long totalMensajes = mensajesConversacion.size();
         Map<String, Long> mensajesPorUsuario = mensajesConversacion.stream()
                 .collect(Collectors.groupingBy(Mensaje::getRemitente, Collectors.counting()));
+
+
         List<String> stopWords = Arrays.asList("que", "de", "la", "el", "en", "y", "a", "los", "del", "un", "una", "es", "no", "si", "para", "con", "mi", "te", "se", "lo", "su", "me", "por", "qué", "pero", "como", "más", "este", "esta");
+
+
         Map<String, Long> conteoPalabras = mensajesConversacion.stream()
                 .flatMap(m -> Arrays.stream(m.getContenido().toLowerCase().split("\\s+")))
                 .map(palabra -> palabra.replaceAll("[^a-záéíóúñ]", ""))
                 .filter(palabra -> !palabra.isEmpty() && !stopWords.contains(palabra) && palabra.length() > 3)
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+
         String palabrasMasComunes = conteoPalabras.entrySet().stream()
                 .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
                 .limit(5)
                 .map(entry -> entry.getKey() + " (" + entry.getValue() + " veces)")
                 .collect(Collectors.joining("\n- "));
+
+
         StringBuilder resumen = new StringBuilder();
         resumen.append("Resumen de la Conversación con ").append(contactoActual.getNombre()).append("\n");
         resumen.append("====================================================\n\n");
@@ -402,6 +430,10 @@ public class ConversacionController {
         mostrarResumenEnDialogo(resumen.toString());
     }
 
+    /**
+     * Metodo que crea una alerta para mostrar el resumen de la conversacion
+     * @param contenido
+     */
     private void mostrarResumenEnDialogo(String contenido) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Resumen de la Conversación");
@@ -415,6 +447,10 @@ public class ConversacionController {
         alert.showAndWait();
     }
 
+    /**
+     * Metodo que crea una alerta para mostrar un mensaje
+     * @param mensaje
+     */
     private void mostrarAlerta(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Información");
@@ -423,6 +459,11 @@ public class ConversacionController {
         alert.showAndWait();
     }
 
+    /**
+     * Metodo que convierte un mensaje a CSV, usado en el metodo exportarConversacion
+     * @param m
+     * @return String con el mensaje convertido a CSV
+     */
     private String convertirMensajeACSV(Mensaje m) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String fecha = m.getFechaEnvio().format(formatter);
@@ -434,24 +475,56 @@ public class ConversacionController {
     }
 
 
+    /**
+     * Este método devuelve el tipo MIME de un archivo (extension)
+     * @param file
+     * @return
+     */
     private String getMimeType(File file) {
+
+        // Obtener el nombre del archivo y convertirlo a minúsculas.
         String name = file.getName().toLowerCase();
+
+
+        // Imagen
         if (name.endsWith(".png") || name.endsWith(".jpg") || name.endsWith(".jpeg") || name.endsWith(".gif")) {
+            // Si es una imagen, construye el tipo MIME como "image/" seguido de la extensión (sin el punto).
+            // Por ejemplo, para "foto.jpg", devuelve "image/jpg".
             return "image/" + name.substring(name.lastIndexOf(".") + 1);
         }
+
+        // Video
         if (name.endsWith(".mp4") || name.endsWith(".mov") || name.endsWith(".avi")) {
+
             return "video/" + name.substring(name.lastIndexOf(".") + 1);
         }
+
+
+        // PDF
         if (name.endsWith(".pdf")) {
+            // Para PDF, el tipo MIME estándar es "application/pdf".
             return "application/pdf";
         }
+
+        //    Caso por defecto: Si la extensión no coincide con ninguno de los tipos anteriores.
+        //    Se devuelve "application/octet-stream", que es un tipo MIME genérico que indica
+        //    que el archivo es un flujo de bytes binarios y que el navegador o la aplicación
+        //    deberían tratarlo como un archivo descargable o de tipo desconocido.
         return "application/octet-stream";
     }
 
+    /**
+     * Metodo usado por el metodo exportanConversacion y enviarMensaje
+     * Guarda el mensaje en el arhcivo xml
+     * @param mensaje
+     */
     private void guardarMensajeEnXML(Mensaje mensaje) {
         File conversacionFile = getConversacionesFile();
         if (conversacionFile == null) return;
 
+        /**
+         * cargamos una conversación existente desde un archivo XML o inicializamos una nueva conversación vacía si el archivo no existe o está vacío.
+         */
         GestorConversacion conversacion = new GestorConversacion();
         if (conversacionFile.exists() && conversacionFile.length() > 0) {
             conversacion = XMLManager.readXML(new GestorConversacion(), conversacionFile.getAbsolutePath());
@@ -464,6 +537,11 @@ public class ConversacionController {
         XMLManager.writeXML(conversacion, conversacionFile.getAbsolutePath());
     }
 
+    /**
+     * Metodo para empaquetar la conversacion en un zip
+     * Describeme el metodo
+     *
+     */
     @FXML
     private void empaquetarConversacionEnZip() {
         File conversacionFile = getConversacionesFile();
@@ -487,7 +565,7 @@ public class ConversacionController {
                 .collect(Collectors.toList());
 
         try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFile))) {
-            // 1. Añadir el historial de chat
+            // Añadir el historial de chat
             zos.putNextEntry(new ZipEntry("conversacion.txt"));
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             for (Mensaje m : mensajes) {
@@ -496,7 +574,7 @@ public class ConversacionController {
             }
             zos.closeEntry();
 
-            // 2. Añadir los adjuntos
+            // Añadir los adjuntos
             for (Mensaje m : mensajes) {
                 if (m.tieneAdjunto()) {
                     File adjuntoFile = new File(m.getAdjunto().getRutaArchivo());
@@ -515,6 +593,7 @@ public class ConversacionController {
             mostrarAlerta("Error al crear el archivo ZIP.");
         }
     }
+
 
     private boolean gestorMensajesVacio(File file) {
         GestorConversacion gestor = XMLManager.readXML(new GestorConversacion(), file.getAbsolutePath());
