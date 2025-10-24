@@ -42,6 +42,9 @@ public class InicioSesionController {
         linkRegistro.setOnAction(e -> abrirRegistro());
     }
 
+    /**
+     * Metodo que maneja el inicio de sesion
+     */
     private void iniciarSesion() {
         String email = txtEmail.getText().trim();
         String pass = txtPassword.getText().trim();
@@ -60,6 +63,7 @@ public class InicioSesionController {
             return;
         }
 
+        // Leer el archivo de usuarios
         GestorUsuarios coleccionUsuarios = new GestorUsuarios();
         try {
             coleccionUsuarios = XMLManager.readXML(new GestorUsuarios(), usuariosFile.getAbsolutePath());
@@ -69,6 +73,7 @@ public class InicioSesionController {
             return;
         }
 
+        // Buscar el usuario en la lista
         Optional<Usuario> usuarioEncontrado = coleccionUsuarios.getUsuarios().stream()
                 .filter(u -> u.getEmail().equalsIgnoreCase(email))
                 .findFirst();
@@ -82,6 +87,10 @@ public class InicioSesionController {
         }
     }
 
+    /**
+     * Metodo que navega a la pantalla principal y pasa el usuario que se ha logueado
+     * @param usuarioLogueado
+     */
     private void navegarAPantallaPrincipal(Usuario usuarioLogueado) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/fran/chatoffline/ui/main.fxml"));
@@ -101,6 +110,9 @@ public class InicioSesionController {
         }
     }
 
+    /**
+     * Metodo que abre la ventana de registro
+     */
     private void abrirRegistro() {
         try {
             Parent registroContent = FXMLLoader.load(getClass().getResource("/org/fran/chatoffline/ui/registro.fxml"));

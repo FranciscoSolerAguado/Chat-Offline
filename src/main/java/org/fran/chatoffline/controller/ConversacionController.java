@@ -539,9 +539,8 @@ public class ConversacionController {
     }
 
     /**
-     * Metodo para empaquetar la conversacion en un zip
-     * Describeme el metodo
-     *
+     * Empaqueta la conversación actual, incluyendo el historial de mensajes y todos los archivos adjuntos,
+     * en un único archivo ZIP.
      */
     @FXML
     private void empaquetarConversacionEnZip() {
