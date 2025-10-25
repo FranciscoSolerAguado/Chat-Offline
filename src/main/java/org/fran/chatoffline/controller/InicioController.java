@@ -10,11 +10,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.fran.chatoffline.utils.LoggerUtil;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.logging.Logger;
 
 public class InicioController {
+    private static final Logger LOGGER = LoggerUtil.getLogger();
     @FXML
     private AnchorPane rootPane;
 
@@ -25,15 +28,18 @@ public class InicioController {
     @FXML
     public void initialize() { //PANTALLA DE CARGA
         // Espera 3 segundos antes de cambiar a pantalla completa
+        LOGGER.info("Cargando pantalla de carga...");
         PauseTransition pause = new PauseTransition(Duration.seconds(3));
         pause.setOnFinished(event -> ponerPantallaCompleta());
         pause.play();
+        LOGGER.info("Pantalla de carga cargada exitosamente.");
     }
 
     /**
      * Cambia la vista actual a la vista principal y ajusta la ventana.
      */
     private void ponerPantallaCompleta() {
+        LOGGER.info("Poniendo pantalla completa...");
         try {
             // Ruta absoluta del FXML en `src/main/resources/org/fran/chatoffline/ui/main.fxml`
             URL fxmlUrl = getClass().getResource("/org/fran/chatoffline/ui/inicioSesion.fxml");
@@ -61,6 +67,7 @@ public class InicioController {
         } catch (IOException | IllegalStateException e) {
             e.printStackTrace();
         }
+        LOGGER.info("Pantalla completa cargada exitosamente.");
     }
 }
 

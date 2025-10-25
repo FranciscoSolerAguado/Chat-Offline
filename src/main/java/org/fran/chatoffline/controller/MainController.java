@@ -80,6 +80,7 @@ public class MainController {
      * Metodo que carga la lista de usuario, menos el usuario actual
      */
     private void cargarListaUsuarios() {
+        LOGGER.info("Cargando lista de usuarios...");
         if (usuarioActual == null) {
             LOGGER.severe("No se puede cargar la lista de usuarios porque el usuario actual es nulo.");
             return;
@@ -111,6 +112,7 @@ public class MainController {
                 }
             }
         }
+        LOGGER.info("Lista de usuarios cargada exitosamente.");
     }
 
     /**
@@ -121,6 +123,7 @@ public class MainController {
      * @return
      */
     private HBox crearChatHBox(Usuario usuario) {
+        LOGGER.info("Creando Hbox para el usuario: " + usuario.getNombre());
         HBox hbox = new HBox(10);
         hbox.setAlignment(Pos.CENTER_LEFT);
         hbox.getStyleClass().add("chatHbox");
@@ -141,6 +144,7 @@ public class MainController {
         infoButton.setOnAction(e -> abrirPerfilUsuario(usuario));
 
         hbox.getChildren().addAll(avatar, nameLabel, region, infoButton);
+        LOGGER.info("Hbox para el usuario creado exitosamente.");
         return hbox;
     }
 
@@ -149,6 +153,7 @@ public class MainController {
      * @param contacto
      */
     private void abrirConversacion(Usuario contacto) {
+        LOGGER.info("Abriendo conversacion con: " + contacto.getNombre());
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/fran/chatoffline/ui/conversacion.fxml"));
             Parent view = loader.load();
@@ -163,6 +168,7 @@ public class MainController {
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Error al cargar la vista de conversación.", e);
         }
+        LOGGER.info("Conversación abierta exitosamente.");
     }
 
     /**
@@ -170,6 +176,7 @@ public class MainController {
      * @param usuario el usuario del que se quiere mostrar su perfil
      */
     public void abrirPerfilUsuario(Usuario usuario) {
+        LOGGER.info("Abriendo perfil de usuario: " + usuario.getNombre());
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/fran/chatoffline/ui/perfilUsuario.fxml"));
             Parent view = loader.load();
@@ -185,6 +192,7 @@ public class MainController {
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Error al cargar la vista de perfil de usuario.", e);
         }
+        LOGGER.info("Perfil de usuario abierto exitosamente.");
     }
 
     /**
@@ -192,6 +200,7 @@ public class MainController {
      * Este método es llamado por los controladores secundarios para "volver" a la pantalla principal.
      */
     public void cerrarVistaSecundariaYRefrescar() {
+        LOGGER.info("Recargando vista principal...");
         try {
             // Obtener la escena actual
             Scene scene = topBar.getScene();
@@ -215,6 +224,7 @@ public class MainController {
             LOGGER.log(Level.SEVERE, "Error al recargar la vista principal (main.fxml).", e);
             LOGGER.log(Level.SEVERE, "Error al recargar la vista principal (main.fxml).", e);
         }
+        LOGGER.info("Vista principal recargada exitosamente.");
     }
 
 
@@ -223,6 +233,7 @@ public class MainController {
      * @return
      */
     private File getUsuariosFile() {
+        LOGGER.info("Obteniendo ruta del archivo de usuarios...");
         return getFileFromResource("/org/fran/chatoffline/usuarios.xml");
     }
 
@@ -232,6 +243,7 @@ public class MainController {
      * @return
      */
     private File getFileFromResource(String resourcePath) {
+        LOGGER.info("Buscando archivo de usuarios...");
         try {
             // Intenta obtener la URL del recurso utilizando el ClassLoader.
             // Esto buscará el archivo en las carpetas de recursos del proyecto (classpath).
@@ -275,6 +287,7 @@ public class MainController {
      */
     @FXML
     private void handleMinimize() {
+        LOGGER.info("Minimizando la pantalla...");
         Stage stage = (Stage) topBar.getScene().getWindow();
         stage.setIconified(true);
     }
@@ -286,6 +299,7 @@ public class MainController {
      */
     @FXML
     private void handleToggleMaximize() {
+        LOGGER.info("Maximización de la pantalla...");
         Stage stage = (Stage) topBar.getScene().getWindow();
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
 
@@ -309,6 +323,7 @@ public class MainController {
      */
     @FXML
     private void handleClose() {
+        LOGGER.info("Cerrando la pantalla...");
         Platform.exit();
     }
 }

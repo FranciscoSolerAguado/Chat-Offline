@@ -55,6 +55,7 @@ public class RegistroController {
      * Método que maneja el registro de un usuario
      */
     private void registrarse() {
+        LOGGER.info("Intentando registrarse...");
         String nombre = txtNombre.getText().trim();
         String email = txtEmail.getText().trim();
         String contrasena = txtPassword.getText().trim();
@@ -115,6 +116,7 @@ public class RegistroController {
             LOGGER.severe("Fallo al guardar el archivo XML para el nuevo usuario: " + email);
             mostrarAlerta("Error: No se pudo completar el registro. Inténtalo de nuevo.");
         }
+        LOGGER.info("Registro finalizado.");
     }
 
     /**
@@ -122,6 +124,7 @@ public class RegistroController {
      * @return
      */
     private File getUsuariosFile() {
+        LOGGER.info("Obteniendo ruta del archivo de usuarios...");
         return getFileFromResource("/org/fran/chatoffline/usuarios.xml");
     }
 
@@ -131,6 +134,7 @@ public class RegistroController {
      * @return
      */
     private File getFileFromResource(String resourcePath) {
+        LOGGER.info("Buscando archivo de usuarios...");
         try {
             // Intenta obtener la URL del recurso utilizando el ClassLoader.
             // Esto buscará el archivo en las carpetas de recursos del proyecto (classpath).
@@ -174,6 +178,7 @@ public class RegistroController {
      * Si hacemos clic en "¿Ya tienes una cuenta?"
      */
     private void abrirInicioSesion() {
+        LOGGER.info("Abriendo ventana de inicio de sesión...");
         try {
             Parent inicioSesionContent = FXMLLoader.load(getClass().getResource("/org/fran/chatoffline/ui/inicioSesion.fxml"));
             Stage stage = (Stage) topBar.getScene().getWindow();
@@ -182,6 +187,7 @@ public class RegistroController {
             LOGGER.log(Level.SEVERE, "Error al cargar la ventana de inicio de sesión", e);
             mostrarAlerta("Error al cargar la ventana de inicio de sesión.");
         }
+        LOGGER.info("Ventana de inicio de sesión abierta exitosamente.");
     }
 
     /**
@@ -189,6 +195,7 @@ public class RegistroController {
      * @param msg
      */
     private void mostrarAlerta(String msg) {
+        LOGGER.info("Mostrando alerta: " + msg);
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
         alert.setContentText(msg);
@@ -200,6 +207,7 @@ public class RegistroController {
      */
     @FXML
     private void handleMinimize() {
+        LOGGER.info("Minimizando la pantalla...");
         Stage stage = (Stage) topBar.getScene().getWindow();
         stage.setIconified(true);
     }
@@ -211,6 +219,7 @@ public class RegistroController {
      */
     @FXML
     private void handleToggleMaximize() {
+        LOGGER.info("Maximización de la pantalla...");
         Stage stage = (Stage) topBar.getScene().getWindow();
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
 
@@ -227,6 +236,7 @@ public class RegistroController {
             stage.setHeight(screenBounds.getHeight());
             isMaximized = true;
         }
+        LOGGER.info("Maximización de la pantalla finalizada.");
     }
 
     /**
@@ -234,6 +244,7 @@ public class RegistroController {
      */
     @FXML
     private void handleClose() {
+        LOGGER.info("Cerrando la pantalla...");
         Platform.exit();
     }
 }
