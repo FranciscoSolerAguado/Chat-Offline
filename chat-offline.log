@@ -1,0 +1,8 @@
+oct 25, 2025 6:43:34 P. M. org.fran.chatoffline.controller.InicioSesionController iniciarSesion
+INFO: Intento de inicio de sesión para: fran@gmail.com
+oct 25, 2025 6:43:34 P. M. org.fran.chatoffline.controller.InicioSesionController iniciarSesion
+INFO: Inicio de sesión exitoso para: fran@gmail.com
+oct 25, 2025 6:43:34 P. M. org.fran.chatoffline.controller.MainController setUsuarioActual
+INFO: Usuario actual establecido: Fran
+oct 25, 2025 6:43:39 P. M. org.fran.chatoffline.controller.MainController setUsuarioActual
+INFO: Usuario actual establecido: Fran
