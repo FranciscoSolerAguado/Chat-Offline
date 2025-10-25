@@ -1,0 +1,73 @@
+@startuml
+title Class Diagram - Package Controller
+
+skinparam classAttributeIconSize 0
+
+package model {
+  class Usuario
+  class Mensaje
+}
+
+package controller {
+
+  class MainController {
+    +iniciarSesion(usuario, contrasena)
+    +registrarUsuario(nombre, contrasena)
+    +mostrarConversacion(contacto)
+    +abrirPerfilUsuario(usuario)
+  }
+
+  class InicioSesionController {
+    -mainController: MainController
+    +iniciarSesion()
+  }
+
+  class RegistroController {
+    -mainController: MainController
+    +registrarUsuario()
+  }
+
+  class InicioController {
+    -mainController: MainController
+    -contactos: ListView<Usuario>
+    +abrirConversacion()
+  }
+
+  class ConversacionController {
+    -mainController: MainController
+    -usuarioActual: Usuario
+    -contactoActual: Usuario
+    +enviarMensaje()
+    +adjuntarArchivo()
+    +generarResumen()
+    +empaquetarConversacionEnZip()
+  }
+
+  class PerfilUsuarioController {
+    -usuario: Usuario
+    +setUsuario(usuario)
+  }
+
+}
+
+' --- Relaciones ---
+
+MainController --> InicioSesionController : "manages"
+MainController --> RegistroController : "manages"
+MainController --> InicioController : "manages"
+MainController --> ConversacionController : "manages"
+MainController --> PerfilUsuarioController : "manages"
+
+InicioSesionController ..> MainController : calls
+RegistroController ..> MainController : calls
+InicioController ..> MainController : calls
+ConversacionController ..> MainController : calls
+
+' --- Dependencias con el Modelo ---
+
+InicioController ..> Usuario
+ConversacionController ..> Usuario
+ConversacionController ..> Mensaje
+PerfilUsuarioController ..> Usuario
+
+@enduml
