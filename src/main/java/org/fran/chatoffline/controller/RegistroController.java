@@ -105,7 +105,6 @@ public class RegistroController {
             return;
         }
 
-        String nombreUsuario = email.split("@")[0];
         Usuario nuevoUsuario = new Usuario(UUID.randomUUID().toString(), nombre, email, telefono, contrasena, LocalDateTime.now(), true);
         coleccionUsuarios.addUsuario(nuevoUsuario);
 

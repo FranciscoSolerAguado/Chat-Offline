@@ -15,7 +15,6 @@ module org.fran.chatoffline {
     requires jakarta.activation;
     requires java.desktop;
     requires javafx.media;
-    requires org.fran.chatoffline;
 
 
     // Abrir paquetes a JavaFX para que pueda acceder a los controladores
