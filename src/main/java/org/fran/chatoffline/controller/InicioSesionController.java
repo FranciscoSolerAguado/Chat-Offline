@@ -13,6 +13,7 @@ import org.fran.chatoffline.dataAccess.XMLManager;
 import org.fran.chatoffline.model.GestorUsuarios;
 import org.fran.chatoffline.model.Usuario;
 import org.fran.chatoffline.utils.LoggerUtil;
+import org.fran.chatoffline.utils.Utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -51,7 +52,7 @@ public class InicioSesionController {
         String pass = txtPassword.getText().trim();
 
         if (email.isEmpty() || pass.isEmpty()) {
-            mostrarAlerta("Por favor, introduce tu email y contraseña.");
+            Utils.mostrarAlerta("Por favor, introduce tu email y contraseña.");
             return;
         }
 
@@ -60,7 +61,7 @@ public class InicioSesionController {
         File usuariosFile = getUsuariosFile();
         if (usuariosFile == null || !usuariosFile.exists() || usuariosFile.length() == 0) {
             LOGGER.warning("Archivo de usuarios no encontrado o vacío. Nadie puede iniciar sesión.");
-            mostrarAlerta("Credenciales incorrectas.");
+            Utils.mostrarAlerta("Credenciales incorrectas.");
             return;
         }
 
@@ -70,7 +71,7 @@ public class InicioSesionController {
             coleccionUsuarios = XMLManager.readXML(new GestorUsuarios(), usuariosFile.getAbsolutePath());
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error al leer el archivo de usuarios.", e);
-            mostrarAlerta("Error del sistema. Por favor, contacta al administrador.");
+            Utils.mostrarAlerta("Error del sistema. Por favor, contacta al administrador.");
             return;
         }
 
@@ -84,7 +85,7 @@ public class InicioSesionController {
             navegarAPantallaPrincipal(usuarioEncontrado.get());
         } else {
             LOGGER.warning("Fallo de inicio de sesión para: " + email);
-            mostrarAlerta("Credenciales incorrectas.");
+            Utils.mostrarAlerta("Credenciales incorrectas.");
         }
         LOGGER.info("Inicio de sesión finalizado.");
     }
@@ -110,7 +111,7 @@ public class InicioSesionController {
 
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Error fatal al cargar la ventana principal.", e);
-            mostrarAlerta("Error fatal al cargar la aplicación.");
+            Utils.mostrarAlerta("Error fatal al cargar la aplicación.");
         }
         LOGGER.info("Pantalla principal cargada exitosamente.");
     }
@@ -126,7 +127,7 @@ public class InicioSesionController {
             stage.getScene().setRoot(registroContent);
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Error al cargar la ventana de registro.", e);
-            mostrarAlerta("Error al cargar la ventana de registro.");
+            Utils.mostrarAlerta("Error al cargar la ventana de registro.");
         }
         LOGGER.info("Ventana de registro abierta exitosamente.");
     }
@@ -190,14 +191,6 @@ public class InicioSesionController {
         }
     }
 
-
-    private void mostrarAlerta(String msg) {
-        LOGGER.info("Mostrando alerta: " + msg);
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText(null);
-        alert.setContentText(msg);
-        alert.showAndWait();
-    }
 
     /**
      * Metodo que maneja el minimizado de la pantalla

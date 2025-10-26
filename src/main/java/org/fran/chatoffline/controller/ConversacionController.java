@@ -20,6 +20,7 @@ import org.fran.chatoffline.model.GestorConversacion;
 import org.fran.chatoffline.model.Mensaje;
 import org.fran.chatoffline.model.Usuario;
 import org.fran.chatoffline.utils.LoggerUtil;
+import org.fran.chatoffline.utils.Utils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -272,10 +273,10 @@ public class ConversacionController {
                 out.write(buffer, 0, length);
             }
             LOGGER.info("Adjunto exportado exitosamente a: " + destino.getAbsolutePath());
-            mostrarAlerta("Adjunto guardado en: " + destino.getAbsolutePath());
+            Utils.mostrarAlerta("Adjunto guardado en: " + destino.getAbsolutePath());
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Error al exportar el adjunto.", e);
-            mostrarAlerta("Error al guardar el archivo.");
+            Utils.mostrarAlerta("Error al guardar el archivo.");
         }
     }
 
@@ -397,12 +398,12 @@ public class ConversacionController {
         LOGGER.info("Generando resumen de la conversación.");
         File conversacionFile = getConversacionesFile();
         if (conversacionFile == null || !conversacionFile.exists() || conversacionFile.length() == 0) {
-            mostrarAlerta("No hay conversación para analizar.");
+            Utils.mostrarAlerta("No hay conversación para analizar.");
             return;
         }
         GestorConversacion gestor = XMLManager.readXML(new GestorConversacion(), conversacionFile.getAbsolutePath());
         if (gestor == null || gestor.getMensajes() == null) {
-            mostrarAlerta("No hay mensajes para analizar.");
+            Utils.mostrarAlerta("No hay mensajes para analizar.");
             return;
         }
         List<Mensaje> mensajesConversacion = gestor.getMensajes().stream()
@@ -410,7 +411,7 @@ public class ConversacionController {
                         (m.getRemitente().equals(contactoActual.getNombre()) && m.getDestinatario().equals(usuarioActual.getNombre())))
                 .collect(Collectors.toList());
         if (mensajesConversacion.isEmpty()) {
-            mostrarAlerta("No hay mensajes en esta conversación.");
+            Utils.mostrarAlerta("No hay mensajes en esta conversación.");
             return;
         }
         long totalMensajes = mensajesConversacion.size();
@@ -468,18 +469,6 @@ public class ConversacionController {
         alert.showAndWait();
     }
 
-    /**
-     * Metodo que crea una alerta para mostrar un mensaje
-     * @param mensaje
-     */
-    private void mostrarAlerta(String mensaje) {
-        LOGGER.info("Mostrando alerta: " + mensaje);
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Información");
-        alert.setHeaderText(null);
-        alert.setContentText(mensaje);
-        alert.showAndWait();
-    }
 
     /**
      * Metodo que convierte un mensaje a CSV, usado en el metodo exportarConversacion
@@ -571,7 +560,7 @@ public class ConversacionController {
         LOGGER.info("Empaquetando conversación en ZIP.");
         File conversacionFile = getConversacionesFile();
         if (conversacionFile == null || !conversacionFile.exists() || gestorMensajesVacio(conversacionFile)) {
-            mostrarAlerta("No hay conversación para empaquetar.");
+            Utils.mostrarAlerta("No hay conversación para empaquetar.");
             return;
         }
 
@@ -612,11 +601,11 @@ public class ConversacionController {
                     }
                 }
             }
-            mostrarAlerta("Conversación empaquetada en: " + zipFile.getAbsolutePath());
+            Utils.mostrarAlerta("Conversación empaquetada en: " + zipFile.getAbsolutePath());
             LOGGER.info("Conversación empaquetada en: " + zipFile.getAbsolutePath());
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Error al empaquetar la conversación en ZIP.", e);
-            mostrarAlerta("Error al crear el archivo ZIP.");
+            Utils.mostrarAlerta("Error al crear el archivo ZIP.");
         }
     }
 
