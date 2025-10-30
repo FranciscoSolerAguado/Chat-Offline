@@ -21,7 +21,8 @@ public class Adjunto {
     @XmlElement
     private String tipoMime;
 
-    public Adjunto() {}
+    public Adjunto() {
+    }
 
     public Adjunto(String nombreArchivo, String rutaArchivo, long tamano, String tipoMime) {
         this.nombreArchivo = nombreArchivo;
@@ -31,17 +32,20 @@ public class Adjunto {
     }
 
 
-    public String getNombreArchivo() { return nombreArchivo; }
-    public void setNombreArchivo(String nombreArchivo) { this.nombreArchivo = nombreArchivo; }
+    public String getNombreArchivo() {
+        return nombreArchivo;
+    }
 
-    public String getRutaArchivo() { return rutaArchivo; }
-    public void setRutaArchivo(String rutaArchivo) { this.rutaArchivo = rutaArchivo; }
 
-    public long getTamano() { return tamano; }
-    public void setTamano(long tamano) { this.tamano = tamano; }
+    public String getRutaArchivo() {
+        return rutaArchivo;
+    }
 
-    public String getTipoMime() { return tipoMime; }
-    public void setTipoMime(String tipoMime) { this.tipoMime = tipoMime; }
+
+    public String getTipoMime() {
+        return tipoMime;
+    }
+
 
     @Override
     public String toString() {

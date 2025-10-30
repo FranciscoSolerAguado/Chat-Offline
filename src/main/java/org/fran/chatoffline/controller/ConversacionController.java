@@ -20,6 +20,7 @@ import org.fran.chatoffline.model.GestorConversacion;
 import org.fran.chatoffline.model.Mensaje;
 import org.fran.chatoffline.model.Usuario;
 import org.fran.chatoffline.utils.LoggerUtil;
+import org.fran.chatoffline.utils.Utils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -111,6 +112,7 @@ public class ConversacionController {
         }
 
         try {
+            LOGGER.info("Cargando mensajes desde el archivo de conversaciones.");
             GestorConversacion conversacion = XMLManager.readXML(new GestorConversacion(), conversacionFile.getAbsolutePath());
             if (conversacion != null && conversacion.getMensajes() != null) {
                 for (Mensaje m : conversacion.getMensajes()) {
@@ -136,6 +138,7 @@ public class ConversacionController {
      * @return el archivo que ha creado si no existe o la ruta directamente si existe
      */
     private File getConversacionesFile() {
+        LOGGER.info("Obteniendo el archivo de conversaciones.");
         File archivo = new File("src/main/resources/org/fran/chatoffline/conversaciones.xml");
         try {
             archivo.getParentFile().mkdirs();
@@ -154,6 +157,7 @@ public class ConversacionController {
      * @param mensaje El mensaje que se va a añadir en la GUI
      */
     private void agregarMensaje(Mensaje mensaje) {
+        LOGGER.info("Agregando mensaje a la conversación.");
         HBox contenedor = new HBox();
         contenedor.setPadding(new Insets(5, 10, 5, 10));
         contenedor.setFillHeight(false);
@@ -171,6 +175,7 @@ public class ConversacionController {
                 String mimeType = adj.getTipoMime();
                 //Si es una imagen
                 if (mimeType != null && mimeType.startsWith("image")) {
+                    LOGGER.info("Agregando imagen a la conversación.");
                     Image imagen = new Image(archivoAdjunto.toURI().toString());
                     ImageView imageView = new ImageView(imagen);
                     imageView.setFitWidth(200);
@@ -181,6 +186,7 @@ public class ConversacionController {
                     contenidoMensaje.getChildren().add(imageView);
                     //Si es un video
                 } else if (mimeType != null && mimeType.startsWith("video")) {
+                    LOGGER.info("Agregando video a la conversación.");
                     Media media = new Media(archivoAdjunto.toURI().toString());
                     MediaPlayer mediaPlayer = new MediaPlayer(media);
                     MediaView mediaView = new MediaView(mediaPlayer);
@@ -202,6 +208,7 @@ public class ConversacionController {
                     contenidoMensaje.getChildren().add(mediaView);
                     //Si es un pdf
                 } else if (mimeType != null && mimeType.equals("application/pdf")) {
+                    LOGGER.info("Agregando PDF a la conversación.");
                     Label pdfLabel = new Label("📄 " + adj.getNombreArchivo());
                     pdfLabel.setStyle("-fx-text-fill: #D32F2F; -fx-font-weight: bold; -fx-cursor: hand;");
                     Tooltip.install(pdfLabel, new Tooltip("Haz clic para guardar el PDF"));
@@ -210,6 +217,7 @@ public class ConversacionController {
                     contenidoMensaje.getChildren().add(pdfLabel);
                     //Si es un archivo
                 } else {
+                    LOGGER.info("Agregando archivo a la conversación.");
                     Label fileLabel = new Label("📁 " + adj.getNombreArchivo());
                     fileLabel.setStyle("-fx-text-fill: #444; -fx-font-style: italic; -fx-cursor: hand;");
                     Tooltip.install(fileLabel, new Tooltip("Haz clic para guardar el archivo"));
@@ -232,9 +240,11 @@ public class ConversacionController {
             contenedor.setAlignment(Pos.CENTER_LEFT);
         }
 
+
         contenedor.getChildren().add(contenidoMensaje);
         contenedorMensajes.getChildren().add(contenedor);
         Platform.runLater(() -> scrollMensajes.setVvalue(1.0));
+        LOGGER.info("Mensaje agregado a la conversación.");
     }
 
     /**
@@ -243,6 +253,7 @@ public class ConversacionController {
      * @param archivoOriginal el archivo que recibe para guardar (haciendo clic en el desde la interfaz gráfica)
      */
     private void exportarAdjunto(File archivoOriginal) {
+        LOGGER.info("Exportando adjunto: " + archivoOriginal.getName());
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Guardar Archivo Adjunto");
         fileChooser.setInitialFileName(archivoOriginal.getName());
@@ -255,16 +266,17 @@ public class ConversacionController {
         // Copiar el archivo original al destino
         try (InputStream in = new FileInputStream(archivoOriginal);
              OutputStream out = new FileOutputStream(destino)) {
+            LOGGER.info("Copiando adjunto a: " + destino.getAbsolutePath());
             byte[] buffer = new byte[1024];
             int length;
             while ((length = in.read(buffer)) > 0) {
                 out.write(buffer, 0, length);
             }
             LOGGER.info("Adjunto exportado exitosamente a: " + destino.getAbsolutePath());
-            mostrarAlerta("Adjunto guardado en: " + destino.getAbsolutePath());
+            Utils.mostrarAlerta("Adjunto guardado en: " + destino.getAbsolutePath());
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Error al exportar el adjunto.", e);
-            mostrarAlerta("Error al guardar el archivo.");
+            Utils.mostrarAlerta("Error al guardar el archivo.");
         }
     }
 
@@ -273,6 +285,7 @@ public class ConversacionController {
      */
     @FXML
     private void enviarMensaje() {
+        LOGGER.info("Enviando mensaje.");
         String texto = campoMensaje.getText().trim();
         if (texto.isEmpty() || usuarioActual == null || contactoActual == null) return;
 
@@ -280,6 +293,7 @@ public class ConversacionController {
         agregarMensaje(nuevoMensaje);
         campoMensaje.clear();
         guardarMensajeEnXML(nuevoMensaje);
+        LOGGER.info("Mensaje enviado.");
     }
 
     /**
@@ -288,6 +302,7 @@ public class ConversacionController {
      */
     @FXML
     private void adjuntarArchivo() {
+        LOGGER.info("Adjuntando archivo.");
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Seleccionar Archivo");
         fileChooser.getExtensionFilters().addAll(
@@ -305,6 +320,7 @@ public class ConversacionController {
         File destino = new File(carpetaMedia, archivoSeleccionado.getName());
         try (InputStream in = new FileInputStream(archivoSeleccionado);
              OutputStream out = new FileOutputStream(destino)) {
+            LOGGER.info("Copiando archivo adjunto a: " + destino.getAbsolutePath());
             byte[] buffer = new byte[1024];
             int length;
             while ((length = in.read(buffer)) > 0) {
@@ -323,6 +339,7 @@ public class ConversacionController {
 
         agregarMensaje(mensaje);
         guardarMensajeEnXML(mensaje);
+        LOGGER.info("Archivo adjunto enviado.");
     }
 
 
@@ -331,6 +348,7 @@ public class ConversacionController {
      */
     @FXML
     private void exportarConversacion() {
+        LOGGER.info("Exportando conversación.");
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Exportar Conversación");
         fileChooser.setInitialFileName("conversacion_" + contactoActual.getNombre() + ".csv");
@@ -377,14 +395,15 @@ public class ConversacionController {
      */
     @FXML
     private void generarResumen() {
+        LOGGER.info("Generando resumen de la conversación.");
         File conversacionFile = getConversacionesFile();
         if (conversacionFile == null || !conversacionFile.exists() || conversacionFile.length() == 0) {
-            mostrarAlerta("No hay conversación para analizar.");
+            Utils.mostrarAlerta("No hay conversación para analizar.");
             return;
         }
         GestorConversacion gestor = XMLManager.readXML(new GestorConversacion(), conversacionFile.getAbsolutePath());
         if (gestor == null || gestor.getMensajes() == null) {
-            mostrarAlerta("No hay mensajes para analizar.");
+            Utils.mostrarAlerta("No hay mensajes para analizar.");
             return;
         }
         List<Mensaje> mensajesConversacion = gestor.getMensajes().stream()
@@ -392,7 +411,7 @@ public class ConversacionController {
                         (m.getRemitente().equals(contactoActual.getNombre()) && m.getDestinatario().equals(usuarioActual.getNombre())))
                 .collect(Collectors.toList());
         if (mensajesConversacion.isEmpty()) {
-            mostrarAlerta("No hay mensajes en esta conversación.");
+            Utils.mostrarAlerta("No hay mensajes en esta conversación.");
             return;
         }
         long totalMensajes = mensajesConversacion.size();
@@ -429,6 +448,7 @@ public class ConversacionController {
         resumen.append(palabrasMasComunes.isEmpty() ? "No hay suficientes palabras." : palabrasMasComunes);
 
         mostrarResumenEnDialogo(resumen.toString());
+        LOGGER.info("Resumen generado exitosamente.");
     }
 
     /**
@@ -436,6 +456,7 @@ public class ConversacionController {
      * @param contenido
      */
     private void mostrarResumenEnDialogo(String contenido) {
+        LOGGER.info("Mostrando resumen de la conversación.");
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Resumen de la Conversación");
         alert.setHeaderText("Análisis de la conversación con " + contactoActual.getNombre());
@@ -448,17 +469,6 @@ public class ConversacionController {
         alert.showAndWait();
     }
 
-    /**
-     * Metodo que crea una alerta para mostrar un mensaje
-     * @param mensaje
-     */
-    private void mostrarAlerta(String mensaje) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Información");
-        alert.setHeaderText(null);
-        alert.setContentText(mensaje);
-        alert.showAndWait();
-    }
 
     /**
      * Metodo que convierte un mensaje a CSV, usado en el metodo exportarConversacion
@@ -466,6 +476,7 @@ public class ConversacionController {
      * @return String con el mensaje convertido a CSV
      */
     private String convertirMensajeACSV(Mensaje m) {
+        LOGGER.info("Convirtiendo mensaje a CSV.");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String fecha = m.getFechaEnvio().format(formatter);
         String remitente = m.getRemitente();
@@ -485,7 +496,6 @@ public class ConversacionController {
 
         // Obtener el nombre del archivo y convertirlo a minúsculas.
         String name = file.getName().toLowerCase();
-
 
         // Imagen
         if (name.endsWith(".png") || name.endsWith(".jpg") || name.endsWith(".jpeg") || name.endsWith(".gif")) {
@@ -512,6 +522,7 @@ public class ConversacionController {
         //    que el archivo es un flujo de bytes binarios y que el navegador o la aplicación
         //    deberían tratarlo como un archivo descargable o de tipo desconocido.
         return "application/octet-stream";
+
     }
 
     /**
@@ -520,6 +531,7 @@ public class ConversacionController {
      * @param mensaje
      */
     private void guardarMensajeEnXML(Mensaje mensaje) {
+        LOGGER.info("Guardando mensaje en el archivo de conversaciones.");
         File conversacionFile = getConversacionesFile();
         if (conversacionFile == null) return;
 
@@ -536,18 +548,19 @@ public class ConversacionController {
 
         conversacion.getMensajes().add(mensaje);
         XMLManager.writeXML(conversacion, conversacionFile.getAbsolutePath());
+        LOGGER.info("Mensaje guardado en el archivo de conversaciones.");
     }
 
     /**
-     * Metodo para empaquetar la conversacion en un zip
-     * Describeme el metodo
-     *
+     * Empaqueta la conversación actual, incluyendo el historial de mensajes y todos los archivos adjuntos,
+     * en un único archivo ZIP.
      */
     @FXML
     private void empaquetarConversacionEnZip() {
+        LOGGER.info("Empaquetando conversación en ZIP.");
         File conversacionFile = getConversacionesFile();
         if (conversacionFile == null || !conversacionFile.exists() || gestorMensajesVacio(conversacionFile)) {
-            mostrarAlerta("No hay conversación para empaquetar.");
+            Utils.mostrarAlerta("No hay conversación para empaquetar.");
             return;
         }
 
@@ -588,15 +601,17 @@ public class ConversacionController {
                     }
                 }
             }
-            mostrarAlerta("Conversación empaquetada en: " + zipFile.getAbsolutePath());
+            Utils.mostrarAlerta("Conversación empaquetada en: " + zipFile.getAbsolutePath());
+            LOGGER.info("Conversación empaquetada en: " + zipFile.getAbsolutePath());
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Error al empaquetar la conversación en ZIP.", e);
-            mostrarAlerta("Error al crear el archivo ZIP.");
+            Utils.mostrarAlerta("Error al crear el archivo ZIP.");
         }
     }
 
 
     private boolean gestorMensajesVacio(File file) {
+        LOGGER.info("Comprobando si el gestor de mensajes está vacío.");
         GestorConversacion gestor = XMLManager.readXML(new GestorConversacion(), file.getAbsolutePath());
         return gestor == null || gestor.getMensajes() == null || gestor.getMensajes().isEmpty();
     }

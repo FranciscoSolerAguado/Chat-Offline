@@ -1,0 +1,144 @@
+oct 25, 2025 6:43:34 P. M. org.fran.chatoffline.controller.InicioSesionController iniciarSesion
+INFO: Intento de inicio de sesión para: fran@gmail.com
+oct 25, 2025 6:43:34 P. M. org.fran.chatoffline.controller.InicioSesionController iniciarSesion
+INFO: Inicio de sesión exitoso para: fran@gmail.com
+oct 25, 2025 6:43:34 P. M. org.fran.chatoffline.controller.MainController setUsuarioActual
+INFO: Usuario actual establecido: Fran
+oct 25, 2025 6:43:39 P. M. org.fran.chatoffline.controller.MainController setUsuarioActual
+INFO: Usuario actual establecido: Fran
+oct 25, 2025 6:50:40 P. M. org.fran.chatoffline.controller.InicioSesionController iniciarSesion
+INFO: Intento de inicio de sesión para: fran@gmail.com
+oct 25, 2025 6:50:40 P. M. org.fran.chatoffline.controller.InicioSesionController iniciarSesion
+INFO: Inicio de sesión exitoso para: fran@gmail.com
+oct 25, 2025 6:50:40 P. M. org.fran.chatoffline.controller.MainController setUsuarioActual
+INFO: Usuario actual establecido: Fran
+oct 25, 2025 7:03:17 P. M. org.fran.chatoffline.controller.MainController setUsuarioActual
+INFO: Usuario actual establecido: Fran
+oct 25, 2025 7:03:20 P. M. org.fran.chatoffline.controller.MainController setUsuarioActual
+INFO: Usuario actual establecido: Fran
+oct 25, 2025 7:14:09 P. M. org.fran.chatoffline.controller.InicioSesionController iniciarSesion
+INFO: Intento de inicio de sesión para: fran@gmail.com
+oct 25, 2025 7:14:10 P. M. org.fran.chatoffline.controller.InicioSesionController iniciarSesion
+INFO: Inicio de sesión exitoso para: fran@gmail.com
+oct 25, 2025 7:14:10 P. M. org.fran.chatoffline.controller.MainController setUsuarioActual
+INFO: Usuario actual establecido: Fran
+oct 25, 2025 7:14:41 P. M. org.fran.chatoffline.controller.InicioSesionController iniciarSesion
+INFO: Intento de inicio de sesión para: marta@gmail.com
+oct 25, 2025 7:14:41 P. M. org.fran.chatoffline.controller.InicioSesionController iniciarSesion
+INFO: Inicio de sesión exitoso para: marta@gmail.com
+oct 25, 2025 7:14:41 P. M. org.fran.chatoffline.controller.MainController setUsuarioActual
+INFO: Usuario actual establecido: Marta
+oct 25, 2025 7:33:30 P. M. org.fran.chatoffline.controller.InicioSesionController iniciarSesion
+INFO: Intento de inicio de sesión para: fran@gmail.com
+oct 25, 2025 7:33:30 P. M. org.fran.chatoffline.controller.InicioSesionController iniciarSesion
+WARNING: Fallo de inicio de sesión para: fran@gmail.com
+oct 25, 2025 7:33:37 P. M. org.fran.chatoffline.controller.InicioSesionController iniciarSesion
+INFO: Intento de inicio de sesión para: fran@gmail.com
+oct 25, 2025 7:33:37 P. M. org.fran.chatoffline.controller.InicioSesionController iniciarSesion
+INFO: Inicio de sesión exitoso para: fran@gmail.com
+oct 25, 2025 7:33:37 P. M. org.fran.chatoffline.controller.MainController setUsuarioActual
+INFO: Usuario actual establecido: Fran
+oct 25, 2025 7:33:41 P. M. org.fran.chatoffline.controller.ConversacionController getConversacionesFile
+INFO: Obteniendo el archivo de conversaciones.
+oct 25, 2025 7:33:41 P. M. org.fran.chatoffline.controller.ConversacionController cargarMensajesDesdeXML
+INFO: Cargando mensajes desde el archivo de conversaciones.
+oct 25, 2025 7:33:41 P. M. org.fran.chatoffline.controller.ConversacionController agregarMensaje
+INFO: Agregando mensaje a la conversación.
+oct 25, 2025 7:33:41 P. M. org.fran.chatoffline.controller.ConversacionController agregarMensaje
+INFO: Mensaje agregado a la conversación.
+oct 25, 2025 7:33:41 P. M. org.fran.chatoffline.controller.ConversacionController agregarMensaje
+INFO: Agregando mensaje a la conversación.
+oct 25, 2025 7:33:41 P. M. org.fran.chatoffline.controller.ConversacionController agregarMensaje
+INFO: Agregando imagen a la conversación.
+oct 25, 2025 7:33:41 P. M. org.fran.chatoffline.controller.ConversacionController agregarMensaje
+INFO: Mensaje agregado a la conversación.
+oct 25, 2025 7:33:41 P. M. org.fran.chatoffline.controller.ConversacionController agregarMensaje
+INFO: Agregando mensaje a la conversación.
+oct 25, 2025 7:33:41 P. M. org.fran.chatoffline.controller.ConversacionController agregarMensaje
+INFO: Mensaje agregado a la conversación.
+oct 25, 2025 7:33:41 P. M. org.fran.chatoffline.controller.ConversacionController agregarMensaje
+INFO: Agregando mensaje a la conversación.
+oct 25, 2025 7:33:41 P. M. org.fran.chatoffline.controller.ConversacionController agregarMensaje
+INFO: Agregando imagen a la conversación.
+oct 25, 2025 7:33:41 P. M. org.fran.chatoffline.controller.ConversacionController agregarMensaje
+INFO: Mensaje agregado a la conversación.
+oct 25, 2025 7:33:41 P. M. org.fran.chatoffline.controller.ConversacionController agregarMensaje
+INFO: Agregando mensaje a la conversación.
+oct 25, 2025 7:33:41 P. M. org.fran.chatoffline.controller.ConversacionController agregarMensaje
+INFO: Mensaje agregado a la conversación.
+oct 25, 2025 7:33:41 P. M. org.fran.chatoffline.controller.ConversacionController agregarMensaje
+INFO: Agregando mensaje a la conversación.
+oct 25, 2025 7:33:41 P. M. org.fran.chatoffline.controller.ConversacionController agregarMensaje
+INFO: Mensaje agregado a la conversación.
+oct 25, 2025 7:33:41 P. M. org.fran.chatoffline.controller.ConversacionController agregarMensaje
+INFO: Agregando mensaje a la conversación.
+oct 25, 2025 7:33:41 P. M. org.fran.chatoffline.controller.ConversacionController agregarMensaje
+INFO: Mensaje agregado a la conversación.
+oct 25, 2025 7:33:41 P. M. org.fran.chatoffline.controller.ConversacionController agregarMensaje
+INFO: Agregando mensaje a la conversación.
+oct 25, 2025 7:33:41 P. M. org.fran.chatoffline.controller.ConversacionController agregarMensaje
+INFO: Mensaje agregado a la conversación.
+oct 25, 2025 7:33:41 P. M. org.fran.chatoffline.controller.ConversacionController agregarMensaje
+INFO: Agregando mensaje a la conversación.
+oct 25, 2025 7:33:41 P. M. org.fran.chatoffline.controller.ConversacionController agregarMensaje
+INFO: Mensaje agregado a la conversación.
+oct 25, 2025 7:33:41 P. M. org.fran.chatoffline.controller.ConversacionController agregarMensaje
+INFO: Agregando mensaje a la conversación.
+oct 25, 2025 7:33:41 P. M. org.fran.chatoffline.controller.ConversacionController agregarMensaje
+INFO: Mensaje agregado a la conversación.
+oct 25, 2025 7:33:41 P. M. org.fran.chatoffline.controller.ConversacionController agregarMensaje
+INFO: Agregando mensaje a la conversación.
+oct 25, 2025 7:33:41 P. M. org.fran.chatoffline.controller.ConversacionController agregarMensaje
+INFO: Mensaje agregado a la conversación.
+oct 25, 2025 7:33:41 P. M. org.fran.chatoffline.controller.ConversacionController agregarMensaje
+INFO: Agregando mensaje a la conversación.
+oct 25, 2025 7:33:41 P. M. org.fran.chatoffline.controller.ConversacionController agregarMensaje
+INFO: Mensaje agregado a la conversación.
+oct 25, 2025 7:33:41 P. M. org.fran.chatoffline.controller.ConversacionController agregarMensaje
+INFO: Agregando mensaje a la conversación.
+oct 25, 2025 7:33:41 P. M. org.fran.chatoffline.controller.ConversacionController agregarMensaje
+INFO: Mensaje agregado a la conversación.
+oct 25, 2025 7:33:54 P. M. org.fran.chatoffline.controller.ConversacionController enviarMensaje
+INFO: Enviando mensaje.
+oct 25, 2025 7:33:54 P. M. org.fran.chatoffline.controller.ConversacionController agregarMensaje
+INFO: Agregando mensaje a la conversación.
+oct 25, 2025 7:33:54 P. M. org.fran.chatoffline.controller.ConversacionController agregarMensaje
+INFO: Mensaje agregado a la conversación.
+oct 25, 2025 7:33:54 P. M. org.fran.chatoffline.controller.ConversacionController guardarMensajeEnXML
+INFO: Guardando mensaje en el archivo de conversaciones.
+oct 25, 2025 7:33:54 P. M. org.fran.chatoffline.controller.ConversacionController getConversacionesFile
+INFO: Obteniendo el archivo de conversaciones.
+oct 25, 2025 7:33:54 P. M. org.fran.chatoffline.controller.ConversacionController guardarMensajeEnXML
+INFO: Mensaje guardado en el archivo de conversaciones.
+oct 25, 2025 7:33:54 P. M. org.fran.chatoffline.controller.ConversacionController enviarMensaje
+INFO: Mensaje enviado.
+oct 26, 2025 9:24:09 A. M. org.fran.chatoffline.controller.InicioController initialize
+INFO: Cargando pantalla de carga...
+oct 26, 2025 9:24:09 A. M. org.fran.chatoffline.controller.InicioController initialize
+INFO: Pantalla de carga cargada exitosamente.
+oct 26, 2025 9:24:12 A. M. org.fran.chatoffline.controller.InicioController ponerPantallaCompleta
+INFO: Poniendo pantalla completa...
+oct 26, 2025 9:24:12 A. M. org.fran.chatoffline.controller.InicioController ponerPantallaCompleta
+INFO: Pantalla completa cargada exitosamente.
+oct 26, 2025 9:24:18 A. M. org.fran.chatoffline.controller.InicioSesionController iniciarSesion
+INFO: Intentando iniciar sesión...
+oct 26, 2025 9:24:18 A. M. org.fran.chatoffline.controller.InicioSesionController iniciarSesion
+INFO: Intento de inicio de sesión para: fran
+oct 26, 2025 9:24:18 A. M. org.fran.chatoffline.controller.InicioSesionController getUsuariosFile
+INFO: Obteniendo ruta del archivo de usuarios...
+oct 26, 2025 9:24:18 A. M. org.fran.chatoffline.controller.InicioSesionController getUsuariosFile
+INFO: Ruta del archivo de usuarios: /org/fran/chatoffline/usuarios.xml
+oct 26, 2025 9:24:18 A. M. org.fran.chatoffline.controller.InicioSesionController getFileFromResource
+INFO: Buscando archivo de usuarios...
+oct 26, 2025 9:24:19 A. M. org.fran.chatoffline.controller.InicioSesionController iniciarSesion
+WARNING: Fallo de inicio de sesión para: fran
+oct 26, 2025 9:24:19 A. M. org.fran.chatoffline.utils.Utils mostrarAlerta
+INFO: Mostrando alerta: Credenciales incorrectas.
+oct 26, 2025 9:24:21 A. M. org.fran.chatoffline.controller.InicioSesionController iniciarSesion
+INFO: Inicio de sesión finalizado.
+oct 26, 2025 9:24:23 A. M. org.fran.chatoffline.controller.InicioSesionController handleToggleMaximize
+INFO: Maximización de la pantalla...
+oct 26, 2025 9:24:24 A. M. org.fran.chatoffline.controller.InicioSesionController handleToggleMaximize
+INFO: Maximización de la pantalla...
+oct 26, 2025 9:24:30 A. M. org.fran.chatoffline.controller.InicioSesionController handleClose
+INFO: Cerrando la pantalla...

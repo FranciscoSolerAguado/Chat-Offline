@@ -13,6 +13,7 @@ import org.fran.chatoffline.dataAccess.XMLManager;
 import org.fran.chatoffline.model.GestorUsuarios;
 import org.fran.chatoffline.model.Usuario;
 import org.fran.chatoffline.utils.LoggerUtil;
+import org.fran.chatoffline.utils.Utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,12 +43,16 @@ public class InicioSesionController {
         linkRegistro.setOnAction(e -> abrirRegistro());
     }
 
+    /**
+     * Metodo que maneja el inicio de sesion
+     */
     private void iniciarSesion() {
+        LOGGER.info("Intentando iniciar sesión...");
         String email = txtEmail.getText().trim();
         String pass = txtPassword.getText().trim();
 
         if (email.isEmpty() || pass.isEmpty()) {
-            mostrarAlerta("Por favor, introduce tu email y contraseña.");
+            Utils.mostrarAlerta("Por favor, introduce tu email y contraseña.");
             return;
         }
 
@@ -56,19 +61,21 @@ public class InicioSesionController {
         File usuariosFile = getUsuariosFile();
         if (usuariosFile == null || !usuariosFile.exists() || usuariosFile.length() == 0) {
             LOGGER.warning("Archivo de usuarios no encontrado o vacío. Nadie puede iniciar sesión.");
-            mostrarAlerta("Credenciales incorrectas.");
+            Utils.mostrarAlerta("Credenciales incorrectas.");
             return;
         }
 
+        // Leer el archivo de usuarios
         GestorUsuarios coleccionUsuarios = new GestorUsuarios();
         try {
             coleccionUsuarios = XMLManager.readXML(new GestorUsuarios(), usuariosFile.getAbsolutePath());
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error crítico al leer el archivo de usuarios.", e);
-            mostrarAlerta("Error del sistema. Por favor, contacta al administrador.");
+            LOGGER.log(Level.SEVERE, "Error al leer el archivo de usuarios.", e);
+            Utils.mostrarAlerta("Error del sistema. Por favor, contacta al administrador.");
             return;
         }
 
+        // Buscar el usuario en la lista
         Optional<Usuario> usuarioEncontrado = coleccionUsuarios.getUsuarios().stream()
                 .filter(u -> u.getEmail().equalsIgnoreCase(email))
                 .findFirst();
@@ -78,11 +85,18 @@ public class InicioSesionController {
             navegarAPantallaPrincipal(usuarioEncontrado.get());
         } else {
             LOGGER.warning("Fallo de inicio de sesión para: " + email);
-            mostrarAlerta("Credenciales incorrectas.");
+            Utils.mostrarAlerta("Credenciales incorrectas.");
         }
+        LOGGER.info("Inicio de sesión finalizado.");
     }
 
+    /**
+     * Metodo que navega a la pantalla principal y pasa el usuario que se ha logueado
+     *
+     * @param usuarioLogueado
+     */
     private void navegarAPantallaPrincipal(Usuario usuarioLogueado) {
+        LOGGER.info("Navegando a la pantalla principal...");
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/fran/chatoffline/ui/main.fxml"));
             Parent mainContent = loader.load();
@@ -97,36 +111,48 @@ public class InicioSesionController {
 
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Error fatal al cargar la ventana principal.", e);
-            mostrarAlerta("Error fatal al cargar la aplicación.");
+            Utils.mostrarAlerta("Error fatal al cargar la aplicación.");
         }
+        LOGGER.info("Pantalla principal cargada exitosamente.");
     }
 
+    /**
+     * Metodo que abre la ventana de registro
+     */
     private void abrirRegistro() {
+        LOGGER.info("Abriendo ventana de registro...");
         try {
             Parent registroContent = FXMLLoader.load(getClass().getResource("/org/fran/chatoffline/ui/registro.fxml"));
             Stage stage = (Stage) topBar.getScene().getWindow();
             stage.getScene().setRoot(registroContent);
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Error al cargar la ventana de registro.", e);
-            mostrarAlerta("Error al cargar la ventana de registro.");
+            Utils.mostrarAlerta("Error al cargar la ventana de registro.");
         }
+        LOGGER.info("Ventana de registro abierta exitosamente.");
     }
 
     /**
      * Llama a getFileFromResource y devuelve la ruta convertida a archivo gracias a getFileFromResource
+     *
      * @return
      */
     private File getUsuariosFile() {
+        LOGGER.info("Obteniendo ruta del archivo de usuarios...");
         final String resourcePath = "/org/fran/chatoffline/usuarios.xml";
+        LOGGER.info("Ruta del archivo de usuarios: " + resourcePath);
         return getFileFromResource(resourcePath);
+
     }
 
     /**
      * Metodo que busca el archivo de usuarios.xml
+     *
      * @param resourcePath
      * @return
      */
     private File getFileFromResource(String resourcePath) {
+        LOGGER.info("Buscando archivo de usuarios...");
         try {
             // Intenta obtener la URL del recurso utilizando el ClassLoader.
             // Esto buscará el archivo en las carpetas de recursos del proyecto (classpath).
@@ -166,18 +192,12 @@ public class InicioSesionController {
     }
 
 
-    private void mostrarAlerta(String msg) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText(null);
-        alert.setContentText(msg);
-        alert.showAndWait();
-    }
-
     /**
      * Metodo que maneja el minimizado de la pantalla
      */
     @FXML
     private void handleMinimize() {
+        LOGGER.info("Minimizando la pantalla...");
         Stage stage = (Stage) topBar.getScene().getWindow();
         stage.setIconified(true);
     }
@@ -189,6 +209,7 @@ public class InicioSesionController {
      */
     @FXML
     private void handleToggleMaximize() {
+        LOGGER.info("Maximización de la pantalla...");
         Stage stage = (Stage) topBar.getScene().getWindow();
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
 
@@ -212,6 +233,7 @@ public class InicioSesionController {
      */
     @FXML
     private void handleClose() {
+        LOGGER.info("Cerrando la pantalla...");
         Platform.exit();
     }
 }

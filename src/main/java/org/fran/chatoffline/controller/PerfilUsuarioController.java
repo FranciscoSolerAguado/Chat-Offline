@@ -33,6 +33,7 @@ public class PerfilUsuarioController {
      * @param usuarioLogueado El usuario que ha iniciado la sesión.
      */
     public void setDatosPerfil(Usuario usuarioDelPerfil, Usuario usuarioLogueado) {
+        LOGGER.info("Configurando datos del perfil del usuario.");
         this.usuarioDelPerfil = usuarioDelPerfil;
         this.usuarioLogueado = usuarioLogueado;
         actualizarVista();
@@ -43,6 +44,7 @@ public class PerfilUsuarioController {
      * Y le asigna los datos del usuario del perfil a los distintos label.
      */
     private void actualizarVista() {
+        LOGGER.info("Actualizando vista del perfil del usuario.");
         if (usuarioDelPerfil == null) {
             LOGGER.severe("No se ha proporcionado un usuario para mostrar en el perfil.");
             return;
@@ -71,6 +73,7 @@ public class PerfilUsuarioController {
                 lblEstadoContacto.getStyleClass().add("estado-inactivo");
             }
         }
+        LOGGER.info("Vista del perfil del usuario actualizada exitosamente.");
     }
 
     /**
@@ -79,6 +82,7 @@ public class PerfilUsuarioController {
      */
     @FXML
     private void handleCerrar() {
+        LOGGER.info("Cerrando perfil del usuario.");
         if (mainController != null) {
             mainController.cerrarVistaSecundariaYRefrescar();
         } else {

@@ -13,6 +13,8 @@ import org.fran.chatoffline.dataAccess.XMLManager;
 import org.fran.chatoffline.model.GestorUsuarios;
 import org.fran.chatoffline.model.Usuario;
 import org.fran.chatoffline.utils.LoggerUtil;
+import org.fran.chatoffline.utils.ReggexUtil;
+import org.fran.chatoffline.utils.Utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,8 +29,9 @@ import java.util.regex.Pattern;
 public class RegistroController {
     private static final Logger LOGGER = LoggerUtil.getLogger();
 
-    private static final Pattern GMAIL_REGEX = Pattern.compile("^[a-zA-Z0-9._%+-]+@gmail\\.com$");
-    private static final Pattern TELEFONO_REGEX = Pattern.compile("^[6789]\\d{8}$");
+    private static final Pattern GMAIL_REGEX = ReggexUtil.GMAIL_REGEX;
+    private static final Pattern TELEFONO_REGEX = ReggexUtil.TELEFONO_REGEX;
+
 
     @FXML
     private TextField txtNombre;
@@ -55,6 +58,7 @@ public class RegistroController {
      * Método que maneja el registro de un usuario
      */
     private void registrarse() {
+        LOGGER.info("Intentando registrarse...");
         String nombre = txtNombre.getText().trim();
         String email = txtEmail.getText().trim();
         String contrasena = txtPassword.getText().trim();
@@ -62,15 +66,15 @@ public class RegistroController {
 
 
         if (email.isEmpty() || contrasena.isEmpty() || telefono.isEmpty()) {
-            mostrarAlerta("Por favor, completa todos los campos.");
+            Utils.mostrarAlerta("Por favor, completa todos los campos.");
             return;
         }
         if (!GMAIL_REGEX.matcher(email).matches()) {
-            mostrarAlerta("El correo electrónico debe ser una dirección de @gmail.com válida.");
+            Utils.mostrarAlerta("El correo electrónico debe ser una dirección de @gmail.com válida.");
             return;
         }
         if (!TELEFONO_REGEX.matcher(telefono).matches()) {
-            mostrarAlerta("El formato del teléfono no es válido. Debe tener 9 dígitos y empezar por 6, 7, 8 o 9.");
+            Utils.mostrarAlerta("El formato del teléfono no es válido. Debe tener 9 dígitos y empezar por 6, 7, 8 o 9.");
             return;
         }
 
@@ -78,7 +82,7 @@ public class RegistroController {
 
         File usuariosFile = getUsuariosFile();
         if (usuariosFile == null) {
-            mostrarAlerta("Error crítico: No se puede acceder a la ubicación de almacenamiento de usuarios.");
+            Utils.mostrarAlerta("Error crítico: No se puede acceder a la ubicación de almacenamiento de usuarios.");
             return;
         }
 
@@ -97,11 +101,10 @@ public class RegistroController {
 
         if (usuarioExiste) {
             LOGGER.warning("Intento de registro para un email ya existente: " + email);
-            mostrarAlerta("El correo electrónico ya está registrado. Por favor, inicia sesión.");
+            Utils.mostrarAlerta("El correo electrónico ya está registrado. Por favor, inicia sesión.");
             return;
         }
 
-        String nombreUsuario = email.split("@")[0];
         Usuario nuevoUsuario = new Usuario(UUID.randomUUID().toString(), nombre, email, telefono, contrasena, LocalDateTime.now(), true);
         coleccionUsuarios.addUsuario(nuevoUsuario);
 
@@ -109,12 +112,13 @@ public class RegistroController {
 
         if (guardadoExitoso) {
             LOGGER.info("Usuario registrado con éxito: " + email);
-            mostrarAlerta("¡Registro completado con éxito! Ahora puedes iniciar sesión.");
+            Utils.mostrarAlerta("¡Registro completado con éxito! Ahora puedes iniciar sesión.");
             abrirInicioSesion();
         } else {
             LOGGER.severe("Fallo al guardar el archivo XML para el nuevo usuario: " + email);
-            mostrarAlerta("Error: No se pudo completar el registro. Inténtalo de nuevo.");
+            Utils.mostrarAlerta("Error: No se pudo completar el registro. Inténtalo de nuevo.");
         }
+        LOGGER.info("Registro finalizado.");
     }
 
     /**
@@ -122,6 +126,7 @@ public class RegistroController {
      * @return
      */
     private File getUsuariosFile() {
+        LOGGER.info("Obteniendo ruta del archivo de usuarios...");
         return getFileFromResource("/org/fran/chatoffline/usuarios.xml");
     }
 
@@ -131,6 +136,7 @@ public class RegistroController {
      * @return
      */
     private File getFileFromResource(String resourcePath) {
+        LOGGER.info("Buscando archivo de usuarios...");
         try {
             // Intenta obtener la URL del recurso utilizando el ClassLoader.
             // Esto buscará el archivo en las carpetas de recursos del proyecto (classpath).
@@ -174,32 +180,25 @@ public class RegistroController {
      * Si hacemos clic en "¿Ya tienes una cuenta?"
      */
     private void abrirInicioSesion() {
+        LOGGER.info("Abriendo ventana de inicio de sesión...");
         try {
             Parent inicioSesionContent = FXMLLoader.load(getClass().getResource("/org/fran/chatoffline/ui/inicioSesion.fxml"));
             Stage stage = (Stage) topBar.getScene().getWindow();
             stage.getScene().setRoot(inicioSesionContent);
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Error al cargar la ventana de inicio de sesión", e);
-            mostrarAlerta("Error al cargar la ventana de inicio de sesión.");
+            Utils.mostrarAlerta("Error al cargar la ventana de inicio de sesión.");
         }
+        LOGGER.info("Ventana de inicio de sesión abierta exitosamente.");
     }
 
-    /**
-     * Metodo que crea una alerta para mostrarla
-     * @param msg
-     */
-    private void mostrarAlerta(String msg) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText(null);
-        alert.setContentText(msg);
-        alert.showAndWait();
-    }
 
     /**
      * Metodo que maneja el minimizado de la pantalla
      */
     @FXML
     private void handleMinimize() {
+        LOGGER.info("Minimizando la pantalla...");
         Stage stage = (Stage) topBar.getScene().getWindow();
         stage.setIconified(true);
     }
@@ -211,6 +210,7 @@ public class RegistroController {
      */
     @FXML
     private void handleToggleMaximize() {
+        LOGGER.info("Maximización de la pantalla...");
         Stage stage = (Stage) topBar.getScene().getWindow();
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
 
@@ -227,6 +227,7 @@ public class RegistroController {
             stage.setHeight(screenBounds.getHeight());
             isMaximized = true;
         }
+        LOGGER.info("Maximización de la pantalla finalizada.");
     }
 
     /**
@@ -234,6 +235,7 @@ public class RegistroController {
      */
     @FXML
     private void handleClose() {
+        LOGGER.info("Cerrando la pantalla...");
         Platform.exit();
     }
 }

@@ -21,7 +21,7 @@ public class Usuario {
     private String email;
 
     @XmlElement
-    private String telefono; // Nuevo campo
+    private String telefono;
 
     @XmlElement
     private String password;
